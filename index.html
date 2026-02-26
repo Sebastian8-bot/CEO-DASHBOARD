@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0064)file:///Users/Konnan/Downloads/Dashboard_MediSmart_CEO_v2_2.html -->
+<!-- saved from url=(0064)file:///Users/Konnan/Downloads/Dashboard_MediSmart_CEO_v2_3.html -->
 <html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -498,8 +498,8 @@ body {
 <!-- ════════════════ NAV ════════════════ -->
 <nav class="nav">
   <div class="nav-inner">
-    <div class="ntab active" onclick="show(&#39;resumen&#39;,this)"><span class="ntab-icon">🌐</span>Resumen Grupo</div>
-    <div class="ntab" onclick="show(&#39;caja&#39;,this)"><span class="ntab-icon">💧</span>Caja &amp; Liquidez</div>
+    <div class="ntab" onclick="show(&#39;resumen&#39;,this)"><span class="ntab-icon">🌐</span>Resumen Grupo</div>
+    <div class="ntab active" onclick="show(&#39;caja&#39;,this)"><span class="ntab-icon">💧</span>Caja &amp; Liquidez</div>
     <div class="ntab" onclick="show(&#39;chile&#39;,this)"><span class="ntab-icon">🇨🇱</span>Chile · EEFF</div>
     <div class="ntab" onclick="show(&#39;ingresos&#39;,this)"><span class="ntab-icon">📈</span>Ingresos por País</div>
     <div class="ntab" onclick="show(&#39;rentabilidad&#39;,this)"><span class="ntab-icon">📊</span>Rentabilidad</div>
@@ -518,7 +518,7 @@ body {
 <!-- ══════════════════════════════════════
      1. RESUMEN GRUPO
 ══════════════════════════════════════ -->
-<section id="resumen" class="section active">
+<section id="resumen" class="section">
   <div class="sec-head">
     <div class="sec-eyebrow">Vista Consolidada · 5 Países</div>
     <h1 class="sec-title">Estado del Grupo MediSmart — 2025</h1>
@@ -619,7 +619,7 @@ body {
 <!-- ══════════════════════════════════════
      2. CAJA & LIQUIDEZ
 ══════════════════════════════════════ -->
-<section id="caja" class="section">
+<section id="caja" class="section active">
   <div class="sec-head">
     <div class="sec-eyebrow">Emergencia Financiera · Chile Operacional</div>
     <h1 class="sec-title">Caja &amp; Liquidez — El Riesgo Inmediato</h1>
@@ -1481,6 +1481,9 @@ Chart.defaults.font.size = 12;
 Chart.defaults.color = '#6b7280';
 Chart.defaults.plugins.legend.labels.boxWidth = 11;
 Chart.defaults.plugins.legend.labels.padding = 14;
+Chart.defaults.animation = false;
+Chart.defaults.animations = false;
+Chart.defaults.transitions = {};
 
 const C = {
   navy:    '#0f1f35',
