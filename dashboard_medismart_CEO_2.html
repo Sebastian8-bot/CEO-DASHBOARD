@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<!-- saved from url=(0059)file:///Users/Konnan/Downloads/dashboard_medismart_CEO.html -->
+<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Medismart — Dashboard Ejecutivo CEO 2025</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --navy: #1a2e4a;
+    --navy-mid: #254060;
+    --blue: #2e5fa3;
+    --blue-light: #4a7fc1;
+    --accent: #c8a45a;
+    --accent-light: #e8c97a;
+    --red: #c0392b;
+    --red-light: #e74c3c;
+    --green: #1a7a4a;
+    --green-light: #27ae60;
+    --orange: #d35400;
+    --gray-100: #f8f9fb;
+    --gray-200: #eef0f4;
+    --gray-300: #dde1e9;
+    --gray-400: #b0b8c8;
+    --gray-500: #7a8699;
+    --gray-700: #3d4a5c;
+    --gray-900: #1a2130;
+    --white: #ffffff;
+    --shadow-sm: 0 1px 4px rgba(26,46,74,0.07);
+    --shadow-md: 0 4px 16px rgba(26,46,74,0.10);
+    --shadow-lg: 0 8px 32px rgba(26,46,74,0.13);
+    --radius: 12px;
+    --radius-lg: 18px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--gray-100);
+    color: var(--gray-900);
+    min-height: 100vh;
+  }
+
+  /* ---- HEADER ---- */
+  .header {
+    background: var(--navy);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.18);
+  }
+  .header-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+  .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .logo-badge {
+    width: 36px; height: 36px;
+    background: var(--accent);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--navy);
+    letter-spacing: -0.5px;
+  }
+  .logo-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: 0.3px;
+  }
+  .header-meta {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  .header-tag {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(200,164,90,0.12);
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid rgba(200,164,90,0.25);
+  }
+  .header-date {
+    font-size: 12px;
+    color: rgba(255,255,255,0.45);
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* ---- NAV TABS ---- */
+  .nav-strip {
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-300);
+    position: sticky;
+    top: 64px;
+    z-index: 99;
+  }
+  .nav-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+  }
+  .nav-tab {
+    padding: 14px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gray-500);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: block;
+  }
+  .nav-tab:hover { color: var(--navy); }
+  .nav-tab.active {
+    color: var(--blue);
+    border-bottom-color: var(--blue);
+    font-weight: 600;
+  }
+
+  /* ---- MAIN ---- */
+  .main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 32px 32px 64px;
+  }
+
+  /* ---- SECTION ---- */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  .section-header {
+    margin-bottom: 28px;
+  }
+  .section-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 6px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.2;
+  }
+  .section-subtitle {
+    margin-top: 6px;
+    font-size: 14px;
+    color: var(--gray-500);
+    line-height: 1.6;
+    max-width: 680px;
+  }
+
+  /* ---- GRID ---- */
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+  .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 24px; }
+  .grid-2-1 { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 24px; }
+  .grid-1-2 { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; margin-bottom: 24px; }
+
+  /* ---- CARD ---- */
+  .card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--gray-200);
+    transition: box-shadow 0.2s;
+  }
+  .card:hover { box-shadow: var(--shadow-md); }
+
+  /* ---- KPI CARD ---- */
+  .kpi-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 22px 24px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--gray-200);
+    border-top: 3px solid var(--blue);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.2s;
+  }
+  .kpi-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .kpi-card.red { border-top-color: var(--red); }
+  .kpi-card.green { border-top-color: var(--green-light); }
+  .kpi-card.orange { border-top-color: var(--orange); }
+  .kpi-card.gold { border-top-color: var(--accent); }
+
+  .kpi-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--gray-500);
+    margin-bottom: 8px;
+  }
+  .kpi-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .kpi-value.red { color: var(--red); }
+  .kpi-value.green { color: var(--green); }
+  .kpi-value.orange { color: var(--orange); }
+  .kpi-sub {
+    font-size: 12px;
+    color: var(--gray-500);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .kpi-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 20px;
+  }
+  .badge-red { background: #fdecea; color: var(--red); }
+  .badge-green { background: #e6f9ef; color: var(--green); }
+  .badge-orange { background: #fef3e9; color: var(--orange); }
+  .badge-blue { background: #e8f0fb; color: var(--blue); }
+  .badge-gray { background: var(--gray-200); color: var(--gray-700); }
+
+  /* ---- CHART CARD ---- */
+  .chart-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--gray-200);
+  }
+  .chart-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+  .chart-subtitle {
+    font-size: 12px;
+    color: var(--gray-500);
+    margin-bottom: 20px;
+  }
+  .chart-wrap { position: relative; }
+
+  /* ---- ALERT BOX ---- */
+  .alert {
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .alert-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .alert-content strong { display: block; font-weight: 600; margin-bottom: 3px; }
+  .alert.danger { background: #fdecea; border-left: 3px solid var(--red); }
+  .alert.warning { background: #fef9ec; border-left: 3px solid #f0b429; }
+  .alert.success { background: #e6f9ef; border-left: 3px solid var(--green-light); }
+  .alert.info { background: #e8f0fb; border-left: 3px solid var(--blue); }
+
+  /* ---- TABLE ---- */
+  .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .data-table th {
+    background: var(--navy);
+    color: var(--white);
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .data-table th:first-child { border-radius: 8px 0 0 0; }
+  .data-table th:last-child { border-radius: 0 8px 0 0; }
+  .data-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--gray-200);
+    color: var(--gray-700);
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:nth-child(even) td { background: var(--gray-100); }
+  .data-table tr.total td {
+    background: var(--gray-200);
+    font-weight: 600;
+    color: var(--navy);
+    border-top: 2px solid var(--gray-300);
+  }
+
+  /* ---- STATUS PILL ---- */
+  .pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 3px 10px; border-radius: 20px;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.3px;
+  }
+  .pill::before { content: ''; width: 6px; height: 6px; border-radius: 50%; }
+  .pill.critico { background: #fdecea; color: var(--red); }
+  .pill.critico::before { background: var(--red); }
+  .pill.alerta { background: #fef3e9; color: var(--orange); }
+  .pill.alerta::before { background: var(--orange); }
+  .pill.ok { background: #e6f9ef; color: var(--green); }
+  .pill.ok::before { background: var(--green-light); }
+  .pill.excelente { background: #e8f0fb; color: var(--blue); }
+  .pill.excelente::before { background: var(--blue-light); }
+
+  /* ---- PROGRESS BAR ---- */
+  .progress-wrap { margin-bottom: 14px; }
+  .progress-label { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 12px; color: var(--gray-700); }
+  .progress-label span:last-child { font-weight: 600; }
+  .progress-bar { height: 8px; background: var(--gray-200); border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 4px; transition: width 1s ease; }
+
+  /* ---- DIVIDER ---- */
+  .divider { height: 1px; background: var(--gray-200); margin: 24px 0; }
+
+  /* ---- CARD HEADER ---- */
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    gap: 12px;
+  }
+  .card-header-left {}
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 2px;
+  }
+  .card-desc { font-size: 12px; color: var(--gray-500); }
+
+  /* ---- COUNTRY FLAG ---- */
+  .country-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 0; border-bottom: 1px solid var(--gray-200);
+  }
+  .country-row:last-child { border-bottom: none; }
+  .country-flag { font-size: 20px; width: 28px; text-align: center; }
+  .country-name { font-weight: 500; font-size: 13px; color: var(--navy); width: 80px; }
+  .country-bar-wrap { flex: 1; }
+  .country-bar { height: 6px; border-radius: 3px; margin-bottom: 3px; }
+  .country-stats { display: flex; gap: 16px; }
+  .country-stat { font-size: 11px; color: var(--gray-500); }
+  .country-stat strong { color: var(--gray-700); font-weight: 600; }
+  .country-value { font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500; color: var(--navy); text-align: right; min-width: 60px; }
+  .country-status { min-width: 90px; text-align: right; }
+
+  /* ---- ROADMAP ---- */
+  .roadmap { display: flex; gap: 0; margin-bottom: 24px; }
+  .roadmap-step {
+    flex: 1;
+    padding: 20px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-right: none;
+    position: relative;
+  }
+  .roadmap-step:first-child { border-radius: var(--radius) 0 0 var(--radius); }
+  .roadmap-step:last-child { border-right: 1px solid var(--gray-200); border-radius: 0 var(--radius) var(--radius) 0; }
+  .roadmap-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--gray-200);
+    margin-bottom: 8px;
+    line-height: 1;
+  }
+  .roadmap-period { font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--blue); margin-bottom: 8px; }
+  .roadmap-title { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 8px; }
+  .roadmap-items { list-style: none; }
+  .roadmap-items li {
+    font-size: 12px; color: var(--gray-700); padding: 4px 0;
+    padding-left: 14px; position: relative; line-height: 1.5;
+  }
+  .roadmap-items li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+  .roadmap-step.highlight { background: var(--navy); border-color: var(--navy); }
+  .roadmap-step.highlight .roadmap-num { color: rgba(255,255,255,0.1); }
+  .roadmap-step.highlight .roadmap-period { color: var(--accent); }
+  .roadmap-step.highlight .roadmap-title { color: var(--white); }
+  .roadmap-step.highlight .roadmap-items li { color: rgba(255,255,255,0.7); }
+  .roadmap-step.highlight .roadmap-items li::before { color: var(--accent-light); }
+
+  /* ---- ANIMATE ---- */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-in { animation: fadeInUp 0.4s ease both; }
+  .fade-in-1 { animation-delay: 0.05s; }
+  .fade-in-2 { animation-delay: 0.1s; }
+  .fade-in-3 { animation-delay: 0.15s; }
+  .fade-in-4 { animation-delay: 0.2s; }
+
+  /* ---- INSIGHT BOX ---- */
+  .insight {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+    border-radius: var(--radius-lg);
+    padding: 24px 28px;
+    color: var(--white);
+    margin-bottom: 24px;
+    display: flex; gap: 20px; align-items: flex-start;
+  }
+  .insight-icon { font-size: 28px; flex-shrink: 0; }
+  .insight-text {}
+  .insight-eyebrow { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; font-weight: 600; }
+  .insight-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 600; margin-bottom: 6px; }
+  .insight-body { font-size: 13px; line-height: 1.7; color: rgba(255,255,255,0.75); }
+
+  /* ---- MINI STAT ROW ---- */
+  .stat-row { display: flex; gap: 12px; margin-bottom: 24px; }
+  .stat-mini {
+    flex: 1; background: var(--white); border: 1px solid var(--gray-200);
+    border-radius: var(--radius); padding: 16px 18px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .stat-mini-icon { font-size: 24px; }
+  .stat-mini-val { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--navy); }
+  .stat-mini-label { font-size: 11px; color: var(--gray-500); margin-top: 1px; }
+
+  /* ---- SCROLL SHADOW ---- */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--gray-100); }
+  ::-webkit-scrollbar-thumb { background: var(--gray-300); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
+    <div class="logo-area">
+      <div class="logo-badge">M</div>
+      <span class="logo-text">Medismart</span>
+    </div>
+    <div class="header-meta">
+      <span class="header-tag">Dashboard Ejecutivo CEO</span>
+      <span class="header-date">Cierre Dic 2025 · Feb 2026</span>
+    </div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="nav-strip">
+  <div class="nav-inner">
+    <a class="nav-tab active" onclick="showSection(&#39;resumen&#39;, this)">Resumen Grupo</a>
+    <a class="nav-tab" onclick="showSection(&#39;chile&#39;, this)">Chile · EEFF</a>
+    <a class="nav-tab" onclick="showSection(&#39;ingresos&#39;, this)">Ingresos por País</a>
+    <a class="nav-tab" onclick="showSection(&#39;rentabilidad&#39;, this)">Rentabilidad</a>
+    <a class="nav-tab" onclick="showSection(&#39;gastos&#39;, this)">Estructura de Gastos</a>
+    <a class="nav-tab" onclick="showSection(&#39;canales&#39;, this)">Canales de Venta</a>
+    <a class="nav-tab" onclick="showSection(&#39;tendencias&#39;, this)">Tendencias 2024-25</a>
+    <a class="nav-tab" onclick="showSection(&#39;plan&#39;, this)">Plan de Acción</a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- ============================================================ -->
+  <!-- RESUMEN GRUPO -->
+  <!-- ============================================================ -->
+  <section id="resumen" class="section active">
+    <div class="section-header fade-in">
+      <div class="section-eyebrow">Vista Consolidada</div>
+      <h1 class="section-title">Estado del Grupo Medismart — 2025</h1>
+      <p class="section-subtitle">5 operaciones. 2 rentables y sólidas, 1 en construcción, 2 en situación crítica. Los ingresos consolidados crecieron +5,3% pero la rentabilidad está presionada por México y Perú.</p>
+    </div>
+
+    <div class="grid-4 fade-in fade-in-1">
+      <div class="kpi-card blue">
+        <div class="kpi-label">Ingresos Consolidados</div>
+        <div class="kpi-value">USD 8,76M</div>
+        <div class="kpi-sub"><span class="kpi-badge badge-green">↑ +5,3% vs 2024</span></div>
+      </div>
+      <div class="kpi-card green">
+        <div class="kpi-label">EBITDA Consolidado Prom.</div>
+        <div class="kpi-value green">~12%</div>
+        <div class="kpi-sub"><span class="kpi-badge badge-blue">Objetivo: 15%</span></div>
+      </div>
+      <div class="kpi-card red">
+        <div class="kpi-label">Países en Pérdida</div>
+        <div class="kpi-value red">2 / 5</div>
+        <div class="kpi-sub"><span class="kpi-badge badge-red">México · Perú</span></div>
+      </div>
+      <div class="kpi-card gold">
+        <div class="kpi-label">Mejor Operación</div>
+        <div class="kpi-value" style="font-size:24px">Costa Rica</div>
+        <div class="kpi-sub"><span class="kpi-badge badge-blue">EBITDA 61,5%</span></div>
+      </div>
+    </div>
+
+    <div class="grid-2 fade-in fade-in-2">
+      <div class="chart-card">
+        <div class="card-header">
+          <div><div class="chart-title">Ingresos por País 2025</div><div class="chart-subtitle">USD millones · Participación en el grupo</div></div>
+        </div>
+        <div style="position:relative;height:260px">
+          <canvas id="chartIngresosGrupo" width="1216" height="520" style="display: block; box-sizing: border-box; height: 260px; width: 608px;"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-title">Estado por País</div><div class="card-desc">Semáforo operacional 2025</div></div>
+        </div>
+        <div class="country-row">
+          <div class="country-flag">🇨🇱</div>
+          <div class="country-name">Chile</div>
+          <div class="country-bar-wrap">
+            <div class="country-bar" style="width:95%;background:#2e5fa3"></div>
+            <div class="country-stats"><span class="country-stat"><strong>$4,94M</strong> ingresos</span><span class="country-stat"><strong>11,9%</strong> EBITDA</span></div>
+          </div>
+          <div class="country-status"><span class="pill alerta">Incipiente</span></div>
+        </div>
+        <div class="country-row">
+          <div class="country-flag">🇨🇴</div>
+          <div class="country-name">Colombia</div>
+          <div class="country-bar-wrap">
+            <div class="country-bar" style="width:61%;background:#27ae60"></div>
+            <div class="country-stats"><span class="country-stat"><strong>$3,17M</strong> ingresos</span><span class="country-stat"><strong>20,0%</strong> EBITDA</span></div>
+          </div>
+          <div class="country-status"><span class="pill ok">Sólido</span></div>
+        </div>
+        <div class="country-row">
+          <div class="country-flag">🇨🇷</div>
+          <div class="country-name">Costa Rica</div>
+          <div class="country-bar-wrap">
+            <div class="country-bar" style="width:6%;background:#4a7fc1"></div>
+            <div class="country-stats"><span class="country-stat"><strong>$0,32M</strong> ingresos</span><span class="country-stat"><strong>61,5%</strong> EBITDA</span></div>
+          </div>
+          <div class="country-status"><span class="pill excelente">Excelente</span></div>
+        </div>
+        <div class="country-row">
+          <div class="country-flag">🇲🇽</div>
+          <div class="country-name">México</div>
+          <div class="country-bar-wrap">
+            <div class="country-bar" style="width:4%;background:#e74c3c"></div>
+            <div class="country-stats"><span class="country-stat"><strong>$0,21M</strong> ingresos</span><span class="country-stat" style="color:var(--red)"><strong>-148,9%</strong> EBITDA</span></div>
+          </div>
+          <div class="country-status"><span class="pill critico">Crítico</span></div>
+        </div>
+        <div class="country-row">
+          <div class="country-flag">🇵🇪</div>
+          <div class="country-name">Perú</div>
+          <div class="country-bar-wrap">
+            <div class="country-bar" style="width:2%;background:#d35400"></div>
+            <div class="country-stats"><span class="country-stat"><strong>$0,08M</strong> ingresos</span><span class="country-stat" style="color:var(--red)"><strong>-66,9%</strong> EBITDA</span></div>
+          </div>
+          <div class="country-status"><span class="pill critico">En riesgo</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="insight fade-in fade-in-3">
+      <div class="insight-icon">💡</div>
+      <div class="insight-text">
+        <div class="insight-eyebrow">Conclusión Estratégica del Grupo</div>
+        <div class="insight-title">El modelo funciona — el problema está focalizado en 2 países</div>
+        <div class="insight-body">Chile y Colombia generan el 94% de los ingresos del grupo y son operaciones viables. Costa Rica es el modelo de eficiencia a replicar. El problema de rentabilidad consolidada tiene nombre y apellido: México (-148,9% EBITDA) y Perú (-66,9% EBITDA). Resolver estos dos países libera el verdadero potencial del grupo. No es un problema de producto ni de demanda — es de estructura de costos fuera de escala respecto a los ingresos actuales.</div>
+      </div>
+    </div>
+
+    <div class="grid-3 fade-in fade-in-4">
+      <div class="alert danger"><div class="alert-icon">🔴</div><div class="alert-content"><strong>México — Colapso estructural</strong>Por cada $1 de ingreso se gastan $2,49. RRHH backoffice = 134,5% de ingresos. Requiere plan de reestructuración en 30 días.</div></div>
+      <div class="alert warning"><div class="alert-icon">🟡</div><div class="alert-content"><strong>Perú — Fuera de escala</strong>Estructura diseñada para un negocio 5-10x más grande. RRHH+Adm = 113,3% de ingresos. Evaluar fusión backoffice con Colombia.</div></div>
+      <div class="alert success"><div class="alert-icon">🟢</div><div class="alert-content"><strong>Costa Rica — Modelo a replicar</strong>EBITDA 61,5%, costos totales 38% de ingresos. Estructura lean y escalable. Analizar qué hace diferente y replicar en el grupo.</div></div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- CHILE EEFF -->
+  <!-- ============================================================ -->
+  <section id="chile" class="section">
+    <div class="section-header fade-in">
+      <div class="section-eyebrow">Medical Solutions SpA · RUT 76.948.151-6</div>
+      <h1 class="section-title">Chile — Estados Financieros 2025</h1>
+      <p class="section-subtitle">Análisis individual de la operación chilena. La más grande del grupo en ingresos, pero con situación patrimonial crítica que requiere atención inmediata.</p>
+    </div>
+
+    <div class="grid-4 fade-in fade-in-1">
+      <div class="kpi-card">
+        <div class="kpi-label">Ingresos 2025</div>
+        <div class="kpi-value">MM$4.984</div>
+        <div class="kpi-sub">Base operacional Chile</div>
+      </div>
+      <div class="kpi-card green">
+        <div class="kpi-label">Margen Bruto</div>
+        <div class="kpi-value green">34,9%</div>
+        <div class="kpi-sub"><span class="kpi-badge badge-green">MM$1.740 positivo</span></div>
+      </div>
+      <div class="kpi-card red">
+        <div class="kpi-label">Pérdida del Ejercicio</div>
+        <div class="kpi-value red">(MM$2.092)</div>
+        <div class="kpi-sub"><span class="kpi-badge badge-red">↑ 25,7% vs 2024</span></div>
+      </div>
+      <div class="kpi-card red">
+        <div class="kpi-label">Patrimonio</div>
+        <div class="kpi-value red">(MM$7.390)</div>
+        <div class="kpi-sub"><span class="kpi-badge badge-red">Negativo — crítico</span></div>
+      </div>
+    </div>
+
+    <div class="grid-2 fade-in fade-in-2">
+      <div class="chart-card">
+        <div class="chart-title">Estado de Resultados — Cascada</div>
+        <div class="chart-subtitle">De ingresos a pérdida neta · MM$ CLP</div>
+        <div style="position:relative;height:280px">
+          <canvas id="chartEERR" height="0" style="display: block; box-sizing: border-box; height: 0px; width: 0px;" width="0"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-title">Balance Resumido</div><div class="card-desc">Posición al 31 Dic 2025 · MM$ CLP</div></div>
+        </div>
+        <table class="data-table">
+          <tbody><tr><th>Activos</th><th>MM$</th><th>Pasivos y Patrimonio</th><th>MM$</th></tr>
+          <tr><td>Efectivo</td><td>98,7</td><td>Otros pas. fin. corr.</td><td>368,2</td></tr>
+          <tr><td>Deudores comerciales</td><td>990,7</td><td>CxP comerciales</td><td>648,7</td></tr>
+          <tr><td style="color:var(--orange)">CxC relacionadas</td><td style="color:var(--orange)">2.371,6</td><td style="color:var(--red)">CxP relacionadas</td><td style="color:var(--red)">10.524,5</td></tr>
+          <tr><td>Otros activos corr.</td><td>188,0</td><td>IVA postergado</td><td style="color:var(--red)">487,9</td></tr>
+          <tr><td><strong>Total Activos Corr.</strong></td><td><strong>3.648,9</strong></td><td>Otras provisiones</td><td>899,3</td></tr>
+          <tr><td style="color:var(--blue)">Intangibles (software)</td><td style="color:var(--blue)">2.105,5</td><td><strong>Total Pas. Corr.</strong></td><td style="color:var(--red)"><strong>12.928,7</strong></td></tr>
+          <tr><td>PPE neto</td><td>62,9</td><td>Pas. no corrientes</td><td>162,6</td></tr>
+          <tr><td><strong>Total Act. No Corr.</strong></td><td><strong>2.168,4</strong></td><td style="color:var(--red)"><strong>Patrimonio total</strong></td><td style="color:var(--red)"><strong>(7.390)</strong></td></tr>
+          <tr class="total"><td>TOTAL ACTIVOS</td><td>5.817,3</td><td>TOTAL PAS+PAT</td><td style="color:var(--orange)">5.701,8 ⚠</td></tr>
+        </tbody></table>
+        <div class="alert warning" style="margin-top:12px;margin-bottom:0">
+          <div class="alert-icon">⚠</div>
+          <div class="alert-content"><strong>Descuadre MM$115,5</strong>Diferencia entre total activos y pasivos+patrimonio. Consultar con contador antes de presentar al directorio.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-3 fade-in fade-in-3">
+      <div class="card">
+        <div class="card-title" style="margin-bottom:16px">🔴 Patrimonio Negativo</div>
+        <div class="progress-wrap">
+          <div class="progress-label"><span>Capital inicial</span><span>MM$378</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:5%;background:var(--blue)"></div></div>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-label"><span>Pérd. acum. 2023</span><span>(MM$2.000)</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:27%;background:var(--red-light)"></div></div>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-label"><span>Pérdida 2024</span><span>(MM$1.667)</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:22%;background:var(--red)"></div></div>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-label"><span>Pérdida 2025</span><span>(MM$2.092)</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:28%;background:#8b0000"></div></div>
+        </div>
+        <div class="divider"></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--gray-500)">Patrimonio resultante</span><span style="color:var(--red);font-weight:700">(MM$7.390)</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title" style="margin-bottom:16px">⚠ IVA Postergado TGR</div>
+        <div style="position:relative;height:180px"><canvas id="chartIVA" height="0" style="display: block; box-sizing: border-box; height: 0px; width: 0px;" width="0"></canvas></div>
+        <div class="alert danger" style="margin-top:12px;margin-bottom:0;padding:12px 14px">
+          <div class="alert-content"><strong>MM$487,9 acumulado desde Mayo 2024</strong>Dic-2025: MM$96,4 en un solo mes — aceleración preocupante.</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title" style="margin-bottom:16px">🏦 Deudas Bancarias</div>
+        <table class="data-table" style="font-size:12px">
+          <tbody><tr><th>Banco</th><th>Saldo MM$</th><th>Estado</th></tr>
+          <tr><td>Banco Estado</td><td>236,0</td><td><span class="pill ok">Al día</span></td></tr>
+          <tr><td>Levannta</td><td>139,0</td><td><span class="pill alerta">Revisar</span></td></tr>
+          <tr><td>Santander 74176</td><td>64,9</td><td><span class="pill ok">Al día</span></td></tr>
+          <tr><td>Banco Security</td><td>15,9</td><td><span class="pill ok">Al día</span></td></tr>
+          <tr><td>Santander 27573</td><td>10,7</td><td><span class="pill ok">Al día</span></td></tr>
+          <tr class="total"><td>TOTAL</td><td>466,5</td><td>~MM$22,8/mes</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+
+    <div class="insight fade-in fade-in-4">
+      <div class="insight-icon">🏗</div>
+      <div class="insight-text">
+        <div class="insight-eyebrow">Clave para entender Chile</div>
+        <div class="insight-title">Chile actuó como banco interno del grupo — y eso tiene un costo</div>
+        <div class="insight-body">El Holding USA financió a Chile (CxP relacionadas MM$10.524), y Chile a su vez prestó a Colombia y otras operaciones hermanas (CxC relacionadas MM$2.372). El saldo neto es que Chile es deudor neto por MM$8.153. La empresa no es casa matriz de nadie — es un país más del holding — pero terminó absorbiendo el riesgo financiero de sus hermanas. Esto explica gran parte del deterioro patrimonial que va más allá de las pérdidas operativas propias.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- INGRESOS -->
+  <!-- ============================================================ -->
+  <section id="ingresos" class="section">
+    <div class="section-header fade-in">
+      <div class="section-eyebrow">Indicador 1</div>
+      <h1 class="section-title">Ingresos Totales por País</h1>
+      <p class="section-subtitle">Chile y Colombia generan el 94% de los ingresos. Los 3 países restantes suman apenas el 6%. La cartera está altamente concentrada en dos mercados.</p>
+    </div>
+
+    <div class="grid-2-1 fade-in fade-in-1">
+      <div class="chart-card">
+        <div class="chart-title">Ingresos 2025 vs 2024 por País</div>
+        <div class="chart-subtitle">USD millones</div>
+        <div style="position:relative;height:320px"><canvas id="chartIngresosPais" height="0" style="display: block; box-sizing: border-box; height: 0px; width: 0px;" width="0"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-title" style="margin-bottom:16px">Participación en el Grupo</div>
+        <div style="position:relative;height:220px"><canvas id="chartParticipacion" height="0" style="display: block; box-sizing: border-box; height: 0px; width: 0px;" width="0"></canvas></div>
+        <div class="divider"></div>
+        <div style="font-size:12px;color:var(--gray-500);line-height:1.6">Chile + Colombia = <strong style="color:var(--navy)">94%</strong> de ingresos totales. Alta dependencia en dos mercados.</div>
+      </div>
+    </div>
+
+    <div class="grid-3 fade-in fade-in-2">
+      <div class="alert danger">
+        <div class="alert-icon">⚠</div>
+        <div class="alert-content"><strong>Riesgo de concentración — Chile</strong>Chile = 57% del total. Una caída del 20% en Chile (ej: pérdida de un asegurador grande) implica perder USD $986K de ingresos del grupo.</div>
+      </div>
+      <div class="alert warning">
+        <div class="alert-icon">📉</div>
+        <div class="alert-content"><strong>Chile y Colombia bajaron levemente</strong>Chile -1,8% y Colombia -2,1% vs 2024. Son mercados maduros con crecimiento moderado. No es alarma, pero tampoco hay dinamismo.</div>
+      </div>
+      <div class="alert success">
+        <div class="alert-icon">🚀</div>
+        <div class="alert-content"><strong>Costa Rica y México crecen fuerte</strong>Costa Rica +16,2% y México +42,4%. Aunque pequeños, muestran tracción comercial real. El problema de México no es de ventas.</div>
+      </div>
+    </div>
+
+    <div class="card fade-in fade-in-3">
+      <div class="card-header"><div><div class="card-title">Tabla Comparativa Ingresos 2024 vs 2025</div></div></div>
+      <table class="data-table">
+        <tbody><tr><th>País</th><th>Ingresos 2024</th><th>Ingresos 2025</th><th>Variación</th><th>% del Grupo 2025</th><th>Tendencia</th></tr>
+        <tr><td>🇨🇱 Chile</td><td>$5,03M</td><td>$4,94M</td><td style="color:var(--red)">-1,8%</td><td>56,5%</td><td><span class="pill alerta">Estable/leve baja</span></td></tr>
+        <tr><td>🇨🇴 Colombia</td><td>$3,24M</td><td>$3,17M</td><td style="color:var(--red)">-2,1%</td><td>36,2%</td><td><span class="pill ok">Mejora rentabilidad</span></td></tr>
+        <tr><td>🇨🇷 Costa Rica</td><td>$0,28M</td><td>$0,32M</td><td style="color:var(--green)">+16,2%</td><td>3,7%</td><td><span class="pill excelente">Crecimiento saludable</span></td></tr>
+        <tr><td>🇲🇽 México</td><td>$0,15M</td><td>$0,21M</td><td style="color:var(--green)">+42,4%</td><td>2,4%</td><td><span class="pill critico">Crece pero pierde más</span></td></tr>
+        <tr><td>🇵🇪 Perú</td><td>$0,08M</td><td>$0,08M</td><td style="color:var(--gray-500)">+4,4%</td><td>0,9%</td><td><span class="pill critico">Sin mejora significativa</span></td></tr>
+        <tr class="total"><td>TOTAL GRUPO</td><td>$8,78M</td><td>$8,76M</td><td style="color:var(--blue)">+5,3%</td><td>100%</td><td>—</td></tr>
+      </tbody></table>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- RENTABILIDAD -->
+  <!-- ============================================================ -->
+  <section id="rentabilidad" class="section">
+    <div class="section-header fade-in">
+      <div class="section-eyebrow">Indicador 2</div>
+      <h1 class="section-title">Rentabilidad Comparativa por País</h1>
+      <p class="section-subtitle">Margen bruto, EBITDA y neto por país. El EBITDA cero es la frontera entre una operación que se autofinancia y una que quema caja mensualmente.</p>
+    </div>
+
+    <div class="grid-4 fade-in fade-in-1">
+      <div class="kpi-card green"><div class="kpi-label">🇨🇷 Costa Rica EBITDA</div><div class="kpi-value green">61,5%</div><div class="kpi-sub"><span class="kpi-badge badge-green">Modelo ideal</span></div></div>
+      <div class="kpi-card green"><div class="kpi-label">🇨🇴 Colombia EBITDA</div><div class="kpi-value green">20,0%</div><div class="kpi-sub"><span class="kpi-badge badge-green">Sobre objetivo</span></div></div>
+      <div class="kpi-card orange"><div class="kpi-label">🇨🇱 Chile EBITDA</div><div class="kpi-value orange">11,9%</div><div class="kpi-sub"><span class="kpi-badge badge-orange">Bajo objetivo</span></div></div>
+      <div class="kpi-card red"><div class="kpi-label">🇲🇽 México EBITDA</div><div class="kpi-value red">-148,9%</div><div class="kpi-sub"><span class="kpi-badge badge-red">Colapso</span></div></div>
+    </div>
+
+    <div class="chart-card fade-in fade-in-2" style="margin-bottom:24px">
+      <div class="chart-title">Comparativa de Márgenes por País — 2025</div>
+      <div class="chart-subtitle">Margen Bruto % · EBITDA % · Margen Neto %</div>
+      <div style="position:relative;height:300px"><canvas id="chartRentabilidad" height="0" style="display: block; box-sizing: border-box; height: 0px; width: 0px;" width="0"></canvas></div>
+    </div>
+
+    <div class="grid-2 fade-in fade-in-3">
+      <div class="card">
+        <div class="card-title" style="margin-bottom:16px">Tabla de Márgenes 2025</div>
+        <table class="data-table">
+          <tbody><tr><th>País</th><th>Margen Bruto</th><th>EBITDA</th><th>Neto</th><th>Estado</th></tr>
+          <tr><td>🇨🇷 Costa Rica</td><td style="color:var(--green)">81,0%</td><td style="color:var(--green)">61,5%</td><td>—</td><td><span class="pill excelente">Excelente</span></td></tr>
+          <tr><td>🇨🇴 Colombia</td><td style="color:var(--green)">52,8%</td><td style="color:var(--green)">20,0%</td><td>—</td><td><span class="pill ok">Sólido</span></td></tr>
+          <tr><td>🇨🇱 Chile</td><td style="color:var(--blue)">39,8%</td><td style="color:var(--orange)">11,9%</td><td style="color:var(--red)">-34,2%</td><td><span class="pill alerta">En construcción</span></td></tr>
+          <tr><td>🇵🇪 Perú</td><td style="color:var(--blue)">47,9%</td><td style="color:var(--red)">-66,9%</td><td>—</td><td><span class="pill critico">Crítico manejable</span></td></tr>
+          <tr><td>🇲🇽 México</td><td style="color:var(--orange)">33,9%</td><td style="color:var(--red)">-148,9%</td><td>—</td><td><span class="pill critico">Urgente</span></td></tr>
+        </tbody></table>
+      </div>
+      <div class="card">
+        <div class="card-title" style="margin-bottom:12px">¿Por qué Chile tiene EBITDA positivo pero pérdida neta?</div>
+        <p style="font-size:13px;color:var(--gray-700);line-height:1.7;margin-bottom:12px">El EBITDA de Chile (11,9%) es positivo — la operación se sostiene sola. Pero el margen neto es -34,2%. La diferencia (-46,1%) se explica por:</p>
+        <div class="alert warning" style="margin-bottom:10px"><div class="alert-icon">💰</div><div class="alert-content"><strong>Gastos corporativos y financieros -30,6%</strong>Intereses bancarios MM$195 + gastos no operacionales MM$309</div></div>
+        <div class="alert danger"><div class="alert-icon">📊</div><div class="alert-content"><strong>Depreciación y amortización -0,2%</strong>El EBITDA positivo no implica que todo esté bien — la estructura financiera pesa.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- GASTOS -->
+  <!-- ============================================================ -->
+  <section id="gastos" class="section">
+    <div class="section-header fade-in">
+      <div class="section-eyebrow">Indicador 5 · Chile</div>
+      <h1 class="section-title">Estructura de Gastos — Chile</h1>
+      <p class="section-subtitle">Los gastos administrativos representan el 58,3% de los ingresos. El benchmark saludable del sector es &lt;35%. Hay una brecha de MM$1.163 que cerrar en 24 meses.</p>
+    </div>
+
+    <div class="grid-4 fade-in fade-in-1">
+      <div class="kpi-card red"><div class="kpi-label">Gastos ADM / Ingresos</div><div class="kpi-value red">58,3%</div><div class="kpi-sub"><span class="kpi-badge badge-red">Objetivo: &lt;35%</span></div></div>
+      <div class="kpi-card red"><div class="kpi-label">Total Gastos ADM</div><div class="kpi-value red">MM$2.907</div><div class="kpi-sub"><span class="kpi-badge badge-red">vs Margen MM$1.740</span></div></div>
+      <div class="kpi-card orange"><div class="kpi-label">Déficit Operacional</div><div class="kpi-value orange">MM$1.167</div><div class="kpi-sub"><span class="kpi-badge badge-orange">Gastos - Margen</span></div></div>
+      <div class="kpi-card"><div class="kpi-label">Para llegar al 35%</div><div class="kpi-value">MM$1.163</div><div class="kpi-sub"><span class="kpi-badge badge-blue">Recorte necesario</span></div></div>
+    </div>
+
+    <div class="grid-2 fade-in fade-in-2">
+      <div class="chart-card">
+        <div class="chart-title">Gastos ADM — Composición</div>
+        <div class="chart-subtitle">MM$ CLP · Chile 2025</div>
+        <div style="position:relative;height:300px"><canvas id="chartGastos" height="0" style="display: block; box-sizing: border-box; height: 0px; width: 0px;" width="0"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div><div class="card-title">Detalle por Categoría</div><div class="card-desc">Ordenado por impacto</div></div></div>
+        <table class="data-table">
+          <tbody><tr><th>Gasto</th><th>MM$</th><th>% Ingresos</th><th>% Adm</th></tr>
+          <tr><td style="color:var(--red)">Personal (sueldo+grat+fin.)</td><td style="color:var(--red);font-weight:600">1.392</td><td>27,9%</td><td>47,9%</td></tr>
+          <tr><td style="color:var(--red)">Tecnología (suscr.+lic.)</td><td style="color:var(--red);font-weight:600">507</td><td>10,2%</td><td>17,4%</td></tr>
+          <tr><td style="color:var(--red)">Honorarios y asesorías</td><td style="color:var(--red)">390</td><td>7,8%</td><td>13,4%</td></tr>
+          <tr><td>Leyes sociales</td><td>159</td><td>3,2%</td><td>5,5%</td></tr>
+          <tr><td>Arriendos y gastos comunes</td><td>122</td><td>2,5%</td><td>4,2%</td></tr>
+          <tr><td style="color:var(--orange)">Multas e intereses fiscales</td><td style="color:var(--orange)">117</td><td>2,3%</td><td>4,0%</td></tr>
+          <tr><td>Viajes y representación</td><td>77</td><td>1,5%</td><td>2,6%</td></tr>
+          <tr><td>Otros gastos ADM</td><td>86</td><td>1,7%</td><td>3,0%</td></tr>
+          <tr><td>Seguros y gastos bancarios</td><td>30</td><td>0,6%</td><td>1,0%</td></tr>
+          <tr><td>Publicidad y marketing</td><td>5</td><td>0,1%</td><td>0,2%</td></tr>
+          <tr class="total"><td>TOTAL GASTOS ADM</td><td>2.907</td><td>58,3%</td><td>100%</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+
+    <div class="insight fade-in fade-in-3">
+      <div class="insight-icon">🎯</div>
+      <div class="insight-text">
+        <div class="insight-eyebrow">Hoja de Ruta — De 58% a 35% en 24 meses</div>
+        <div class="insight-title">El 85% del recorte necesario está en 3 líneas: Personal + Tecnología + Asesorías</div>
+        <div class="insight-body">Personal (MM$1.392), Tecnología (MM$507) y Honorarios (MM$390) = MM$2.289 = 79% de todo el gasto administrativo. Un recorte del 30-40% en estas tres categorías durante 24 meses genera un ahorro de MM$550-700, suficiente para llevar el ratio al 35% cuando se combina con crecimiento de ingresos del 15-20%. Las multas e intereses fiscales (MM$117) se eliminan completamente al regularizar la deuda tributaria — ahorro inmediato sin restructuración.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- CANALES -->
+  <!-- ============================================================ -->
+  <section id="canales" class="section">
+    <div class="section-header fade-in">
+      <div class="section-eyebrow">Indicador 3</div>
+      <h1 class="section-title">Mix de Canales de Venta por País</h1>
+      <p class="section-subtitle">Chile y Perú superan el umbral crítico del 75% de concentración en un solo canal. Un cambio de condiciones con el principal asegurador tiene impacto inmediato en ingresos.</p>
+    </div>
+
+    <div class="chart-card fade-in fade-in-1" style="margin-bottom:24px">
+      <div class="chart-title">Concentración del Canal Principal por País</div>
+      <div class="chart-subtitle">% del canal dominante sobre ingresos totales · Umbral crítico: 75%</div>
+      <div style="position:relative;height:280px"><canvas id="chartCanales" height="0" style="display: block; box-sizing: border-box; height: 0px; width: 0px;" width="0"></canvas></div>
+    </div>
+
+    <div class="grid-3 fade-in fade-in-2">
+      <div class="card">
+        <div class="card-title" style="margin-bottom:12px">🇨🇱 Chile — Alta concentración</div>
+        <p style="font-size:13px;color:var(--gray-700);line-height:1.7;margin-bottom:12px">Aseguradoras 43% + Isapres 39% = <strong>81,8%</strong> concentrado en el canal asegurador.</p>
+        <div class="progress-wrap"><div class="progress-label"><span>Aseguradoras</span><span>43%</span></div><div class="progress-bar"><div class="progress-fill" style="width:43%;background:var(--blue)"></div></div></div>
+        <div class="progress-wrap"><div class="progress-label"><span>Isapres</span><span>39%</span></div><div class="progress-bar"><div class="progress-fill" style="width:39%;background:var(--blue-light)"></div></div></div>
+        <div class="progress-wrap"><div class="progress-label"><span>Agregadores</span><span>11%</span></div><div class="progress-bar"><div class="progress-fill" style="width:11%;background:var(--gray-400)"></div></div></div>
+        <div class="progress-wrap"><div class="progress-label"><span>Empleadores</span><span>6%</span></div><div class="progress-bar"><div class="progress-fill" style="width:6%;background:var(--gray-300)"></div></div></div>
+      </div>
+      <div class="card">
+        <div class="card-title" style="margin-bottom:12px">🇲🇽 México — Más diversificado</div>
+        <p style="font-size:13px;color:var(--gray-700);line-height:1.7;margin-bottom:12px">Empleadores 54% + Agregadores 29%. Modelo más diversificado pero el problema no es el canal — es la estructura de costos.</p>
+        <div class="progress-wrap"><div class="progress-label"><span>Empleadores</span><span>54%</span></div><div class="progress-bar"><div class="progress-fill" style="width:54%;background:var(--orange)"></div></div></div>
+        <div class="progress-wrap"><div class="progress-label"><span>Agregadores</span><span>29%</span></div><div class="progress-bar"><div class="progress-fill" style="width:29%;background:#f39c12"></div></div></div>
+        <div class="progress-wrap"><div class="progress-label"><span>Aseguradoras</span><span>16%</span></div><div class="progress-bar"><div class="progress-fill" style="width:16%;background:var(--gray-400)"></div></div></div>
+      </div>
+      <div class="card">
+        <div class="card-title" style="margin-bottom:12px">🇨🇷 Costa Rica — Innovación</div>
+        <p style="font-size:13px;color:var(--gray-700);line-height:1.7;margin-bottom:12px">Labs 61% — modelo único en el grupo. Ingresos a través de laboratorios es una diferenciación con potencial de réplica.</p>
+        <div class="progress-wrap"><div class="progress-label"><span>Labs</span><span>61%</span></div><div class="progress-bar"><div class="progress-fill" style="width:61%;background:var(--green-light)"></div></div></div>
+        <div class="progress-wrap"><div class="progress-label"><span>Empleadores</span><span>38%</span></div><div class="progress-bar"><div class="progress-fill" style="width:38%;background:#52be80"></div></div></div>
+        <div class="progress-wrap"><div class="progress-label"><span>B2C</span><span>1%</span></div><div class="progress-bar"><div class="progress-fill" style="width:1%;background:var(--gray-300)"></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- TENDENCIAS -->
+  <!-- ============================================================ -->
+  <section id="tendencias" class="section">
+    <div class="section-header fade-in">
+      <div class="section-eyebrow">Indicador 4</div>
+      <h1 class="section-title">Tendencias Mensuales 2024 vs 2025</h1>
+      <p class="section-subtitle">Evolución consolidada mes a mes. El segundo semestre 2025 fue excelente — superó el objetivo del 15% de EBITDA en 4 meses consecutivos.</p>
+    </div>
+
+    <div class="grid-2 fade-in fade-in-1">
+      <div class="chart-card">
+        <div class="chart-title">Ingresos Mensuales Consolidados</div>
+        <div class="chart-subtitle">USD · 2024 vs 2025</div>
+        <div style="position:relative;height:260px"><canvas id="chartTendIngresos" height="0" style="display: block; box-sizing: border-box; height: 0px; width: 0px;" width="0"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Margen EBITDA Mensual Consolidado</div>
+        <div class="chart-subtitle">% · Objetivo 15% marcado</div>
+        <div style="position:relative;height:260px"><canvas id="chartTendEBITDA" height="0" style="display: block; box-sizing: border-box; height: 0px; width: 0px;" width="0"></canvas></div>
+      </div>
+    </div>
+
+    <div class="card fade-in fade-in-2">
+      <div class="card-header"><div><div class="card-title">Tabla Mes a Mes 2024 vs 2025</div></div></div>
+      <table class="data-table">
+        <tbody><tr><th>Mes</th><th>Ingresos 2024</th><th>Ingresos 2025</th><th>Variación</th><th>EBITDA% 2024</th><th>EBITDA% 2025</th><th>vs Obj. 15%</th></tr>
+        <tr><td>Enero</td><td>$674K</td><td>$713K</td><td style="color:var(--green)">+5,7%</td><td>21,4%</td><td>18,9%</td><td><span class="pill ok">✓</span></td></tr>
+        <tr><td>Febrero</td><td>$523K</td><td>$654K</td><td style="color:var(--green)">+25,1%</td><td>1,5%</td><td>8,6%</td><td><span class="pill alerta">Bajo</span></td></tr>
+        <tr><td>Marzo</td><td>$597K</td><td>$683K</td><td style="color:var(--green)">+14,3%</td><td>16,8%</td><td style="color:var(--red)">-6,9%</td><td><span class="pill critico">Negativo</span></td></tr>
+        <tr><td>Abril</td><td>$702K</td><td>$679K</td><td style="color:var(--red)">-3,3%</td><td>20,2%</td><td>3,1%</td><td><span class="pill alerta">Bajo</span></td></tr>
+        <tr><td>Mayo</td><td>$706K</td><td>$733K</td><td style="color:var(--green)">+3,9%</td><td>7,0%</td><td style="color:var(--red)">-2,2%</td><td><span class="pill critico">Negativo</span></td></tr>
+        <tr><td>Junio</td><td>$690K</td><td>$711K</td><td style="color:var(--green)">+3,0%</td><td>12,9%</td><td>11,5%</td><td><span class="pill alerta">Bajo</span></td></tr>
+        <tr><td>Julio</td><td>$645K</td><td>$729K</td><td style="color:var(--green)">+12,9%</td><td>9,5%</td><td>8,9%</td><td><span class="pill alerta">Bajo</span></td></tr>
+        <tr><td>Agosto</td><td>$674K</td><td>$758K</td><td style="color:var(--green)">+12,4%</td><td>11,1%</td><td style="color:var(--green)">16,1%</td><td><span class="pill ok">✓</span></td></tr>
+        <tr><td>Septiembre</td><td>$726K</td><td>$720K</td><td style="color:var(--red)">-0,8%</td><td>17,9%</td><td style="color:var(--green)">21,2%</td><td><span class="pill ok">✓</span></td></tr>
+        <tr><td>Octubre</td><td>$740K</td><td>$767K</td><td style="color:var(--green)">+3,6%</td><td>6,2%</td><td style="color:var(--green)">22,9%</td><td><span class="pill excelente">Peak</span></td></tr>
+        <tr><td>Noviembre</td><td>$767K</td><td>$787K</td><td style="color:var(--green)">+2,6%</td><td>24,1%</td><td style="color:var(--green)">22,6%</td><td><span class="pill ok">✓</span></td></tr>
+        <tr><td>Diciembre</td><td>$749K</td><td>$793K</td><td style="color:var(--green)">+5,9%</td><td>13,5%</td><td style="color:var(--green)">16,9%</td><td><span class="pill ok">✓</span></td></tr>
+        <tr class="total"><td>Promedio / Total</td><td>$693K prom.</td><td>$730K prom.</td><td style="color:var(--green)">+5,3%</td><td>13,5%</td><td>11,9%</td><td>8/12 meses ✓</td></tr>
+      </tbody></table>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- PLAN DE ACCION -->
+  <!-- ============================================================ -->
+  <section id="plan" class="section">
+    <div class="section-header fade-in">
+      <div class="section-eyebrow">Decisiones</div>
+      <h1 class="section-title">Plan de Acción Recomendado</h1>
+      <p class="section-subtitle">Tres horizontes de tiempo. Tres tipos de problema. Un objetivo: llegar a EBITDA positivo en Chile y rentabilizar el grupo en 24 meses.</p>
+    </div>
+
+    <div class="roadmap fade-in fade-in-1">
+      <div class="roadmap-step highlight">
+        <div class="roadmap-num">01</div>
+        <div class="roadmap-period">0 – 30 días</div>
+        <div class="roadmap-title">Urgente — Liquidez y tributario</div>
+        <ul class="roadmap-items">
+          <li>Inyección de capital contra activo (no equity) para pagar IVA TGR MM$488</li>
+          <li>Verificar estado real de cuotas Levannta nov/dic 2025</li>
+          <li>Formalizar carta compromiso del holding sobre deuda MM$10.524</li>
+          <li>Congelar contrataciones en México inmediatamente</li>
+          <li>Auditar todas las suscripciones tecnológicas (MM$462)</li>
+        </ul>
+      </div>
+      <div class="roadmap-step">
+        <div class="roadmap-num">02</div>
+        <div class="roadmap-period">30 – 90 días</div>
+        <div class="roadmap-title">Estructural — Reducción de costos</div>
+        <ul class="roadmap-items">
+          <li>Cortar suscripciones sin uso — meta: -30% (ahorro MM$140-185)</li>
+          <li>Reducir honorarios externos — meta: -30% (ahorro MM$120)</li>
+          <li>Plan restructuración personal México y Perú</li>
+          <li>Mapear canal comisiones Colombia (30,2%) — alternativas directas</li>
+          <li>Dashboard mensual con semáforo por país</li>
+        </ul>
+      </div>
+      <div class="roadmap-step">
+        <div class="roadmap-num">03</div>
+        <div class="roadmap-period">90 – 180 días</div>
+        <div class="roadmap-title">Estratégico — Restructuración</div>
+        <ul class="roadmap-items">
+          <li>Restructuración parcial de personal Chile — meta: -10% planilla ADM</li>
+          <li>Formalizar deuda relacionada como préstamo LP (reclasificar a no corriente)</li>
+          <li>Definir viabilidad de México: ¿reestructurar o salir?</li>
+          <li>Plan diversificación canales Chile: objetivo 65% (hoy 81,8%)</li>
+          <li>Replicar modelo Costa Rica en otros países</li>
+        </ul>
+      </div>
+      <div class="roadmap-step">
+        <div class="roadmap-num">04</div>
+        <div class="roadmap-period">12 – 24 meses</div>
+        <div class="roadmap-title">Largo plazo — Rentabilidad</div>
+        <ul class="roadmap-items">
+          <li>Gastos ADM Chile: de 58% a 35% sobre ingresos</li>
+          <li>Crecimiento ingresos Chile +15-20% manteniendo costos fijos</li>
+          <li>EBITDA Chile objetivo: ≥20%</li>
+          <li>Patrimonio positivo Chile — requiere breakeven + aporte capital</li>
+          <li>EBITDA grupo ≥18% en todos los países</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="grid-2 fade-in fade-in-2">
+      <div class="card">
+        <div class="card-title" style="margin-bottom:16px">Potencial de Ahorro — Gastos Chile</div>
+        <table class="data-table">
+          <tbody><tr><th>Área</th><th>Hoy MM$</th><th>Meta reducción</th><th>Ahorro MM$</th></tr>
+          <tr><td>Tecnología/suscripciones</td><td>462</td><td>-30 a -40%</td><td style="color:var(--green);font-weight:600">140–185</td></tr>
+          <tr><td>Honorarios y asesorías</td><td>390</td><td>-25 a -35%</td><td style="color:var(--green);font-weight:600">97–136</td></tr>
+          <tr><td>Multas e int. fiscales</td><td>117</td><td>-100% (pagar TGR)</td><td style="color:var(--green);font-weight:600">117</td></tr>
+          <tr><td>Viajes y representación</td><td>77</td><td>-40 a -50%</td><td style="color:var(--green);font-weight:600">31–38</td></tr>
+          <tr><td>Personal ADM</td><td>1.392</td><td>-10 a -15%</td><td style="color:var(--green);font-weight:600">139–209</td></tr>
+          <tr><td>Otros gastos</td><td>86</td><td>-30%</td><td style="color:var(--green);font-weight:600">26</td></tr>
+          <tr class="total"><td>AHORRO TOTAL</td><td>2.524</td><td>—</td><td style="color:var(--green);font-weight:700">550 – 711</td></tr>
+        </tbody></table>
+      </div>
+      <div class="card">
+        <div class="card-title" style="margin-bottom:16px">Objetivos 2026 por País</div>
+        <table class="data-table">
+          <tbody><tr><th>Indicador</th><th>Objetivo</th><th>País crítico</th><th>Hoy</th></tr>
+          <tr><td>EBITDA mínimo</td><td>≥15%</td><td>México, Perú</td><td><span class="pill critico">2/5 OK</span></td></tr>
+          <tr><td>Gastos ADM</td><td>&lt;50%</td><td>México, Perú</td><td><span class="pill critico">3/5 OK</span></td></tr>
+          <tr><td>Concentración canal</td><td>&lt;70%</td><td>Chile, Perú</td><td><span class="pill alerta">3/5 OK</span></td></tr>
+          <tr><td>Crecimiento ingresos</td><td>+10%</td><td>C. Rica, México</td><td><span class="pill alerta">En curso</span></td></tr>
+          <tr><td>EBITDA consolidado</td><td>≥18%</td><td>Grupo</td><td><span class="pill alerta">Pendiente</span></td></tr>
+        </tbody></table>
+        <div class="alert info" style="margin-top:16px;margin-bottom:0">
+          <div class="alert-icon">💡</div>
+          <div class="alert-content"><strong>Estrategia de capital para Chile</strong>Inyectar capital contra activo (no equity) para pagar TGR. Esto libera liquidez, elimina multas futuras y no requiere asambleas de accionistas ni cambia la estructura de propiedad.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="insight fade-in fade-in-3">
+      <div class="insight-icon">🔑</div>
+      <div class="insight-text">
+        <div class="insight-eyebrow">Los 3 mensajes que el CEO debe tener claros</div>
+        <div class="insight-title">El negocio funciona · La caja es el riesgo inmediato · El grupo es la clave</div>
+        <div class="insight-body">1) El margen bruto del 34,9% en Chile y 52,8% en Colombia prueba que la telemedicina es un modelo viable — el problema no es el producto ni el mercado. 2) La deuda tributaria de Chile (IVA MM$488 + convenio TGR MM$402) es la amenaza más urgente — el SII puede paralizar la operación si no se actúa. 3) El holding USA tiene el poder de resolver la crisis: formalizar el apoyo, inyectar liquidez para la TGR y reclasificar la deuda relacionada como largo plazo son las tres acciones que cambian el cuadro radicalmente en 90 días.</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+// ---- NAV ----
+function showSection(id, el) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+  // re-trigger fade
+  document.querySelectorAll('.fade-in').forEach(el => {
+    el.style.animation = 'none';
+    el.offsetHeight;
+    el.style.animation = '';
+  });
+}
+
+// ---- CHART DEFAULTS ----
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+Chart.defaults.font.size = 12;
+Chart.defaults.color = '#7a8699';
+Chart.defaults.plugins.legend.labels.boxWidth = 12;
+Chart.defaults.plugins.legend.labels.padding = 16;
+
+const NAVY = '#1a2e4a', BLUE = '#2e5fa3', BLUE_L = '#4a7fc1', BLUE_LL = '#bdd4ee';
+const RED = '#c0392b', RED_L = '#e74c3c';
+const GREEN = '#27ae60', GREEN_L = '#52be80';
+const ORANGE = '#d35400', ORANGE_L = '#e67e22';
+const GOLD = '#c8a45a';
+const GRAY = '#b0b8c8';
+
+// ---- INGRESOS GRUPO (pie on resumen) ----
+new Chart(document.getElementById('chartIngresosGrupo'), {
+  type: 'bar',
+  data: {
+    labels: ['🇨🇱 Chile', '🇨🇴 Colombia', '🇨🇷 C. Rica', '🇲🇽 México', '🇵🇪 Perú'],
+    datasets: [{
+      label: 'Ingresos USD M',
+      data: [4.94, 3.17, 0.32, 0.21, 0.08],
+      backgroundColor: [BLUE, GREEN, BLUE_L, RED_L, ORANGE],
+      borderRadius: 6,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { color: '#eef0f4' }, ticks: { callback: v => '$' + v + 'M' } },
+      y: { grid: { display: false } }
+    }
+  }
+});
+
+// ---- EERR CASCADA ----
+new Chart(document.getElementById('chartEERR'), {
+  type: 'bar',
+  data: {
+    labels: ['Ingresos', 'Costo Servicios', 'Margen Bruto', 'Gastos ADM', 'Gastos Finan.', 'Otros Egresos', 'Pérdida Neta'],
+    datasets: [{
+      data: [4984, -3244, 1740, -3305, -195, -319, -2092],
+      backgroundColor: [GREEN, RED_L, GREEN, RED_L, RED_L, RED_L, RED],
+      borderRadius: 5,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => 'MM$ ' + ctx.raw.toLocaleString('es-CL') } } },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 10 } } },
+      y: { grid: { color: '#eef0f4' }, ticks: { callback: v => 'MM$' + v.toLocaleString('es-CL') } }
+    }
+  }
+});
+
+// ---- IVA ----
+new Chart(document.getElementById('chartIVA'), {
+  type: 'bar',
+  data: {
+    labels: ['May-24','Jul-24','Ago-24','Oct-24','Nov-24','Dic-24','Ene-25','Mar-25','May-25','Jun-25','Jul-25','Ago-25','Oct-25','Nov-25','Dic-25'],
+    datasets: [{
+      label: 'IVA Postergado MM$',
+      data: [6.1,12.2,13,46,19.8,20.8,20.9,25.9,42.7,29.4,28.7,32.3,63.2,30.6,96.4],
+      backgroundColor: ctx => ctx.dataIndex === 14 ? RED : RED_L,
+      borderRadius: 3,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 9 }, maxRotation: 45 } },
+      y: { grid: { color: '#eef0f4' } }
+    }
+  }
+});
+
+// ---- INGRESOS PAIS ----
+new Chart(document.getElementById('chartIngresosPais'), {
+  type: 'bar',
+  data: {
+    labels: ['🇨🇱 Chile', '🇨🇴 Colombia', '🇨🇷 Costa Rica', '🇲🇽 México', '🇵🇪 Perú'],
+    datasets: [
+      { label: '2024', data: [5.03, 3.24, 0.28, 0.15, 0.08], backgroundColor: GRAY, borderRadius: 4 },
+      { label: '2025', data: [4.94, 3.17, 0.32, 0.21, 0.08], backgroundColor: [BLUE, GREEN, BLUE_L, ORANGE, RED_L], borderRadius: 4 },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'top' }, tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': $' + ctx.raw + 'M' } } },
+    scales: {
+      x: { grid: { display: false } },
+      y: { grid: { color: '#eef0f4' }, ticks: { callback: v => '$' + v + 'M' } }
+    }
+  }
+});
+
+// ---- PARTICIPACION PIE ----
+new Chart(document.getElementById('chartParticipacion'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Chile 56,5%', 'Colombia 36,2%', 'Costa Rica 3,7%', 'México 2,4%', 'Perú 0,9%'],
+    datasets: [{ data: [56.5, 36.2, 3.7, 2.4, 0.9], backgroundColor: [BLUE, GREEN, BLUE_L, ORANGE, RED_L], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false, cutout: '62%',
+    plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } }
+  }
+});
+
+// ---- RENTABILIDAD ----
+new Chart(document.getElementById('chartRentabilidad'), {
+  type: 'bar',
+  data: {
+    labels: ['🇨🇷 Costa Rica', '🇨🇴 Colombia', '🇨🇱 Chile', '🇵🇪 Perú', '🇲🇽 México'],
+    datasets: [
+      { label: 'Margen Bruto %', data: [81.0, 52.8, 39.8, 47.9, 33.9], backgroundColor: BLUE_LL, borderRadius: 4 },
+      { label: 'EBITDA %', data: [61.5, 20.0, 11.9, -66.9, -148.9], backgroundColor: [GREEN, GREEN, ORANGE, RED_L, RED], borderRadius: 4 },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'top' }, annotation: {} },
+    scales: {
+      x: { grid: { display: false } },
+      y: { grid: { color: '#eef0f4' }, ticks: { callback: v => v + '%' } }
+    }
+  }
+});
+
+// ---- GASTOS DONUT ----
+new Chart(document.getElementById('chartGastos'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Personal 47,9%', 'Tecnología 17,4%', 'Honorarios 13,4%', 'Leyes Soc. 5,5%', 'Arriendos 4,2%', 'Multas 4,0%', 'Otros 7,6%'],
+    datasets: [{ data: [1392, 507, 390, 159, 122, 117, 220], backgroundColor: [RED, '#e74c3c', '#e67e22', GRAY, BLUE_L, ORANGE, '#bdc3c7'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false, cutout: '55%',
+    plugins: { legend: { position: 'right', labels: { font: { size: 11 }, boxWidth: 10 } } }
+  }
+});
+
+// ---- CANALES ----
+new Chart(document.getElementById('chartCanales'), {
+  type: 'bar',
+  data: {
+    labels: ['🇨🇱 Chile', '🇨🇴 Colombia', '🇲🇽 México', '🇵🇪 Perú', '🇨🇷 Costa Rica'],
+    datasets: [
+      { label: 'Canal principal %', data: [81.8, 64.5, 54.4, 83.9, 61.1], backgroundColor: [RED, GREEN, ORANGE, RED, GREEN_L], borderRadius: 6 },
+      { label: 'Otros canales %', data: [18.2, 35.5, 45.6, 16.1, 38.9], backgroundColor: GRAY, borderRadius: 6 },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top' },
+      annotation: {
+        annotations: {
+          line75: { type: 'line', yMin: 75, yMax: 75, borderColor: RED, borderWidth: 2, borderDash: [6,3], label: { content: 'Umbral crítico 75%', display: true, position: 'end', font: { size: 11 }, backgroundColor: RED } }
+        }
+      }
+    },
+    scales: {
+      x: { stacked: true, grid: { display: false } },
+      y: { stacked: true, max: 100, grid: { color: '#eef0f4' }, ticks: { callback: v => v + '%' } }
+    }
+  }
+});
+
+// ---- TENDENCIAS INGRESOS ----
+const meses = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+new Chart(document.getElementById('chartTendIngresos'), {
+  type: 'line',
+  data: {
+    labels: meses,
+    datasets: [
+      { label: '2024', data: [674619,522503,597109,701629,705549,689951,645128,673683,725795,740379,767477,749260], borderColor: GRAY, borderWidth: 2, pointRadius: 3, fill: false, tension: 0.3 },
+      { label: '2025', data: [712965,653588,682597,678723,733284,710719,728523,757547,719949,767316,787332,793332], borderColor: BLUE, borderWidth: 2.5, pointRadius: 4, fill: false, tension: 0.3 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'top' } },
+    scales: {
+      x: { grid: { display: false } },
+      y: { grid: { color: '#eef0f4' }, ticks: { callback: v => '$' + (v/1000).toFixed(0) + 'K' } }
+    }
+  }
+});
+
+// ---- TENDENCIAS EBITDA ----
+new Chart(document.getElementById('chartTendEBITDA'), {
+  type: 'line',
+  data: {
+    labels: meses,
+    datasets: [
+      { label: '2024', data: [21.4,1.5,16.8,20.2,7.0,12.9,9.5,11.1,17.9,6.2,24.1,13.5], borderColor: GRAY, borderWidth: 2, pointRadius: 3, fill: false, tension: 0.3 },
+      { label: '2025', data: [18.9,8.6,-6.9,3.1,-2.2,11.5,8.9,16.1,21.2,22.9,22.6,16.9], borderColor: BLUE, borderWidth: 2.5, pointRadius: 4, fill: { target: { value: 0 }, above: 'rgba(46,95,163,0.08)', below: 'rgba(192,57,43,0.1)' }, tension: 0.3 },
+      { label: 'Objetivo 15%', data: Array(12).fill(15), borderColor: GOLD, borderWidth: 1.5, borderDash: [5,4], pointRadius: 0, fill: false }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'top' } },
+    scales: {
+      x: { grid: { display: false } },
+      y: { grid: { color: '#eef0f4' }, ticks: { callback: v => v + '%' } }
+    }
+  }
+});
+</script>
+
+
+</body></html>
