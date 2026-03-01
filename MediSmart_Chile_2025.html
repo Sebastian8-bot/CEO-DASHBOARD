@@ -1,0 +1,1882 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MediSmart Chile — Panel Ejecutivo 2025</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --chile-red: #D52B1E;
+    --chile-blue: #003087;
+    --white: #ffffff;
+    --off-white: #F7F8FA;
+    --body-bg: #F4F5F7;
+    --text: #1A202C;
+    --text-mid: #4A5568;
+    --text-light: #718096;
+    --border: #E2E8F0;
+    --card-bg: #ffffff;
+    --green: #16A34A;
+    --green-light: #DCFCE7;
+    --red: #DC2626;
+    --red-light: #FEE2E2;
+    --amber: #D97706;
+    --amber-light: #FEF3C7;
+    --blue: #2563EB;
+    --blue-light: #DBEAFE;
+    --teal: #0D9488;
+    --header-dark: #0A1628;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--body-bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* ======================== HEADER ======================== */
+  .header {
+    background: var(--header-dark);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Franja superior: rojo-blanco-azul estilo chile */
+  .header-stripe {
+    height: 5px;
+    background: linear-gradient(90deg, var(--chile-red) 0%, var(--chile-red) 33%, #ffffff 33%, #ffffff 66%, var(--chile-blue) 66%, var(--chile-blue) 100%);
+  }
+
+  .header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 0% 100%, rgba(213,43,30,0.18) 0%, transparent 55%),
+      radial-gradient(ellipse at 100% 0%, rgba(0,48,135,0.22) 0%, transparent 55%);
+    pointer-events: none;
+  }
+
+  .header-inner {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 28px 48px 26px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    position: relative;
+  }
+
+  .header-left { display: flex; flex-direction: column; gap: 6px; }
+
+  .header-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+  }
+
+  .header-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 30px;
+    font-weight: 900;
+    color: #ffffff;
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+  }
+
+  .header-title span { color: var(--chile-red); }
+
+  .header-subtitle {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 2px;
+  }
+
+  .header-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+  }
+
+  .header-badge {
+    background: rgba(213,43,30,0.18);
+    border: 1px solid rgba(213,43,30,0.35);
+    border-radius: 4px;
+    padding: 4px 12px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: rgba(255,120,120,0.9);
+  }
+
+  .header-meta {
+    font-size: 12px;
+    color: rgba(255,255,255,0.38);
+    font-family: 'DM Mono', monospace;
+    text-align: right;
+    line-height: 1.7;
+  }
+
+  /* ======================== NAV ======================== */
+  .nav {
+    background: #ffffff;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+
+  .nav-inner {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: flex;
+    padding: 0 48px;
+    overflow-x: auto;
+    gap: 0;
+  }
+
+  .nav-btn {
+    padding: 13px 18px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    border: none;
+    background: transparent;
+    color: var(--text-light);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.18s;
+    white-space: nowrap;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .nav-btn:hover { color: var(--text); }
+  .nav-btn.active { color: var(--chile-red); border-bottom-color: var(--chile-red); font-weight: 700; }
+
+  /* ======================== MAIN ======================== */
+  .main {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 32px 48px 60px;
+  }
+
+  .section { display: none; }
+  .section.active { display: block; animation: fadeIn 0.28s ease; }
+
+  @keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+  /* ======================== SECTION TITLE ======================== */
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .section-desc {
+    font-size: 12px;
+    color: var(--text-light);
+    margin-bottom: 24px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .section-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 28px 0;
+  }
+
+  /* ======================== BANNER EJECUTIVO ======================== */
+  .exec-banner {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--chile-red);
+    border-radius: 8px;
+    padding: 22px 28px;
+    margin-bottom: 28px;
+  }
+
+  .exec-banner-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--chile-red);
+    margin-bottom: 8px;
+  }
+
+  .exec-banner-text {
+    font-size: 14px;
+    color: var(--text-mid);
+    line-height: 1.75;
+    max-width: 980px;
+  }
+
+  .exec-banner-text strong { color: var(--text); font-weight: 700; }
+
+  /* ======================== KPI GRID ======================== */
+  .kpi-row {
+    display: grid;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+
+  .kpi-row.cols-4 { grid-template-columns: repeat(4, 1fr); }
+  .kpi-row.cols-5 { grid-template-columns: repeat(5, 1fr); }
+  .kpi-row.cols-3 { grid-template-columns: repeat(3, 1fr); }
+
+  .kpi-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+    position: relative;
+  }
+
+  .kpi-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    border-radius: 0 0 8px 8px;
+    background: var(--kpi-color, var(--chile-blue));
+    opacity: 0.5;
+  }
+
+  .kpi-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    color: var(--text-light);
+    margin-bottom: 8px;
+  }
+
+  .kpi-value {
+    font-family: 'DM Mono', monospace;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.1;
+    margin-bottom: 6px;
+  }
+
+  .kpi-delta {
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 4px;
+  }
+
+  .kpi-delta.up { color: var(--green); }
+  .kpi-delta.down { color: var(--red); }
+  .kpi-delta.warn { color: var(--amber); }
+  .kpi-delta.neutral { color: var(--text-light); }
+
+  .kpi-note {
+    font-size: 11px;
+    color: var(--text-light);
+    line-height: 1.4;
+    margin-top: 2px;
+  }
+
+  /* ======================== CARDS ======================== */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+
+  .card-header {
+    padding: 16px 22px 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .card-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .card-subtitle {
+    font-size: 11px;
+    color: var(--text-light);
+    margin-top: 2px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .card-body { padding: 20px 22px; }
+
+  /* ======================== CHART LAYOUT ======================== */
+  .chart-cols-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 20px;
+  }
+
+  .chart-cols-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 20px;
+  }
+
+  .chart-wrap canvas { max-height: 180px; }
+
+  .chart-note {
+    font-size: 11px;
+    color: var(--text-light);
+    line-height: 1.6;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+
+  .chart-note strong { color: var(--text-mid); font-weight: 600; }
+
+  /* ======================== TABLES ======================== */
+  table { width: 100%; border-collapse: collapse; }
+
+  th {
+    padding: 9px 16px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--text-light);
+    background: var(--off-white);
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 11px 16px;
+    font-size: 13px;
+    border-bottom: 1px solid #F1F5F9;
+    color: var(--text-mid);
+  }
+
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #FAFBFC; }
+
+  td.mono { font-family: 'DM Mono', monospace; font-size: 12px; }
+  td.right { text-align: right; }
+  td.bold { font-weight: 700; color: var(--text); }
+  td.group { background: var(--off-white); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-light); }
+  td.total { background: #F0F4FF; font-weight: 700; color: var(--text); }
+
+  .c-green { color: var(--green); font-weight: 600; }
+  .c-red { color: var(--red); font-weight: 600; }
+  .c-amber { color: var(--amber); font-weight: 600; }
+  .c-blue { color: var(--blue); font-weight: 600; }
+  .c-muted { color: var(--text-light); }
+
+  /* ======================== PILLS ======================== */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .pill-green { background: var(--green-light); color: var(--green); }
+  .pill-red { background: var(--red-light); color: var(--red); }
+  .pill-amber { background: var(--amber-light); color: var(--amber); }
+  .pill-blue { background: var(--blue-light); color: var(--blue); }
+  .pill-gray { background: #F1F5F9; color: var(--text-light); }
+
+  /* ======================== SEMAPHORE ======================== */
+  .semaphore-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .sem-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 10px 14px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-mid);
+  }
+
+  .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+  .dot-green { background: var(--green); }
+  .dot-amber { background: var(--amber); }
+  .dot-red { background: var(--red); }
+
+  /* ======================== ALERTS ======================== */
+  .alerts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .alert-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+    border-left: 4px solid var(--red);
+  }
+  .alert-card.warn { border-left-color: var(--amber); }
+  .alert-card.info { border-left-color: var(--blue); }
+  .alert-card.ok { border-left-color: var(--green); }
+
+  .alert-sev { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--red); margin-bottom: 4px; }
+  .alert-card.warn .alert-sev { color: var(--amber); }
+  .alert-card.ok .alert-sev { color: var(--green); }
+  .alert-card.info .alert-sev { color: var(--blue); }
+
+  .alert-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+  .alert-body { font-size: 12px; color: var(--text-light); line-height: 1.65; margin-bottom: 10px; }
+  .alert-rec {
+    font-size: 12px;
+    color: var(--text-mid);
+    background: var(--off-white);
+    border-radius: 5px;
+    padding: 8px 12px;
+    line-height: 1.55;
+  }
+
+  /* ======================== NODE CARDS ======================== */
+  .node-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+
+  .node-header {
+    padding: 13px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .node-header:hover { background: var(--off-white); }
+
+  .node-badge {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700;
+    flex-shrink: 0;
+    background: var(--red-light); color: var(--red);
+  }
+  .node-card.warn .node-badge { background: var(--amber-light); color: var(--amber); }
+  .node-card.ok .node-badge { background: var(--green-light); color: var(--green); }
+
+  .node-title { flex: 1; font-size: 13px; font-weight: 600; color: var(--text); }
+  .node-toggle { font-size: 11px; color: var(--text-light); transition: transform 0.2s; }
+
+  .node-body { display: none; padding: 0 18px 16px; border-top: 1px solid var(--border); }
+  .node-body.open { display: block; }
+
+  .node-cols { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; padding-top: 16px; }
+
+  .node-col-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-light); margin-bottom: 6px; }
+  .node-col-text { font-size: 12px; color: var(--text-mid); line-height: 1.65; }
+
+  /* ======================== CASH FLOW TABLE ======================== */
+  .cf-positive { color: var(--green); font-weight: 600; }
+  .cf-negative { color: var(--red); font-weight: 600; }
+  .cf-total { background: #EFF6FF; font-weight: 700; color: var(--text); }
+  .cf-projected { background: #FFFBEB; }
+
+  /* ======================== WATERFALL ======================== */
+  .wf-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid #F1F5F9;
+  }
+  .wf-row:last-child { border-bottom: none; }
+  .wf-label { width: 180px; font-size: 12px; color: var(--text-mid); flex-shrink: 0; }
+  .wf-label.bold { font-weight: 700; color: var(--text); }
+  .wf-track { flex: 1; height: 16px; background: #F1F5F9; border-radius: 3px; overflow: hidden; position: relative; }
+  .wf-fill { position: absolute; top: 0; height: 100%; border-radius: 3px; transition: width 1s ease; }
+  .wf-amt { width: 90px; text-align: right; font-family: 'DM Mono', monospace; font-size: 12px; flex-shrink: 0; }
+
+  /* ======================== INTRAGROUP ======================== */
+  .intragroup {
+    background: linear-gradient(135deg, #F8FAFF 0%, #FFF8F8 100%);
+    border: 1px solid #DDE6FF;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+  }
+
+  .intragroup-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--chile-blue);
+    margin-bottom: 16px;
+  }
+
+  /* ======================== CONTEXT GRID ======================== */
+  .context-cols { display: grid; grid-template-columns: 3fr 2fr; gap: 20px; }
+
+  .question-item {
+    display: flex;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .question-item:last-child { border-bottom: none; }
+
+  .q-num {
+    width: 22px; height: 22px;
+    background: var(--off-white);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700;
+    color: var(--text-light);
+    flex-shrink: 0; margin-top: 2px;
+  }
+
+  .q-text { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .q-sub { font-size: 12px; color: var(--text-light); line-height: 1.55; }
+
+  /* ======================== MISC ======================== */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  @media (max-width: 900px) {
+    .main { padding: 20px 16px; }
+    .header-inner { padding: 20px 16px; flex-direction: column; align-items: flex-start; }
+    .nav-inner { padding: 0 16px; }
+    .kpi-row.cols-4, .kpi-row.cols-5 { grid-template-columns: repeat(2, 1fr); }
+    .chart-cols-2, .chart-cols-3 { grid-template-columns: 1fr; }
+    .alerts-grid { grid-template-columns: 1fr; }
+    .semaphore-grid { grid-template-columns: repeat(2, 1fr); }
+    .context-cols { grid-template-columns: 1fr; }
+    .node-cols { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-stripe"></div>
+  <div class="header-inner">
+    <div class="header-left">
+      <div class="header-eyebrow">Medical Solutions SpA · República de Chile</div>
+      <div class="header-title">MediSmart <span>Chile</span></div>
+      <div class="header-subtitle">Panel Ejecutivo Financiero 2024 → 2026 · Cifras en USD y MM CLP</div>
+    </div>
+    <div class="header-right">
+      <div class="header-badge">🔒 Confidencial · CEO</div>
+      <div class="header-meta">
+        Corte: 31 Dic 2025 / Feb 2026<br>
+        Fuente: EEFF IFRS · Dashboard_EEFF · Proyección Caja<br>
+        TC referencia: 1 USD = 950 CLP
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <div class="nav-inner">
+    <button class="nav-btn active" onclick="show('resumen', this)">📊 Resumen Ejecutivo</button>
+    <button class="nav-btn" onclick="show('resultados', this)">📈 Resultados & Márgenes</button>
+    <button class="nav-btn" onclick="show('caja', this)">💰 Flujo de Caja</button>
+    <button class="nav-btn" onclick="show('balance', this)">🏦 Balance & EEFF IFRS</button>
+    <button class="nav-btn" onclick="show('deudas', this)">📋 Deudas & Estructura</button>
+    <button class="nav-btn" onclick="show('alertas', this)">🚨 Alertas & Nodos</button>
+    <button class="nav-btn" onclick="show('contexto', this)">🎯 Prep. CEO</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- ============================== RESUMEN ============================== -->
+<div class="section active" id="resumen">
+
+  <div class="exec-banner">
+    <div class="exec-banner-label">💡 El gran titular</div>
+    <div class="exec-banner-text">
+      Chile es la operación matriz de MediSmart y 2025 fue un <strong>año de ajuste estructural</strong>. Los ingresos cayeron <strong>USD 1.47M (−22.9%)</strong> frente a 2024 y la pérdida neta se amplió a <strong>USD 1.69M</strong>. La compañía ejecutó una reestructuración agresiva (salida de WeWork, indemnizaciones, cierre de sociedades por MM$228 CLP) que redujo los gastos operacionales un <strong>−35.8%</strong>, sentando la base para 2026. El riesgo inmediato es liquidez: con <strong>MM$12 de caja al cierre de Feb-26</strong>, la proyección base muestra saldo negativo desde Mar-26 sin nuevas fuentes de financiamiento. El presupuesto 2026 proyecta ingresos <strong>USD 5.81M (+18%)</strong> y EBITDA de <strong>USD 1.94M</strong>, pero los primeros dos meses de 2026 ejecutan un 10–13% por debajo del budget.
+    </div>
+  </div>
+
+  <div class="section-title">KPIs Clave · 2024 vs 2025 vs 2026P</div>
+  <div class="section-desc">Fuente: Base_Datos Chile — Dashboard_EEFF_Ok.xlsx · Cifras en USD</div>
+
+  <div class="kpi-row cols-4">
+    <div class="kpi-card" style="--kpi-color: var(--red)">
+      <div class="kpi-label">Ingresos 2025</div>
+      <div class="kpi-value">USD 4.94M</div>
+      <div class="kpi-delta down">▼ −22.9% vs 2024</div>
+      <div class="kpi-note">2024: USD 6.41M · 2026P: USD 5.81M (+18%)</div>
+    </div>
+    <div class="kpi-card" style="--kpi-color: var(--amber)">
+      <div class="kpi-label">Margen Bruto 2025</div>
+      <div class="kpi-value">39.8%</div>
+      <div class="kpi-delta down">▼ vs 50.3% en 2024</div>
+      <div class="kpi-note">USD 1.97M absolutos · 2026P: 49.0%</div>
+    </div>
+    <div class="kpi-card" style="--kpi-color: var(--amber)">
+      <div class="kpi-label">EBITDA 2025</div>
+      <div class="kpi-value">USD 587K</div>
+      <div class="kpi-delta down">▼ −58.1% vs 2024</div>
+      <div class="kpi-note">Margen: 11.9% · 2024: USD 1.40M · 2026P: USD 1.94M</div>
+    </div>
+    <div class="kpi-card" style="--kpi-color: var(--red)">
+      <div class="kpi-label">Pérdida Neta 2025</div>
+      <div class="kpi-value">(USD 1.69M)</div>
+      <div class="kpi-delta down">▼ Pérdida ampliada</div>
+      <div class="kpi-note">2024: (USD 925K) · 2026P: +USD 44K (breakeven)</div>
+    </div>
+  </div>
+
+  <div class="kpi-row cols-4">
+    <div class="kpi-card" style="--kpi-color: var(--red)">
+      <div class="kpi-label">Caja Feb-26</div>
+      <div class="kpi-value">MM$11.95</div>
+      <div class="kpi-delta down">🔴 Mínimo histórico</div>
+      <div class="kpi-note">Mar-26 proyectado: (MM$373). Cobertura cuotas: 0.22x</div>
+    </div>
+    <div class="kpi-card" style="--kpi-color: var(--red)">
+      <div class="kpi-label">Deuda Bancaria CLP</div>
+      <div class="kpi-value">MM$893</div>
+      <div class="kpi-delta warn">⚠ Cuota mensual MM$54.7</div>
+      <div class="kpi-note">TGR: MM$402 · Banco Estado: MM$236 · Levannta: MM$136</div>
+    </div>
+    <div class="kpi-card" style="--kpi-color: var(--red)">
+      <div class="kpi-label">Patrimonio IFRS</div>
+      <div class="kpi-value">(MM$7.390)</div>
+      <div class="kpi-delta down">🔴 Negativo — insolvencia técnica</div>
+      <div class="kpi-note">Sostenido por deuda intragrupo MM$10.525 (CxP relacionadas)</div>
+    </div>
+    <div class="kpi-card" style="--kpi-color: var(--blue)">
+      <div class="kpi-label">Canal Líder 2025</div>
+      <div class="kpi-value">Isapres</div>
+      <div class="kpi-delta up">▲ +4.4% vs 2024</div>
+      <div class="kpi-note">USD 1.93M · 39% del ingreso · único canal en crecimiento</div>
+    </div>
+  </div>
+
+  <!-- Gráficos pequeños -->
+  <div class="chart-cols-3">
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Ingresos Mensuales 2024 vs 2025</div>
+          <div class="card-subtitle">USD — real ejecutado</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="chart-wrap"><canvas id="cIngresos"></canvas></div>
+        <div class="chart-note">
+          <strong>Tendencia descendente en 2025:</strong> El promedio mensual cayó de USD 534K (H1-25) a USD 391K (H2-25), −26.8%. Diciembre 2025 marcó el mínimo anual con USD 383K.
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">EBITDA Mensual 2025</div>
+          <div class="card-subtitle">USD — real ejecutado</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="chart-wrap"><canvas id="cEBITDA"></canvas></div>
+        <div class="chart-note">
+          <strong>Tres meses negativos:</strong> Mar (−USD 57K), May (−USD 2K). La recuperación se consolida de Sep a Nov. Los meses negativos coinciden con gastos de reestructuración y peak de honorarios.
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Mix de Canales 2025</div>
+          <div class="card-subtitle">USD — participación</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="chart-wrap"><canvas id="cCanales"></canvas></div>
+        <div class="chart-note">
+          <strong>Isapres supera a Aseguradoras:</strong> por primera vez en la historia, Isapres (39.0%) supera al canal Aseguradoras (42.9% → 42.8%) como resultado de la contracción de este último (−32.4%).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <div class="section-title" style="margin-bottom:14px;">🚦 Semáforo de Indicadores</div>
+  <div class="semaphore-grid">
+    <div class="sem-item"><div class="dot dot-red"></div>Ingresos −22.9% vs 2024</div>
+    <div class="sem-item"><div class="dot dot-red"></div>Pérdida neta USD 1.69M</div>
+    <div class="sem-item"><div class="dot dot-red"></div>Caja negativa desde Mar-26</div>
+    <div class="sem-item"><div class="dot dot-red"></div>Patrimonio negativo MM$(7.390)</div>
+    <div class="sem-item"><div class="dot dot-red"></div>Convenios TGR — riesgo cascada</div>
+    <div class="sem-item"><div class="dot dot-red"></div>Notas accionistas vencidas</div>
+    <div class="sem-item"><div class="dot dot-amber"></div>Margen bruto 39.8% (vs 50.3%)</div>
+    <div class="sem-item"><div class="dot dot-amber"></div>EBITDA positivo pero −58% vs 2024</div>
+    <div class="sem-item"><div class="dot dot-amber"></div>Recaudación Feb-26 recuperando (+13%)</div>
+    <div class="sem-item"><div class="dot dot-green"></div>Reestructuración completada en 2025</div>
+    <div class="sem-item"><div class="dot dot-green"></div>Gastos operacionales −35.8%</div>
+    <div class="sem-item"><div class="dot dot-green"></div>Budget 2026: EBITDA +230%</div>
+  </div>
+
+</div>
+
+<!-- ============================== RESULTADOS ============================== -->
+<div class="section" id="resultados">
+
+  <div class="section-title">Estado de Resultados Comparativo</div>
+  <div class="section-desc">Fuente: Base_Datos hoja Chile — Dashboard_EEFF_Ok.xlsx · Cifras en USD</div>
+
+  <div class="card" style="margin-bottom:20px;">
+    <div class="card-header">
+      <div>
+        <div class="card-title">P&L Chile — Medical Solutions SpA</div>
+        <div class="card-subtitle">Real 2024 | Real 2025 | Presupuesto 2026</div>
+      </div>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Cuenta</th>
+          <th class="right">2024 Real</th>
+          <th class="right">2025 Real</th>
+          <th class="right">Δ USD</th>
+          <th class="right">Δ %</th>
+          <th class="right">2026 Ppto.</th>
+          <th>Nota</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td colspan="7" class="group">Ingresos</td></tr>
+        <tr>
+          <td class="bold">Ingresos Operacionales</td>
+          <td class="mono right">$6,406,317</td>
+          <td class="mono right">$4,938,541</td>
+          <td class="mono right c-red">−$1,467,776</td>
+          <td class="right"><span class="pill pill-red">▼ −22.9%</span></td>
+          <td class="mono right">$5,810,945</td>
+          <td><span class="pill pill-blue">+17.7% vs 2025</span></td>
+        </tr>
+        <tr><td colspan="7" class="group">Costos</td></tr>
+        <tr>
+          <td>Costo Directo</td>
+          <td class="mono right c-muted">($3,185,602)</td>
+          <td class="mono right c-muted">($2,973,324)</td>
+          <td class="mono right c-green">+$212,278</td>
+          <td class="right"><span class="pill pill-green">▼ −6.7%</span></td>
+          <td class="mono right c-muted">($2,964,288)</td>
+          <td class="c-muted" style="font-size:12px">Cae menos que ingresos</td>
+        </tr>
+        <tr>
+          <td class="bold">Margen Bruto</td>
+          <td class="mono right bold">$3,220,715</td>
+          <td class="mono right bold">$1,965,217</td>
+          <td class="mono right c-red">−$1,255,498</td>
+          <td class="right"><span class="pill pill-red">▼ −39.0%</span></td>
+          <td class="mono right bold">$2,846,658</td>
+          <td>50.3% → <strong>39.8%</strong> → 49.0%</td>
+        </tr>
+        <tr><td colspan="7" class="group">Gastos Operacionales</td></tr>
+        <tr>
+          <td>Gastos Adm. y Ventas</td>
+          <td class="mono right c-muted">($1,818,320)</td>
+          <td class="mono right c-muted">($1,167,330)</td>
+          <td class="mono right c-green">+$650,990</td>
+          <td class="right"><span class="pill pill-green">▼ −35.8%</span></td>
+          <td class="mono right c-muted">($904,628)</td>
+          <td><span class="pill pill-green">Reducción ejecutada ✓</span></td>
+        </tr>
+        <tr>
+          <td class="bold">EBITDA</td>
+          <td class="mono right bold">$1,402,395</td>
+          <td class="mono right bold">$587,157</td>
+          <td class="mono right c-red">−$815,238</td>
+          <td class="right"><span class="pill pill-red">▼ −58.1%</span></td>
+          <td class="mono right bold">$1,942,030</td>
+          <td>21.9% → <strong>11.9%</strong> → 33.4%</td>
+        </tr>
+        <tr><td colspan="7" class="group">No Operacional</td></tr>
+        <tr>
+          <td>Gastos Corporativos</td>
+          <td class="mono right c-muted">($2,327,475)</td>
+          <td class="mono right c-muted">($2,274,835)</td>
+          <td class="mono right c-green">+$52,640</td>
+          <td class="right"><span class="pill pill-amber">▼ −2.3%</span></td>
+          <td class="mono right c-muted">($1,898,168)</td>
+          <td class="c-muted" style="font-size:12px">TI, Finanzas, RRHH central grupo</td>
+        </tr>
+        <tr>
+          <td class="bold c-red">Pérdida Neta</td>
+          <td class="mono right bold c-red">($925,080)</td>
+          <td class="mono right bold c-red">($1,687,678)</td>
+          <td class="mono right c-red">−$762,598</td>
+          <td class="right"><span class="pill pill-red">▼ Pérdida +82%</span></td>
+          <td class="mono right bold c-green">$43,862</td>
+          <td><span class="pill pill-green">Breakeven 2026P</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Gráficos resultados -->
+  <div class="chart-cols-2">
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Evolución Anual — Ingresos, Costo y EBITDA</div>
+          <div class="card-subtitle">USD · 2024 Real | 2025 Real | 2026P</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="chart-wrap"><canvas id="cAnual"></canvas></div>
+        <div class="chart-note">
+          <strong>2025 = año valle:</strong> El EBITDA cayó −58% pero la estructura de costos también se redujo agresivamente. El presupuesto 2026 proyecta un rebote de +230% en EBITDA, asumiendo que los ingresos recuperan USD 873K adicionales vs 2025. Los primeros 2 meses del año ejecutan un 10% por debajo del presupuesto.
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Canales de Ingreso — 2024 vs 2025</div>
+          <div class="card-subtitle">USD por canal</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="chart-wrap"><canvas id="cCanalesComp"></canvas></div>
+        <div class="chart-note">
+          <strong>Aseguradoras:</strong> cayeron −32.4% (USD 3.13M → USD 2.12M), el mayor driver de la contracción. <strong>Isapres</strong> fue el único canal en crecer (+4.4%). Agregadores cayeron −43.2% y Empleadores −29.4%.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Waterfall -->
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Waterfall — Del Ingreso a la Pérdida Neta 2025</div>
+        <div class="card-subtitle">USD · ¿Cómo se destruye valor desde cada dólar facturado?</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="wf-row">
+        <div class="wf-label bold">Ingresos</div>
+        <div class="wf-track"><div class="wf-fill" style="background:#2563EB;width:100%;opacity:0.7"></div></div>
+        <div class="wf-amt c-blue">$4,938,541</div>
+      </div>
+      <div class="wf-row">
+        <div class="wf-label">(-) Costo Directo</div>
+        <div class="wf-track"><div class="wf-fill" style="background:#DC2626;width:60.2%;opacity:0.65"></div></div>
+        <div class="wf-amt c-red">($2,973,324)</div>
+      </div>
+      <div class="wf-row">
+        <div class="wf-label bold">= Margen Bruto</div>
+        <div class="wf-track"><div class="wf-fill" style="background:#0D9488;width:39.8%;opacity:0.7"></div></div>
+        <div class="wf-amt" style="color:var(--teal);font-weight:700">$1,965,217</div>
+      </div>
+      <div class="wf-row">
+        <div class="wf-label">(-) Gastos Adm./Venta</div>
+        <div class="wf-track"><div class="wf-fill" style="background:#D97706;width:23.6%;opacity:0.65"></div></div>
+        <div class="wf-amt c-amber">($1,167,330)</div>
+      </div>
+      <div class="wf-row">
+        <div class="wf-label bold">= EBITDA</div>
+        <div class="wf-track"><div class="wf-fill" style="background:#16A34A;width:11.9%;opacity:0.7"></div></div>
+        <div class="wf-amt c-green">$587,157</div>
+      </div>
+      <div class="wf-row">
+        <div class="wf-label">(-) Gastos Corporativos</div>
+        <div class="wf-track"><div class="wf-fill" style="background:#DC2626;width:46.1%;opacity:0.5"></div></div>
+        <div class="wf-amt c-red">($2,274,835)</div>
+      </div>
+      <div class="wf-row">
+        <div class="wf-label bold">= Pérdida Neta</div>
+        <div class="wf-track"><div class="wf-fill" style="background:#DC2626;width:34.2%;opacity:0.3"></div></div>
+        <div class="wf-amt c-red" style="font-weight:700">($1,687,678)</div>
+      </div>
+      <div class="chart-note" style="margin-top:12px;">
+        <strong>Nota:</strong> El EBITDA de USD 587K es positivo, lo que implica que la operación per se genera valor. La pérdida neta es consecuencia de los Gastos Corporativos (TI, Finanzas, RRHH central, USD 2.27M) que se cargan sobre Chile como casa matriz del grupo. Reducir o repartir esos gastos corporativos entre las filiales es una palanca directa de rentabilidad.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============================== CAJA ============================== -->
+<div class="section" id="caja">
+
+  <div class="section-title">Flujo de Caja — Chile 2025 Real + 2026 Proyectado</div>
+  <div class="section-desc">Fuente: Proyeccion_Caja_Feb2026_corregido.xlsx · MM CLP · TC = 950 CLP/USD</div>
+
+  <div class="kpi-row cols-4">
+    <div class="kpi-card" style="--kpi-color: var(--amber)">
+      <div class="kpi-label">Saldo Caja Ene-26</div>
+      <div class="kpi-value">MM$96.96</div>
+      <div class="kpi-delta warn">Cobertura cuotas: 1.77x</div>
+      <div class="kpi-note">Aún sobre el umbral 1.0x, pero muy ajustado</div>
+    </div>
+    <div class="kpi-card" style="--kpi-color: var(--red)">
+      <div class="kpi-label">Saldo Caja Feb-26</div>
+      <div class="kpi-value">MM$11.95</div>
+      <div class="kpi-delta down">Cobertura cuotas: 0.22x</div>
+      <div class="kpi-note">0.22x significa que la caja solo cubre el 22% de las cuotas del mes</div>
+    </div>
+    <div class="kpi-card" style="--kpi-color: var(--red)">
+      <div class="kpi-label">Saldo Proyectado Mar-26</div>
+      <div class="kpi-value">(MM$373)</div>
+      <div class="kpi-delta down">🔴 Negativo — sin fondos</div>
+      <div class="kpi-note">Sin medidas adicionales (factoring, K+, renegociación deuda)</div>
+    </div>
+    <div class="kpi-card" style="--kpi-color: var(--blue)">
+      <div class="kpi-label">Recaudación Feb-26</div>
+      <div class="kpi-value">MM$356</div>
+      <div class="kpi-delta up">▲ +12.9% vs Ene-26</div>
+      <div class="kpi-note">Real bancario cobrado · Budget proyectaba MM$390 (−9%)</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:20px;">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Saldo de Caja Mensual — Real 2025 + Proyección 2026</div>
+        <div class="card-subtitle">MM CLP · barras azules = real 2025 · barras ámbar/rojo = proyección 2026</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="chart-wrap" style="max-height:none"><canvas id="cCaja" height="160"></canvas></div>
+      <div class="chart-note">
+        <strong>Lectura del gráfico:</strong> Durante 2025 la caja osciló entre MM$1 y MM$196, cerrando el año en MM$97. En 2026, el saldo cae vertiginosamente sin capital adicional: MM$12 en Feb → (MM$374) en Mar → (MM$940) en Jun. La línea cero es el umbral de viabilidad operacional. <strong>Acción requerida antes de Mar-26.</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-cols-2">
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Recaudación vs Egresos Operacionales 2025</div>
+          <div class="card-subtitle">MM CLP mensual</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="chart-wrap"><canvas id="cRecEgr"></canvas></div>
+        <div class="chart-note">
+          <strong>Los egresos son semirígidos:</strong> Remuneraciones + Honorarios médicos promedian MM$323/mes y no pueden reducirse rápidamente. Cuando la recaudación cae (como en Dic-25 con MM$302), el flujo operacional se torna fuertemente negativo.
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Composición de Egresos — Promedio 2025</div>
+          <div class="card-subtitle">MM CLP mensual promedio</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="chart-wrap"><canvas id="cEgrComp"></canvas></div>
+        <div class="chart-note">
+          <strong>Remuneraciones + Honorarios = 73% del egreso operacional.</strong> Son los ítems de mayor peso y menor flexibilidad en el corto plazo. La palanca de ajuste más efectiva es crecer la recaudación, no cortar costos adicionales.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla flujo caja -->
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Flujo de Caja Mensual Detallado</div>
+        <div class="card-subtitle">MM CLP · meses proyectados 2026 en fondo amarillo · negativo = egreso</div>
+      </div>
+    </div>
+    <div style="overflow-x:auto;">
+      <table>
+        <thead>
+          <tr>
+            <th>Concepto</th>
+            <th class="right">Ene-25</th><th class="right">Mar-25</th><th class="right">Jun-25</th>
+            <th class="right">Sep-25</th><th class="right">Dic-25</th>
+            <th class="right" style="background:#FFFDE7">Ene-26</th>
+            <th class="right" style="background:#FFFDE7">Feb-26</th>
+            <th class="right" style="background:#FFFDE7">Mar-26P</th>
+            <th class="right" style="background:#FFFDE7">Jun-26P</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="bold">Saldo Inicial</td>
+            <td class="mono right">51.31</td><td class="mono right">124.77</td><td class="mono right">109.46</td>
+            <td class="mono right">1.00</td><td class="mono right">79.59</td>
+            <td class="mono right cf-projected">96.96</td><td class="mono right cf-projected">11.95</td>
+            <td class="mono right cf-projected c-red">(373.45)</td>
+            <td class="mono right cf-projected c-red">(812.17)</td>
+          </tr>
+          <tr>
+            <td>Recaudación Clientes</td>
+            <td class="mono right c-green">518.29</td><td class="mono right c-green">500.25</td><td class="mono right c-green">386.82</td>
+            <td class="mono right c-green">379.42</td><td class="mono right c-green">301.61</td>
+            <td class="mono right cf-projected c-green">315.42</td><td class="mono right cf-projected c-green">356.13</td>
+            <td class="mono right cf-projected c-green">327.40</td>
+            <td class="mono right cf-projected c-green">327.40</td>
+          </tr>
+          <tr>
+            <td>Remuneraciones</td>
+            <td class="mono right c-red">−216.43</td><td class="mono right c-red">−164.26</td><td class="mono right c-red">−151.06</td>
+            <td class="mono right c-red">−151.29</td><td class="mono right c-red">−173.51</td>
+            <td class="mono right cf-projected c-red">−152.52</td><td class="mono right cf-projected c-red">−155.85</td>
+            <td class="mono right cf-projected c-red">−177.56</td>
+            <td class="mono right cf-projected c-red">−142.56</td>
+          </tr>
+          <tr>
+            <td>Honorarios Médicos</td>
+            <td class="mono right c-red">−177.07</td><td class="mono right c-red">−150.46</td><td class="mono right c-red">−173.45</td>
+            <td class="mono right c-red">−157.19</td><td class="mono right c-red">−123.14</td>
+            <td class="mono right cf-projected c-red">−120.49</td><td class="mono right cf-projected c-red">−118.00</td>
+            <td class="mono right cf-projected c-red">−104.98</td>
+            <td class="mono right cf-projected c-red">−104.98</td>
+          </tr>
+          <tr>
+            <td>Facturas Proveedores</td>
+            <td class="mono right c-red">−43.73</td><td class="mono right c-red">−74.45</td><td class="mono right c-red">−81.31</td>
+            <td class="mono right c-red">−12.83</td><td class="mono right c-red">−46.66</td>
+            <td class="mono right cf-projected c-red">−69.53</td><td class="mono right cf-projected c-red">−221.04</td>
+            <td class="mono right cf-projected c-red">−95.96</td>
+            <td class="mono right cf-projected c-red">−56.34</td>
+          </tr>
+          <tr>
+            <td>Impuestos SII (F29/F50)</td>
+            <td class="mono right c-red">−4.10</td><td class="mono right c-red">−5.22</td><td class="mono right c-red">−54.42</td>
+            <td class="mono right c-red">−35.09</td><td class="mono right c-red">−38.72</td>
+            <td class="mono right cf-projected c-red">−80.15</td><td class="mono right cf-projected c-red">−111.60</td>
+            <td class="mono right cf-projected c-red">−74.80</td>
+            <td class="mono right cf-projected c-red">−74.80</td>
+          </tr>
+          <tr>
+            <td class="bold">≡ Flujo Neto Chile</td>
+            <td class="mono right bold c-red">(10.87)</td><td class="mono right bold c-green">2.49</td><td class="mono right bold c-red">(171.49)</td>
+            <td class="mono right bold c-red">(29.33)</td><td class="mono right bold c-red">(142.18)</td>
+            <td class="mono right cf-projected bold c-red">(156.50)</td><td class="mono right cf-projected bold c-red">(276.04)</td>
+            <td class="mono right cf-projected bold c-red">(184.71)</td>
+            <td class="mono right cf-projected bold c-red">(89.09)</td>
+          </tr>
+          <tr class="cf-total">
+            <td class="bold">Saldo Final</td>
+            <td class="mono right bold c-red">−1.40</td><td class="mono right bold c-green">56.65</td><td class="mono right bold c-green">177.44</td>
+            <td class="mono right bold c-green">23.91</td><td class="mono right bold c-green">96.96</td>
+            <td class="mono right bold c-green" style="background:#FFFDE7">11.95</td>
+            <td class="mono right bold c-red" style="background:#FFFDE7">(373.45)</td>
+            <td class="mono right bold c-red" style="background:#FFFDE7">(596.77)</td>
+            <td class="mono right bold c-red" style="background:#FFFDE7">(939.84)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="padding:14px 20px;background:var(--off-white);border-top:1px solid var(--border);">
+      <span style="font-size:11px;color:var(--text-light);">
+        <strong>⚠ Nota sobre Feb-26:</strong> El pico de proveedores en Feb-26 (MM$221 vs promedio MM$65) refleja el pago de facturas acumuladas de Q4-2025 que se difirieron para mejorar el saldo de cierre de año. Este efecto es transitorio pero amplifica la caída de caja en ese mes.
+      </span>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============================== BALANCE ============================== -->
+<div class="section" id="balance">
+
+  <div class="section-title">Balance & EEFF IFRS — Medical Solutions SpA</div>
+  <div class="section-desc">Fuente: EEFF IFRS v2 — 31 Dic 2025 · Cifras en MM CLP · Preparado por EY</div>
+
+  <div class="kpi-row cols-4">
+    <div class="kpi-card" style="--kpi-color: var(--blue)">
+      <div class="kpi-label">Total Activos</div>
+      <div class="kpi-value">MM$5.817</div>
+      <div class="kpi-delta neutral">IFRS 2025</div>
+      <div class="kpi-note">62.7% activo corriente · 36.2% intangibles (plataforma)</div>
+    </div>
+    <div class="kpi-card" style="--kpi-color: var(--red)">
+      <div class="kpi-label">Total Pasivos Corrientes</div>
+      <div class="kpi-value">MM$12.929</div>
+      <div class="kpi-delta down">🔴 222% de los activos totales</div>
+      <div class="kpi-note">Dominado por CxP relacionadas MM$10.525 (deuda intragrupo)</div>
+    </div>
+    <div class="kpi-card" style="--kpi-color: var(--red)">
+      <div class="kpi-label">Patrimonio Total</div>
+      <div class="kpi-value">(MM$7.390)</div>
+      <div class="kpi-delta down">🔴 Insolvencia técnica IFRS</div>
+      <div class="kpi-note">Sostenido por el soporte financiero de la matriz / grupo</div>
+    </div>
+    <div class="kpi-card" style="--kpi-color: var(--red)">
+      <div class="kpi-label">Pérdida Ejercicio 2025</div>
+      <div class="kpi-value">(MM$2.092)</div>
+      <div class="kpi-delta down">Margen neto: −42.0%</div>
+      <div class="kpi-note">Incluye reestructuración y gastos no recurrentes de 2025</div>
+    </div>
+  </div>
+
+  <div class="chart-cols-2">
+    <div class="card">
+      <div class="card-header"><div><div class="card-title">Estructura de Activos</div><div class="card-subtitle">MM CLP · IFRS 31-Dic-2025</div></div></div>
+      <div class="card-body">
+        <div class="chart-wrap"><canvas id="cActivos"></canvas></div>
+        <div class="chart-note">
+          <strong>Activo principal:</strong> CxC con entidades relacionadas (filiales) por MM$2.372, equivalente al 40.8% del activo total. <strong>Riesgo:</strong> su cobrabilidad depende de la salud financiera de Colombia, México y Costa Rica. Si no pueden pagar, el activo se deteriora.
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div><div class="card-title">Estructura de Pasivos</div><div class="card-subtitle">MM CLP · IFRS 31-Dic-2025</div></div></div>
+      <div class="card-body">
+        <div class="chart-wrap"><canvas id="cPasivos"></canvas></div>
+        <div class="chart-note">
+          <strong>Pasivo crítico:</strong> CxP relacionadas MM$10.525 representa el 81% del pasivo corriente. Es la deuda de Chile con su propia casa matriz (grupo) y es el mecanismo de subsistencia operacional. Si el grupo deja de financiar, la entidad no puede operar.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:20px;">
+    <div class="card-header">
+      <div><div class="card-title">Balance Clasificado — 31 Diciembre 2025 (MM CLP)</div><div class="card-subtitle">IFRS · Medical Solutions SpA</div></div>
+    </div>
+    <table>
+      <thead><tr><th>Cuenta</th><th class="right">MM CLP</th><th class="right">% Total</th><th>Nota ejecutiva</th></tr></thead>
+      <tbody>
+        <tr><td colspan="4" class="group">Activos Corrientes</td></tr>
+        <tr><td>Efectivo y equivalentes</td><td class="mono right">98.7</td><td class="right">1.7%</td><td><span class="pill pill-amber">⚠ Muy bajo para operar</span></td></tr>
+        <tr><td>Deudores comerciales (CxC)</td><td class="mono right">990.7</td><td class="right">17.0%</td><td class="c-muted" style="font-size:12px">Top: Telesalud $391M · MasVida $57M · Consalud $53M</td></tr>
+        <tr><td>CxC entidades relacionadas</td><td class="mono right">2,371.6</td><td class="right">40.8%</td><td><span class="pill pill-amber">⚠ Cobrable solo si las filiales tienen liquidez</span></td></tr>
+        <tr><td>Otros activos corrientes</td><td class="mono right">188.0</td><td class="right">3.2%</td><td class="c-muted" style="font-size:12px">Prepagos, activos por impuestos</td></tr>
+        <tr><td class="bold">Total Activos Corrientes</td><td class="mono right bold">3,648.9</td><td class="right bold">62.7%</td><td></td></tr>
+        <tr><td colspan="4" class="group">Activos No Corrientes</td></tr>
+        <tr><td>Intangibles (plataforma + PI)</td><td class="mono right">2,105.5</td><td class="right">36.2%</td><td class="c-muted" style="font-size:12px">Valor tecnológico de la operación</td></tr>
+        <tr><td>Propiedad, Planta y Equipo</td><td class="mono right">62.9</td><td class="right">1.1%</td><td class="c-muted" style="font-size:12px">Negocio capital-light — positivo</td></tr>
+        <tr><td class="bold">Total Activos</td><td class="mono right bold">5,817.3</td><td class="right bold">100%</td><td></td></tr>
+        <tr><td colspan="4" class="group">Pasivos Corrientes</td></tr>
+        <tr><td>Pasivos financieros corr. (bancos)</td><td class="mono right">368.2</td><td class="right">2.8%</td><td class="c-muted" style="font-size:12px">Créditos bancarios corto plazo</td></tr>
+        <tr><td>CxP Comerciales (proveedores)</td><td class="mono right">648.7</td><td class="right">5.0%</td><td class="c-muted" style="font-size:12px">Normal — cuentas por pagar comerciales</td></tr>
+        <tr><td>CxP entidades relacionadas</td><td class="mono right bold c-red">10,524.5</td><td class="right c-red">—</td><td><span class="pill pill-red">🔴 81% del pasivo cte. — soporte financiero del grupo</span></td></tr>
+        <tr><td>Impuestos corrientes (SII)</td><td class="mono right">487.9</td><td class="right">3.7%</td><td><span class="pill pill-amber">⚠ SII pendiente de pago</span></td></tr>
+        <tr><td>Otras provisiones + prov. filiales</td><td class="mono right">899.4</td><td class="right">6.9%</td><td class="c-muted" style="font-size:12px">Incluye provisión por patrimonio negativo de filiales</td></tr>
+        <tr><td class="bold c-red">Total Pasivos Corrientes</td><td class="mono right bold c-red">12,928.7</td><td class="right">—</td><td><span class="pill pill-red">Supera los activos totales (MM$5.817)</span></td></tr>
+        <tr><td colspan="4" class="group">Patrimonio</td></tr>
+        <tr><td class="bold c-red">Patrimonio Total</td><td class="mono right bold c-red">(7,389.5)</td><td class="right">—</td><td><span class="pill pill-red">🔴 Insolvencia técnica bajo IFRS</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- EERR IFRS -->
+  <div class="card">
+    <div class="card-header"><div><div class="card-title">Estado de Resultados IFRS 2025</div><div class="card-subtitle">Medical Solutions SpA · cifras en MM CLP</div></div></div>
+    <table>
+      <thead><tr><th>Concepto</th><th class="right">MM CLP</th><th class="right">% Ingresos</th><th>Interpretación</th></tr></thead>
+      <tbody>
+        <tr><td class="bold">Ingresos ordinarios</td><td class="mono right bold">4,983.5</td><td class="right">100%</td><td class="c-muted" style="font-size:12px">Equivalente a ~USD 5.2M a TC 950</td></tr>
+        <tr><td>Costo de servicios</td><td class="mono right c-red">(3,244.0)</td><td class="right c-red">−65.1%</td><td class="c-muted" style="font-size:12px">Honorarios médicos + insumos clínicos</td></tr>
+        <tr><td class="bold">Margen Bruto</td><td class="mono right bold">1,739.5</td><td class="right c-green">34.9%</td><td class="c-muted" style="font-size:12px">Algo menor que el 39.8% del modelo USD por diferencias de clasificación IFRS</td></tr>
+        <tr><td>Gastos de Administración</td><td class="mono right c-red">(3,304.7)</td><td class="right c-red">−66.3%</td><td><span class="pill pill-red">⚠ Supera al margen bruto — estructura pesada</span></td></tr>
+        <tr><td>Depreciación y Amortización</td><td class="mono right c-red">(12.4)</td><td class="right c-muted">−0.2%</td><td class="c-muted" style="font-size:12px">Amortización plataforma tecnológica</td></tr>
+        <tr><td class="bold c-red">Resultado Operacional</td><td class="mono right bold c-red">(1,577.6)</td><td class="right c-red">−31.7%</td><td class="c-muted" style="font-size:12px">Antes de gastos financieros e impuestos</td></tr>
+        <tr><td>Gastos financieros</td><td class="mono right c-red">(194.8)</td><td class="right c-red">−3.9%</td><td class="c-muted" style="font-size:12px">Intereses deuda bancaria + accionistas</td></tr>
+        <tr><td>Otros egresos no operacionales</td><td class="mono right c-red">(309.1)</td><td class="right c-red">−6.2%</td><td class="c-muted" style="font-size:12px">Reestructuración, indemnizaciones, diferencia de cambio</td></tr>
+        <tr><td>Impuesto a la renta</td><td class="mono right c-muted">—</td><td class="right c-muted">—</td><td class="c-muted" style="font-size:12px">Cero: pérdida no genera impuesto</td></tr>
+        <tr class="cf-total"><td class="bold c-red">Pérdida del Ejercicio</td><td class="mono right bold c-red">(2,091.7)</td><td class="right c-red">−42.0%</td><td class="c-muted" style="font-size:12px">Incluye items no recurrentes (~MM$309 reestructuración)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- ============================== DEUDAS ============================== -->
+<div class="section" id="deudas">
+
+  <div class="section-title">Deudas & Estructura Financiera</div>
+  <div class="section-desc">Fuente: Deudas Crediticias + Préstamos Accionistas · Enero 2026 · CLP / USD</div>
+
+  <div class="kpi-row cols-4">
+    <div class="kpi-card" style="--kpi-color: var(--red)">
+      <div class="kpi-label">Deuda Bancaria CLP</div>
+      <div class="kpi-value">MM$893</div>
+      <div class="kpi-delta down">Cuota mensual ~MM$54.7</div>
+      <div class="kpi-note">6 créditos activos. TGR representa el 45% del total</div>
+    </div>
+    <div class="kpi-card" style="--kpi-color: var(--red)">
+      <div class="kpi-label">Convenios TGR</div>
+      <div class="kpi-value">MM$402</div>
+      <div class="kpi-delta down">🔴 14 convenios — riesgo cascada</div>
+      <div class="kpi-note">Si falla 1 → 14 caducan → SII embarga cuentas → sin factoring → sin operación</div>
+    </div>
+    <div class="kpi-card" style="--kpi-color: var(--amber)">
+      <div class="kpi-label">Deuda Accionistas</div>
+      <div class="kpi-value">USD 1.57M</div>
+      <div class="kpi-delta warn">Varios instrumentos vencidos</div>
+      <div class="kpi-note">Tasas 10.5–14.5% · Intereses acum. ~USD 90K adicionales</div>
+    </div>
+    <div class="kpi-card" style="--kpi-color: var(--amber)">
+      <div class="kpi-label">Deuda Proveedores</div>
+      <div class="kpi-value">MM$155.8</div>
+      <div class="kpi-delta warn">Top: Saluta MM$25.3</div>
+      <div class="kpi-note">Riesgo operacional si proveedores médicos (I-Med, Saluta) suspenden servicios</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:20px;">
+    <div class="card-header"><div><div class="card-title">Deudas Crediticias — Saldo y Calendario (CLP)</div><div class="card-subtitle">Verificado Enero 2026</div></div></div>
+    <table>
+      <thead><tr><th>#</th><th>Nombre Deuda</th><th class="right">Saldo MM$</th><th class="right">Cuota/mes</th><th>Vence</th><th>Estado</th><th>Riesgo</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="c-muted">1</td>
+          <td class="bold">Convenios TGR (14 conv.)</td>
+          <td class="mono right bold">402.0</td>
+          <td class="mono right">MM$31.9</td>
+          <td>Jul-2027</td>
+          <td><span class="pill pill-green">Al día ✓</span></td>
+          <td><span class="pill pill-red">Caducidad cascada si falla 1</span></td>
+        </tr>
+        <tr>
+          <td class="c-muted">2</td>
+          <td>Crédito Banco Estado</td>
+          <td class="mono right">236.0</td>
+          <td class="mono right">MM$8.3</td>
+          <td>Oct-2028</td>
+          <td><span class="pill pill-green">Al día ✓</span></td>
+          <td class="c-muted" style="font-size:12px">Mayor crédito bancario directo</td>
+        </tr>
+        <tr>
+          <td class="c-muted">3</td>
+          <td>Crédito Levannta</td>
+          <td class="mono right">135.7</td>
+          <td class="mono right">MM$7.8</td>
+          <td>Oct-2027</td>
+          <td><span class="pill pill-amber">⚠ Rev. Nov-Dic 25</span></td>
+          <td class="c-muted" style="font-size:12px">Cuotas crecientes — monitorear</td>
+        </tr>
+        <tr>
+          <td class="c-muted">4</td>
+          <td>Crédito Santander 4176</td>
+          <td class="mono right">64.9</td>
+          <td class="mono right">MM$3.3</td>
+          <td>Nov-2027</td>
+          <td><span class="pill pill-green">Al día ✓</span></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="c-muted">5</td>
+          <td>Crédito Banco Security</td>
+          <td class="mono right">15.9</td>
+          <td class="mono right">MM$1.5</td>
+          <td>Dic-2026</td>
+          <td><span class="pill pill-green">Al día ✓</span></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="c-muted">6</td>
+          <td>Crédito Santander 7573</td>
+          <td class="mono right">10.7</td>
+          <td class="mono right">MM$1.8</td>
+          <td>Jul-2026</td>
+          <td><span class="pill pill-green">Al día ✓</span></td>
+          <td></td>
+        </tr>
+        <tr class="cf-total">
+          <td colspan="2" class="bold">Total Deuda Bancaria CLP</td>
+          <td class="mono right bold">864.1</td>
+          <td class="mono right bold">~MM$54.7/mes</td>
+          <td colspan="3" class="c-muted" style="font-size:12px">Adicionalmente: deuda accionistas USD ~1.57M (~MM$1.490)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="chart-cols-2">
+    <div class="card">
+      <div class="card-header"><div><div class="card-title">Préstamos Accionistas</div><div class="card-subtitle">USD · Estado de instrumentos</div></div></div>
+      <table>
+        <thead><tr><th>Acreedor</th><th class="right">Saldo Capital</th><th>Tasa</th><th>Estado</th></tr></thead>
+        <tbody>
+          <tr>
+            <td style="font-size:12px">Solutions Group LLC (Alex V.)</td>
+            <td class="mono right" style="font-size:12px">$544,742</td>
+            <td style="font-size:12px">13.5%</td>
+            <td><span class="pill pill-red">Vencida 2025</span></td>
+          </tr>
+          <tr>
+            <td style="font-size:12px">Martín Weinstein (Yesod)</td>
+            <td class="mono right" style="font-size:12px">$100,000</td>
+            <td style="font-size:12px">14.5%</td>
+            <td><span class="pill pill-red">Vencida Feb-25</span></td>
+          </tr>
+          <tr>
+            <td style="font-size:12px">Alberto Eguiguren</td>
+            <td class="mono right" style="font-size:12px">$102,000</td>
+            <td style="font-size:12px">13.5%</td>
+            <td><span class="pill pill-amber">Activo</span></td>
+          </tr>
+          <tr>
+            <td style="font-size:12px">Chutzpah Holdings (Notes)</td>
+            <td class="mono right" style="font-size:12px">$320,000</td>
+            <td style="font-size:12px">13.5%</td>
+            <td><span class="pill pill-amber">Activo</span></td>
+          </tr>
+          <tr>
+            <td style="font-size:12px">Mauricio Urbina (Notas)</td>
+            <td class="mono right" style="font-size:12px">~$102,645</td>
+            <td style="font-size:12px">10.5%</td>
+            <td><span class="pill pill-amber">Activo</span></td>
+          </tr>
+          <tr>
+            <td style="font-size:12px">Alejandro Weinstein (Loans)</td>
+            <td class="mono right c-green" style="font-size:12px">$0</td>
+            <td style="font-size:12px">14.5%</td>
+            <td><span class="pill pill-green">Convertido a K ✓</span></td>
+          </tr>
+          <tr class="cf-total">
+            <td class="bold" style="font-size:12px">Total activo</td>
+            <td class="mono right bold" style="font-size:12px">~$1,169,387</td>
+            <td colspan="2" class="c-muted" style="font-size:11px">+ int. acum. ~$90K</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div><div class="card-title">Uso del Capital Levantado 2025</div><div class="card-subtitle">MM$1.515 CLP · Feb–Ago 2025 · ¿A dónde fue?</div></div></div>
+      <div class="card-body">
+        <div class="chart-wrap"><canvas id="cUsoCapital"></canvas></div>
+        <div class="chart-note">
+          <strong>73.5% del capital fue a cubrir déficits de caja operacional</strong>. Solo el 11.1% fue reestructuración (costos one-off). El capital levantado en 2025 no se invirtió en crecimiento sino en sobrevivencia operacional. Esto explica por qué no hay caja al inicio de 2026.
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============================== ALERTAS ============================== -->
+<div class="section" id="alertas">
+
+  <div class="section-title">Alertas Prioritarias & Nodos Críticos</div>
+  <div class="section-desc">6 nodos analizados · Prioridad de acción Q1 2026</div>
+
+  <div class="alerts-grid">
+    <div class="alert-card">
+      <div class="alert-sev">🔴 Crítico</div>
+      <div class="alert-title">Crisis de Liquidez — Caja Negativa desde Mar-26</div>
+      <div class="alert-body">
+        El saldo de caja cae a <strong>MM$11.95</strong> al cierre de Feb-26 y proyecta <strong>(MM$373)</strong> en Mar-26 sin medidas adicionales. La cobertura de cuotas en Feb-26 es <strong>0.22x</strong> — insuficiente. El déficit estructural mensual es de MM$85–185. Los impuestos acumulados pagados en Feb-26 (MM$111.6) amplifican la caída.
+      </div>
+      <div class="alert-rec">🎯 <strong>Acción urgente:</strong> Definir fuente de financiamiento antes de Mar-26. Activar factoring al máximo. Renegociar cuotas bancarias (+3 meses). No enviar fondos a filiales hasta estabilizar.</div>
+    </div>
+
+    <div class="alert-card">
+      <div class="alert-sev">🔴 Crítico</div>
+      <div class="alert-title">Convenios TGR — Riesgo de Caducidad Cascada</div>
+      <div class="alert-body">
+        Chile mantiene <strong>14 convenios TGR (Ley 20.780)</strong> por MM$402 CLP (cuota MM$31.9/mes). Si falla el pago de <strong>uno solo</strong>, los 14 caducan simultáneamente → SII embarga cuentas corrientes → <strong>sin cuenta bancaria → sin factoring → sin operación</strong>. Es el riesgo de muerte instantánea del negocio.
+      </div>
+      <div class="alert-rec">🎯 <strong>Acción:</strong> Crear cuenta segregada permanente con MM$35 solo para TGR. Asignar responsable exclusivo del pago. Monitoreo semanal del estado de cada convenio.</div>
+    </div>
+
+    <div class="alert-card warn">
+      <div class="alert-sev">🟡 Atención</div>
+      <div class="alert-title">Patrimonio Negativo IFRS — MM$(7.390)</div>
+      <div class="alert-body">
+        El balance IFRS muestra patrimonio negativo de MM$7.390 al 31-Dic-2025, configurando <strong>insolvencia técnica</strong>. La causa: deuda intragrupo CxP relacionadas MM$10.525 representa el 81% del pasivo corriente. Sin ese soporte de la matriz, la entidad no puede operar. Bancos con cláusulas de patrimonio mínimo (covenants) podrían declarar incumplimiento.
+      </div>
+      <div class="alert-rec">🎯 <strong>Acción:</strong> Revisar covenants bancarios. Evaluar capitalización de deuda intragrupo. Preparar plan de saneamiento patrimonial con EY para presentar a accionistas.</div>
+    </div>
+
+    <div class="alert-card warn">
+      <div class="alert-sev">🟡 Atención</div>
+      <div class="alert-title">Caída Canal Aseguradoras — USD 1.01M perdido</div>
+      <div class="alert-body">
+        Las Aseguradoras cayeron de USD 3.13M (2024) a USD 2.12M (2025), <strong>−32.4%</strong>. Es la mayor caída absoluta y el principal driver de la contracción total. El canal Isapres fue el único en crecer (+4.4%), pero no compensa la pérdida. Los agregadores también cayeron −43.2%.
+      </div>
+      <div class="alert-rec">🎯 <strong>Acción:</strong> Auditar contratos vigentes con BNP Paribas Cardif, Zurich, Cámara y BICE Vida. Identificar si la causa es precio, volumen o pérdida de contratos. Definir plan de recuperación comercial Q1-2026.</div>
+    </div>
+
+    <div class="alert-card warn">
+      <div class="alert-sev">🟡 Atención</div>
+      <div class="alert-title">Deuda Accionistas Vencida sin Plan Formal</div>
+      <div class="alert-body">
+        Solutions Group LLC (Alex Vicencio): <strong>USD 544.7K vencida</strong> en 2025. Martín Weinstein (Yesod Trust): <strong>USD 100K vencida</strong> en Feb-25. Ambas sin acuerdo formal de pago ni conversión. A 13.5–14.5% anual generan ~USD 73.5K de intereses anuales adicionales. Riesgo legal si los acreedores exigen pago o ejecutan garantías.
+      </div>
+      <div class="alert-rec">🎯 <strong>Acción:</strong> Formalizar todos los instrumentos antes del cierre auditado EY. Definir conversión a equity o refinanciamiento. Priorizar Solutions Group LLC por ser el de mayor monto y riesgo.</div>
+    </div>
+
+    <div class="alert-card ok">
+      <div class="alert-sev">🟢 Positivo</div>
+      <div class="alert-title">Reestructuración Completada — Base de Costos Saneada</div>
+      <div class="alert-body">
+        Los gastos operacionales cayeron <strong>−35.8%</strong> en 2025 (USD 1.82M → USD 1.17M). Salida de WeWork completada (MM$57.6), indemnizaciones pagadas (MM$168), crédito Santander Comex liquidado. Los honorarios médicos mensuales cayeron de MM$177 (Ene-25) a MM$120 (Ene-26), −32%. Remuneraciones bajaron MM$216 → MM$153, −29%.
+      </div>
+      <div class="alert-rec">✅ <strong>Implicancia:</strong> La estructura reducida para 2026 mejora el punto de equilibrio. Con la base actual, se necesitan ~USD 420K/mes en ingresos para cubrir costos operacionales directos, niveles que ya se alcanzan actualmente.</div>
+    </div>
+  </div>
+
+  <!-- Nodos detalle -->
+  <div class="section-title" style="margin-bottom:14px;">🔍 Análisis de Nodos — Detalle Expandible</div>
+
+  <div class="node-card">
+    <div class="node-header" onclick="toggleNode(this)">
+      <div class="node-badge">N1</div>
+      <div class="node-title">🔴 Crisis de Liquidez — Análisis Profundo</div>
+      <div class="node-toggle">▼</div>
+    </div>
+    <div class="node-body">
+      <div class="node-cols">
+        <div><div class="node-col-title">Desviación</div><div class="node-col-text">Saldo Feb-26: MM$11.95. Cobertura cuotas: 0.22x (crítico, ref &gt;1.5x). Proyección sin medidas: (MM$373) Mar · (MM$597) Abr · (MM$940) Jun-26. Recaudación cayó -26.8% de H1 a H2 2025. Mínimo: Dic-25 MM$302.</div></div>
+        <div><div class="node-col-title">Causa Raíz</div><div class="node-col-text">Caída de ingresos −22.9% con estructura semi-rígida (honorarios MM$120 + remuneraciones MM$153 = MM$273/mes). Cuotas TGR+bancos MM$54.7/mes constantes. Impuestos acumulados pagados Feb-26 (MM$111.6) amplifican la caída puntual.</div></div>
+        <div><div class="node-col-title">Palancas de Acción</div><div class="node-col-text">① Factoring inmediato CxC MM$990. ② K+ accionistas min USD 500K. ③ Renegociar cuotas bancarias +90 días. ④ Reducir honorarios MM$15–20/mes. ⑤ Cobrar CxC intragrupo de filiales. ⑥ No enviar fondos a México.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="node-card">
+    <div class="node-header" onclick="toggleNode(this)">
+      <div class="node-badge">N2</div>
+      <div class="node-title">🔴 TGR Cascada — El Riesgo de Muerte Instantánea</div>
+      <div class="node-toggle">▼</div>
+    </div>
+    <div class="node-body">
+      <div class="node-cols">
+        <div><div class="node-col-title">El Riesgo</div><div class="node-col-text">14 convenios interconectados por MM$402 CLP. Cuota mensual: MM$31.9. Fecha final: Jul-2027. La cláusula legal establece que la mora en cualquiera de los 14 activa la caducidad de todos automáticamente.</div></div>
+        <div><div class="node-col-title">Consecuencia</div><div class="node-col-text">SII puede embargar cuentas corrientes dentro de 24–72 horas de vencido un convenio. Sin cuenta bancaria: sin recaudación, sin pago de sueldos, sin factoring. La operación se detiene inmediatamente. Riesgo de quiebra acelerada.</div></div>
+        <div><div class="node-col-title">Controles</div><div class="node-col-text">① Cuenta segregada MM$35 solo para TGR. ② Responsable exclusivo del pago (CFO o Gerente Finanzas). ③ Alerta automática 15 días antes del vencimiento. ④ Evaluar renegociación de plazo con SII para aliviar 2026.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="node-card warn">
+    <div class="node-header" onclick="toggleNode(this)">
+      <div class="node-badge">N3</div>
+      <div class="node-title">🟡 Aseguradoras −32.4% — ¿Pérdida de mercado o ciclo?</div>
+      <div class="node-toggle">▼</div>
+    </div>
+    <div class="node-body">
+      <div class="node-cols">
+        <div><div class="node-col-title">Los Números</div><div class="node-col-text">USD 3.13M (2024) → USD 2.12M (2025) = pérdida de USD 1.01M. Pasó de representar el 48.8% al 42.9% del ingreso total. El canal Isapres (USD 1.93M, +4.4%) no compensa. Top clientes aseguradoras: BNP Paribas Cardif, Zurich, Cámara, Consorcio, BICE Vida.</div></div>
+        <div><div class="node-col-title">Causa Probable</div><div class="node-col-text">Sin detalle de causa en los datos disponibles. Posibilidades: renegociación de tarifas a la baja, reducción de activación de beneficios post-pandemia, pérdida de contrato puntual, o competencia. La causa define si es recuperable o estructural.</div></div>
+        <div><div class="node-col-title">Recomendación</div><div class="node-col-text">① Auditar contrato por contrato las condiciones 2024 vs 2025. ② Revisar uso/activación de beneficios por asegurado. ③ Identificar si hay contratos nuevos que compensan en 2026. ④ Reforzar canal Isapres y Incumbentes (nuevo en 2025, USD 14.8K).</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="node-card warn">
+    <div class="node-header" onclick="toggleNode(this)">
+      <div class="node-badge">N4</div>
+      <div class="node-title">🟡 Budget 2026 — Supuestos vs Realidad</div>
+      <div class="node-toggle">▼</div>
+    </div>
+    <div class="node-body">
+      <div class="node-cols">
+        <div><div class="node-col-title">El Budget Dice</div><div class="node-col-text">Ingresos 2026P: USD 5.81M (+17.7% vs 2025). Recaudación mensual MM$328–558 CLP (crecimiento lineal). EBITDA USD 1.94M (+230%). El budget asume un salto de MM$302 (Dic-25) a MM$558 (Dic-26), +85% en 12 meses.</div></div>
+        <div><div class="node-col-title">La Realidad</div><div class="node-col-text">Ene-26 real: MM$315 (−13% vs budget MM$363). Feb-26 real: MM$356 (−9% vs budget MM$390). Tendencia H2-2025: caída -21%. No hay señal de rebote acelerado sin un contrato nuevo o driver identificado.</div></div>
+        <div><div class="node-col-title">Recomendación</div><div class="node-col-text">① Comparar budget vs real mensualmente. ② Preparar escenario conservador (ingresos planos 2025). ③ No planificar capex ni expansión hasta confirmar tendencia positiva en Q1. ④ Identificar contratos firmados que justifiquen el crecimiento del H2-2026.</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============================== CONTEXTO ============================== -->
+<div class="section" id="contexto">
+
+  <div class="section-title">Preparación CEO — Agenda Ejecutiva</div>
+  <div class="section-desc">Preguntas críticas · Decisiones urgentes · Contexto del grupo</div>
+
+  <!-- Contexto grupo -->
+  <div class="intragroup">
+    <div class="intragroup-title">🌎 Posición de Chile en el Grupo MediSmart — 2024 / 2025E / 2026P (MM USD)</div>
+    <table>
+      <thead><tr><th>País</th><th class="right">2024 Real</th><th class="right">2025 Est.</th><th class="right">2026 Ppto.</th><th class="right">Δ 25→26</th><th>Rol en el Grupo</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="bold">🇨🇱 Chile</td>
+          <td class="mono right">USD 6.3M</td>
+          <td class="mono right c-red">USD 4.9M</td>
+          <td class="mono right">USD 5.3M</td>
+          <td class="right"><span class="pill pill-blue">+8.2%</span></td>
+          <td class="c-muted" style="font-size:12px">Matriz operativa · Financia filiales · Mayor operación del grupo</td>
+        </tr>
+        <tr>
+          <td class="bold">🇨🇴 Colombia</td>
+          <td class="mono right">USD 1.3M</td>
+          <td class="mono right c-green">USD 3.0M</td>
+          <td class="mono right">USD 4.6M</td>
+          <td class="right"><span class="pill pill-green">+53.5%</span></td>
+          <td class="c-muted" style="font-size:12px">En expansión · EBITDA positivo · Utilidad neta USD 1.16M en 2025</td>
+        </tr>
+        <tr>
+          <td class="bold">🇲🇽 México</td>
+          <td class="mono right">USD 0.2M</td>
+          <td class="mono right">USD 0.2M</td>
+          <td class="mono right">USD 1.1M</td>
+          <td class="right"><span class="pill pill-green">+464%</span></td>
+          <td class="c-muted" style="font-size:12px">Early stage · Fondos enviados desde Chile 2025: MM$240 CLP</td>
+        </tr>
+        <tr>
+          <td class="bold">🇨🇷 Costa Rica</td>
+          <td class="mono right c-muted">—</td>
+          <td class="mono right">USD 0.3M</td>
+          <td class="mono right">USD 2.6M</td>
+          <td class="right"><span class="pill pill-green">+750%</span></td>
+          <td class="c-muted" style="font-size:12px">Nueva · 22% participación MediSmart · Etapa de inversión</td>
+        </tr>
+        <tr class="cf-total">
+          <td class="bold">Consolidado</td>
+          <td class="mono right bold">USD 7.8M</td>
+          <td class="mono right bold">USD 8.3M</td>
+          <td class="mono right bold">USD 11.3M</td>
+          <td class="right"><span class="pill pill-green">+37.3%</span></td>
+          <td class="c-muted" style="font-size:12px">EBITDA consol.: (USD 916K) 2025 → +USD 1.86M 2026P</td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="margin-top:12px;font-size:12px;color:var(--text-light);line-height:1.6;">
+      <strong>Nota clave:</strong> Chile financia a México (MM$240 CLP enviados en 2025) mientras opera con caja mínima. Colombia es la única filial que genera flujo positivo y podría comenzar a repagar su deuda intragrupo con Chile (CxC MM$2.372).
+    </div>
+  </div>
+
+  <div class="context-cols">
+    <div class="card">
+      <div class="card-header"><div><div class="card-title">❓ Preguntas Críticas para la Reunión</div></div></div>
+      <div style="padding:0 22px 8px;">
+        <div class="question-item">
+          <div class="q-num">1</div>
+          <div>
+            <div class="q-text">¿Cuál es el plan de financiamiento antes de Mar-26?</div>
+            <div class="q-sub">Con MM$12 de caja y caja negativa desde Mar-26, se necesita articular: nuevo K+ de accionistas, factoring ampliado, refinanciamiento bancario, o combinación. ¿Cuál es el commitment de los accionistas actuales ante esta situación?</div>
+          </div>
+        </div>
+        <div class="question-item">
+          <div class="q-num">2</div>
+          <div>
+            <div class="q-text">¿Qué generó la caída de USD 1.01M en el canal Aseguradoras?</div>
+            <div class="q-sub">¿Es precio, volumen, pérdida de contratos o competencia? La respuesta define si el problema es transitorio o estructural y cambia radicalmente el plan de acción comercial 2026.</div>
+          </div>
+        </div>
+        <div class="question-item">
+          <div class="q-num">3</div>
+          <div>
+            <div class="q-text">¿Qué contratos nuevos sustentan el budget 2026 (+17.7%)?</div>
+            <div class="q-sub">Ene-26 y Feb-26 ejecutan −10% vs budget. Si no hay contratos firmados que expliquen el crecimiento proyectado de H2-2026, el escenario base debería revisarse antes de la próxima junta.</div>
+          </div>
+        </div>
+        <div class="question-item">
+          <div class="q-num">4</div>
+          <div>
+            <div class="q-text">¿Cómo se resuelve la deuda vencida de Solutions Group (USD 544K)?</div>
+            <div class="q-sub">Vencida en 2025, sin acuerdo formal. A 13.5% anual acumula ~USD 73K de intereses adicionales por año. ¿Conversión a equity, refinanciamiento o pago? Necesita resolución antes del cierre auditado EY.</div>
+          </div>
+        </div>
+        <div class="question-item">
+          <div class="q-num">5</div>
+          <div>
+            <div class="q-text">¿Los bancos tienen covenants de patrimonio mínimo?</div>
+            <div class="q-sub">El patrimonio IFRS es (MM$7.390). Si los contratos de crédito con Banco Estado, Levannta o Santander incluyen cláusulas de patrimonio mínimo positivo, podrían declarar vencimiento anticipado. Necesita revisión jurídica urgente.</div>
+          </div>
+        </div>
+        <div class="question-item">
+          <div class="q-num">6</div>
+          <div>
+            <div class="q-text">¿Colombia puede repagar su deuda intragrupo a Chile en 2026?</div>
+            <div class="q-sub">Colombia tuvo utilidad neta USD 1.16M en 2025. Chile le reporta CxC de MM$2.372. ¿Hay un plan de dividendos o repago que genere flujo real de caja hacia Chile en 2026? Sería la palanca intragrupo más relevante.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <!-- Decisiones por urgencia -->
+      <div class="card" style="margin-bottom:18px;">
+        <div class="card-header"><div><div class="card-title">⚡ Decisiones por Urgencia</div></div></div>
+        <div class="card-body" style="padding:16px 20px;">
+          <div style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border);">
+            <div style="font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--red);margin-bottom:6px;">Esta Semana</div>
+            <div style="font-size:12px;color:var(--text-mid);line-height:1.65;">• Verificar pago TGR del mes<br>• Activar factoring cartera MM$990<br>• Confirmar saldo bancario real</div>
+          </div>
+          <div style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border);">
+            <div style="font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--amber);margin-bottom:6px;">Antes de Mar-26</div>
+            <div style="font-size:12px;color:var(--text-mid);line-height:1.65;">• Definir fuente de financiamiento<br>• Renegociar cuotas bancarias +90 días<br>• Formalizar deuda Vicencio (USD 544K)<br>• Revisión covenants bancarios</div>
+          </div>
+          <div style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border);">
+            <div style="font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--blue);margin-bottom:6px;">Q1 2026</div>
+            <div style="font-size:12px;color:var(--text-mid);line-height:1.65;">• Revisar budget mensualmente<br>• Auditar contratos Aseguradoras<br>• Plan capitalización con accionistas<br>• Calendarizar cobro CxC Colombia</div>
+          </div>
+          <div>
+            <div style="font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--green);margin-bottom:6px;">H1 2026</div>
+            <div style="font-size:12px;color:var(--text-mid);line-height:1.65;">• Cierre auditado EY 2025<br>• Plan de saneamiento patrimonial<br>• Evaluación dividendos Colombia → Chile<br>• Presentar a accionistas escenario real vs budget</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Factoring disponible -->
+      <div class="card">
+        <div class="card-header"><div><div class="card-title">💳 Factoring Disponible</div><div class="card-subtitle">Liquidez inmediata potencial</div></div></div>
+        <table>
+          <thead><tr><th>Cliente</th><th class="right">Factura Prom.</th><th>Factoring</th></tr></thead>
+          <tbody>
+            <tr><td style="font-size:12px">BNP Paribas Cardif</td><td class="mono right" style="font-size:12px">MM$112.5</td><td><span class="pill pill-green">Día 3</span></td></tr>
+            <tr><td style="font-size:12px">Zurich Chile</td><td class="mono right" style="font-size:12px">MM$30.4</td><td><span class="pill pill-green">Día 8</span></td></tr>
+            <tr><td style="font-size:12px">Cardif Seguros Gen.</td><td class="mono right" style="font-size:12px">MM$27.9</td><td><span class="pill pill-green">Día 3</span></td></tr>
+            <tr><td style="font-size:12px">Cámara Seguros</td><td class="mono right" style="font-size:12px">MM$18.8</td><td><span class="pill pill-green">Día 1</span></td></tr>
+            <tr><td style="font-size:12px">BICE Vida</td><td class="mono right" style="font-size:12px">MM$14.3</td><td><span class="pill pill-green">Día 5</span></td></tr>
+            <tr><td style="font-size:12px">Employadores varios</td><td class="mono right" style="font-size:12px">MM$15.0</td><td><span class="pill pill-amber">Día 15</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div><!-- /main -->
+
+<script>
+// NAV
+function show(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  setTimeout(renderCharts, 50);
+}
+
+// NODE TOGGLE
+function toggleNode(el) {
+  const body = el.closest('.node-card').querySelector('.node-body');
+  const tog = el.querySelector('.node-toggle');
+  body.classList.toggle('open');
+  tog.textContent = body.classList.contains('open') ? '▲' : '▼';
+}
+
+// CHARTS
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+Chart.defaults.color = '#718096';
+Chart.defaults.borderColor = '#E2E8F0';
+
+const COLORS = {
+  blue: '#2563EB', red: '#DC2626', green: '#16A34A',
+  amber: '#D97706', teal: '#0D9488', gray: '#94A3B8',
+  purple: '#7C3AED', chile_red: '#D52B1E', chile_blue: '#003087'
+};
+
+const months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+const ing2024 = [544263,385525,465896,560867,571060,554516,517970,529911,582940,592594,568345,532430];
+const ing2025 = [484619,421550,423361,419074,440393,418724,396652,423229,362987,382651,382651,382651];
+const ebitda2025 = [132383,74526,-57333,19110,-2201,45171,36922,72329,69308,78405,81941,36596];
+
+let rendered = {};
+
+function renderCharts() {
+  const charts = {
+    cIngresos: () => {
+      new Chart(document.getElementById('cIngresos'), {
+        type:'line',
+        data:{ labels:months, datasets:[
+          {label:'2024',data:ing2024,borderColor:COLORS.blue,backgroundColor:'rgba(37,99,235,0.05)',pointRadius:2,tension:0.35,borderWidth:1.8},
+          {label:'2025',data:ing2025,borderColor:COLORS.red,backgroundColor:'rgba(220,38,38,0.05)',pointRadius:2,tension:0.35,borderWidth:1.8}
+        ]},
+        options:{responsive:true,plugins:{legend:{labels:{font:{size:11},boxWidth:12}}},
+          scales:{y:{ticks:{callback:v=>'$'+(v/1000).toFixed(0)+'K',font:{size:10}},grid:{color:'#F1F5F9'}},
+            x:{ticks:{font:{size:10}},grid:{display:false}}}}
+      });
+    },
+    cEBITDA: () => {
+      new Chart(document.getElementById('cEBITDA'), {
+        type:'bar',
+        data:{ labels:months, datasets:[{
+          label:'EBITDA USD',
+          data:ebitda2025,
+          backgroundColor:ebitda2025.map(v=>v>=0?'rgba(22,163,74,0.65)':'rgba(220,38,38,0.65)'),
+          borderRadius:3, borderWidth:0
+        }]},
+        options:{responsive:true,plugins:{legend:{display:false}},
+          scales:{y:{ticks:{callback:v=>'$'+(v/1000).toFixed(0)+'K',font:{size:10}},grid:{color:'#F1F5F9'}},
+            x:{ticks:{font:{size:10}},grid:{display:false}}}}
+      });
+    },
+    cCanales: () => {
+      new Chart(document.getElementById('cCanales'), {
+        type:'doughnut',
+        data:{ labels:['Aseguradoras','Isapres','Agregadores','Empleadores','B2C','Otros'],
+          datasets:[{data:[2116043,1926212,540648,303930,36913,14795],
+            backgroundColor:[COLORS.chile_blue,'rgba(13,148,136,0.8)',COLORS.amber,'rgba(124,58,237,0.7)','rgba(148,163,184,0.7)','rgba(209,213,219,0.7)'],
+            borderWidth:0, hoverOffset:6}]},
+        options:{responsive:true,cutout:'62%',
+          plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10,padding:6}},
+            tooltip:{callbacks:{label:ctx=>ctx.label+': $'+(ctx.parsed/1000).toFixed(0)+'K'}}}}
+      });
+    },
+    cAnual: () => {
+      new Chart(document.getElementById('cAnual'), {
+        type:'bar',
+        data:{ labels:['2024 Real','2025 Real','2026P'],
+          datasets:[
+            {label:'Ingresos',data:[6406317,4938541,5810945],backgroundColor:'rgba(37,99,235,0.7)',borderRadius:4},
+            {label:'Costo Directo',data:[3185602,2973324,2964288],backgroundColor:'rgba(220,38,38,0.55)',borderRadius:4},
+            {label:'EBITDA',data:[1402395,587157,1942030],backgroundColor:'rgba(22,163,74,0.7)',borderRadius:4}
+          ]},
+        options:{responsive:true,plugins:{legend:{labels:{font:{size:11},boxWidth:12}}},
+          scales:{y:{ticks:{callback:v=>'$'+(v/1000000).toFixed(1)+'M',font:{size:10}},grid:{color:'#F1F5F9'}},
+            x:{ticks:{font:{size:10}},grid:{display:false}}}}
+      });
+    },
+    cCanalesComp: () => {
+      new Chart(document.getElementById('cCanalesComp'), {
+        type:'bar',
+        data:{ labels:['Aseguradoras','Isapres','Agregadores','Empleadores','B2C'],
+          datasets:[
+            {label:'2024',data:[3127724,1845687,951435,430500,50971],backgroundColor:'rgba(37,99,235,0.6)',borderRadius:3},
+            {label:'2025',data:[2116043,1926212,540648,303930,36913],backgroundColor:'rgba(220,38,38,0.6)',borderRadius:3}
+          ]},
+        options:{responsive:true,plugins:{legend:{labels:{font:{size:11},boxWidth:12}}},
+          scales:{y:{ticks:{callback:v=>'$'+(v/1000000).toFixed(1)+'M',font:{size:10}},grid:{color:'#F1F5F9'}},
+            x:{ticks:{font:{size:10}},grid:{display:false}}}}
+      });
+    },
+    cCaja: () => {
+      const cajaMes = ['Ene-25','Feb-25','Mar-25','Abr-25','May-25','Jun-25','Jul-25','Ago-25','Sep-25','Oct-25','Nov-25','Dic-25','Ene-26','Feb-26','Mar-26P','Abr-26P','May-26P','Jun-26P'];
+      const cajaSaldo = [-1.40,124.77,56.65,142.82,109.46,177.44,196.30,1.00,23.91,24.89,79.59,96.96,11.95,-373.45,-596.77,-704.47,-812.17,-939.87];
+      new Chart(document.getElementById('cCaja'), {
+        type:'bar',
+        data:{ labels:cajaMes, datasets:[{
+          label:'Saldo MM CLP',
+          data:cajaSaldo,
+          backgroundColor:cajaSaldo.map((v,i)=>i<12?(v>=0?'rgba(37,99,235,0.6)':'rgba(220,38,38,0.6)'):(v>=0?'rgba(217,119,6,0.65)':'rgba(220,38,38,0.7)')),
+          borderRadius:3, borderWidth:0
+        }]},
+        options:{responsive:true,plugins:{legend:{display:false},
+          annotation:{annotations:{zero:{type:'line',y:0,borderColor:'#94A3B8',borderWidth:1}}}},
+          scales:{y:{ticks:{callback:v=>'MM$'+v,font:{size:10}},grid:{color:'#F1F5F9'}},
+            x:{ticks:{font:{size:9}},grid:{display:false}}}}
+      });
+    },
+    cRecEgr: () => {
+      const rec = [518.29,472.26,500.25,469.38,403.66,386.82,417.25,363.03,379.42,375.73,365.84,301.61];
+      const egr = [494.71,512.49,434.70,541.56,544.25,474.18,550.39,484.58,378.34,351.75,342.95,373.27];
+      new Chart(document.getElementById('cRecEgr'), {
+        type:'line',
+        data:{ labels:months, datasets:[
+          {label:'Recaudación',data:rec,borderColor:COLORS.green,backgroundColor:'rgba(22,163,74,0.06)',tension:0.3,pointRadius:2,borderWidth:1.8},
+          {label:'Egresos Op.',data:egr,borderColor:COLORS.red,backgroundColor:'rgba(220,38,38,0.06)',tension:0.3,pointRadius:2,borderWidth:1.8}
+        ]},
+        options:{responsive:true,plugins:{legend:{labels:{font:{size:11},boxWidth:12}}},
+          scales:{y:{ticks:{callback:v=>'MM$'+v,font:{size:10}},grid:{color:'#F1F5F9'}},
+            x:{ticks:{font:{size:10}},grid:{display:false}}}}
+      });
+    },
+    cEgrComp: () => {
+      new Chart(document.getElementById('cEgrComp'), {
+        type:'doughnut',
+        data:{ labels:['Remuneraciones MM$167','Honorarios Médicos MM$157','Facturas Prov. MM$65','Otros Costos MM$52'],
+          datasets:[{data:[166.99,156.48,64.73,52.45],
+            backgroundColor:['rgba(220,38,38,0.75)','rgba(217,119,6,0.75)','rgba(37,99,235,0.65)','rgba(148,163,184,0.65)'],
+            borderWidth:0, hoverOffset:6}]},
+        options:{responsive:true,cutout:'60%',
+          plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10,padding:5}}}}
+      });
+    },
+    cActivos: () => {
+      new Chart(document.getElementById('cActivos'), {
+        type:'doughnut',
+        data:{ labels:['CxC Relacionadas\nMM$2.372','Deudores Comerc.\nMM$991','Intangibles\nMM$2.106','Efectivo MM$99','Otros MM$249'],
+          datasets:[{data:[2371.6,990.7,2105.5,98.7,250.8],
+            backgroundColor:['rgba(220,38,38,0.75)','rgba(37,99,235,0.7)','rgba(13,148,136,0.7)','rgba(22,163,74,0.7)','rgba(148,163,184,0.6)'],
+            borderWidth:0}]},
+        options:{responsive:true,cutout:'58%',
+          plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10,padding:5}}}}
+      });
+    },
+    cPasivos: () => {
+      new Chart(document.getElementById('cPasivos'), {
+        type:'doughnut',
+        data:{ labels:['CxP Relacionadas\nMM$10.525','CxP Comerc. MM$649','Imp. corr. MM$488','Prov. MM$699','Pasivos Fin. MM$531'],
+          datasets:[{data:[10524.5,648.7,487.9,699.4,530.8],
+            backgroundColor:['rgba(220,38,38,0.8)','rgba(217,119,6,0.7)','rgba(220,38,38,0.45)','rgba(148,163,184,0.6)','rgba(37,99,235,0.6)'],
+            borderWidth:0}]},
+        options:{responsive:true,cutout:'58%',
+          plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10,padding:5}}}}
+      });
+    },
+    cUsoCapital: () => {
+      new Chart(document.getElementById('cUsoCapital'), {
+        type:'doughnut',
+        data:{ labels:['Déficits caja 73.5%','Envíos México 15.8%','Indemnizaciones 11.1%','Servicio deuda 8.7%','Impuestos SII 5.5%','Otros 5.4%'],
+          datasets:[{data:[73.5,15.8,11.1,8.7,5.5,5.4],
+            backgroundColor:['rgba(220,38,38,0.75)','rgba(217,119,6,0.7)','rgba(37,99,235,0.65)','rgba(124,58,237,0.6)','rgba(13,148,136,0.6)','rgba(148,163,184,0.55)'],
+            borderWidth:0}]},
+        options:{responsive:true,cutout:'58%',
+          plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10,padding:4}}}}
+      });
+    }
+  };
+
+  // Only render charts in the current visible section
+  Object.entries(charts).forEach(([id, fn]) => {
+    const el = document.getElementById(id);
+    if (el && !rendered[id]) {
+      try { fn(); rendered[id] = true; } catch(e){}
+    }
+  });
+}
+
+window.onload = function() { renderCharts(); };
+</script>
+</body>
+</html>
