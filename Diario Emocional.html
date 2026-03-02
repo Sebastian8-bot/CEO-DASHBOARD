@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)file:///Users/Konnan/Downloads/diario-emocional.html -->
+<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diario Emocional</title>
+<link href="./Diario Emocional_files/css2" rel="stylesheet">
+<script src="./Diario Emocional_files/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg: #0c0f1d;
+  --surface: #141829;
+  --surface2: #1c2038;
+  --border: rgba(255,255,255,0.07);
+  --text: #dde4f0;
+  --dim: #7a869e;
+  --accent: #7c6af7;
+  --accent2: #f09c6a;
+  --rabia: #e05252;
+  --repulsion: #a855f7;
+  --envidia: #22c55e;
+  --miedo: #64748b;
+  --felicidad: #f59e0b;
+  --celos: #14b8a6;
+  --amor: #ec4899;
+  --tristeza: #60a5fa;
+  --vergüenza: #f97316;
+  --culpa: #94a3b8;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body { background:var(--bg); color:var(--text); font-family:'Outfit',sans-serif; min-height:100vh; font-size:15px; }
+body::before { content:''; position:fixed; inset:0; background:radial-gradient(ellipse at 15% 0%, rgba(124,106,247,0.07) 0%, transparent 55%), radial-gradient(ellipse at 85% 100%, rgba(240,149,106,0.05) 0%, transparent 50%); pointer-events:none; z-index:0; }
+
+/* ── NAV ── */
+.nav { position:sticky; top:0; z-index:100; background:rgba(12,15,29,0.92); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); display:flex; align-items:center; padding:0 20px; gap:2px; }
+.nav-brand { font-family:'Lora',serif; font-style:italic; font-size:1.05rem; color:var(--accent); padding:16px 0; margin-right:auto; }
+.nav-tab { padding:16px 18px; background:none; border:none; border-bottom:2px solid transparent; color:var(--dim); font-family:'Outfit',sans-serif; font-size:0.88rem; cursor:pointer; transition:all .2s; white-space:nowrap; }
+.nav-tab:hover { color:var(--text); }
+.nav-tab.active { color:var(--accent); border-bottom-color:var(--accent); }
+
+/* ── VIEWS ── */
+.view { display:none; position:relative; z-index:1; }
+.view.active { display:block; }
+.wrap { max-width:680px; margin:0 auto; padding:28px 18px 80px; }
+.wrap-wide { max-width:960px; margin:0 auto; padding:28px 18px 80px; }
+
+/* ── CARDS ── */
+.card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:22px; margin-bottom:14px; }
+.card-lbl { font-size:.72rem; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:var(--dim); margin-bottom:14px; }
+.card-desc { font-size:.85rem; color:var(--dim); margin-bottom:14px; font-style:italic; }
+
+/* ── DATE HEADER ── */
+.date-hdr { text-align:center; padding:28px 20px 10px; }
+.date-hdr .dayname { font-family:'Lora',serif; font-style:italic; font-size:1.7rem; }
+.date-hdr .dateline { font-size:.8rem; color:var(--dim); letter-spacing:1px; margin-top:4px; }
+
+/* ── MOOD ── */
+.mood-row { display:flex; align-items:center; gap:14px; }
+.mood-icon { font-size:1.8rem; transition:all .3s; min-width:40px; text-align:center; }
+.mood-val { font-size:2.2rem; font-weight:700; min-width:56px; text-align:center; transition:color .3s; }
+.mood-desc { font-size:.9rem; color:var(--dim); font-style:italic; }
+input[type=range].mood-sl { width:100%; -webkit-appearance:none; height:8px; border-radius:4px; background:linear-gradient(90deg,#e05252 0%,#e07c52 20%,#64748b 45%,#7c6af7 55%,#60a5fa 70%,#22c55e 85%,#f59e0b 100%); cursor:pointer; outline:none; margin:14px 0 6px; }
+input[type=range].mood-sl::-webkit-slider-thumb { -webkit-appearance:none; width:20px; height:20px; border-radius:50%; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,.5); cursor:pointer; }
+.mood-scale { display:flex; justify-content:space-between; font-size:.72rem; color:var(--dim); }
+
+/* ── EMOTION CATEGORIES ── */
+.emo-cats { display:flex; flex-wrap:wrap; gap:9px; margin-bottom:14px; }
+.emo-cat { padding:7px 16px; border-radius:30px; border:2px solid transparent; cursor:pointer; font-family:'Outfit',sans-serif; font-size:.85rem; font-weight:500; background:var(--surface2); transition:all .2s; color:var(--text); }
+.emo-cat:hover { transform:translateY(-1px); }
+.emo-cat.open { border-color:var(--cc); background:color-mix(in srgb, var(--cc) 18%, transparent); }
+
+.emo-panel { display:none; background:var(--surface2); border-radius:12px; padding:14px; margin-bottom:10px; border:1px solid var(--border); }
+.emo-panel.open { display:block; }
+.emo-panel-title { font-size:.7rem; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--dim); margin-bottom:10px; }
+.chips { display:flex; flex-wrap:wrap; gap:7px; }
+.chip { padding:4px 11px; border-radius:18px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.1); font-size:.82rem; cursor:pointer; color:var(--dim); transition:all .15s; user-select:none; }
+.chip:hover { border-color:rgba(255,255,255,.25); color:var(--text); }
+.chip.on { background:color-mix(in srgb, var(--cc) 20%, transparent); border-color:var(--cc); color:var(--text); }
+
+/* ── INDICATORS ── */
+.ind-row { display:flex; align-items:center; gap:10px; padding:11px 0; border-bottom:1px solid var(--border); }
+.ind-row:last-child { border-bottom:none; }
+.ind-info { flex:1; }
+.ind-name { font-size:.92rem; }
+.ind-hint { font-size:.73rem; color:var(--dim); font-style:italic; margin-top:2px; }
+.dots { display:flex; gap:5px; }
+.dot { width:26px; height:26px; border-radius:50%; border:2px solid rgba(255,255,255,.14); background:transparent; cursor:pointer; transition:all .15s; display:flex; align-items:center; justify-content:center; font-size:.68rem; color:var(--dim); font-weight:600; }
+.dot:hover { border-color:rgba(255,255,255,.35); }
+.dot.on { background:var(--dc, var(--accent)); border-color:var(--dc, var(--accent)); color:#fff; }
+
+/* ── JOURNAL ── */
+.journal-ta { width:100%; background:rgba(0,0,0,.2); border:1px solid var(--border); border-radius:12px; color:var(--text); font-family:'Lora',serif; font-size:.98rem; line-height:1.75; padding:14px; resize:vertical; outline:none; min-height:110px; transition:border-color .2s; }
+.journal-ta:focus { border-color:rgba(124,106,247,.4); }
+.journal-ta::placeholder { color:var(--dim); font-style:italic; }
+.jactions { display:flex; gap:9px; margin-top:9px; flex-wrap:wrap; }
+.ai-btn { padding:7px 16px; background:rgba(124,106,247,.13); border:1px solid rgba(124,106,247,.35); border-radius:18px; color:#b0a6ff; font-size:.82rem; cursor:pointer; transition:all .2s; font-family:'Outfit',sans-serif; }
+.ai-btn:hover { background:rgba(124,106,247,.24); }
+.ai-btn:disabled { opacity:.5; cursor:not-allowed; }
+.jcorrected { display:none; margin-top:12px; padding:13px; background:rgba(34,197,94,.07); border:1px solid rgba(34,197,94,.22); border-radius:10px; font-family:'Lora',serif; font-size:.93rem; line-height:1.75; color:#a8d5a2; }
+.jcorrected.show { display:block; }
+.jcorr-lbl { font-size:.68rem; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:rgba(34,197,94,.6); margin-bottom:7px; font-family:'Outfit',sans-serif; }
+
+/* ── SAVE ── */
+.save-btn { width:100%; padding:17px; background:linear-gradient(135deg,#5b4de0,#7c6af7); border:none; border-radius:14px; color:#fff; font-family:'Outfit',sans-serif; font-size:.98rem; font-weight:600; letter-spacing:.5px; cursor:pointer; transition:all .3s; box-shadow:0 4px 20px rgba(124,106,247,.3); margin-top:6px; }
+.save-btn:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 6px 30px rgba(124,106,247,.45); }
+.save-btn:disabled { opacity:.6; cursor:not-allowed; transform:none; }
+
+/* ── CRISIS WARNING ── */
+.crisis-warn { display:none; margin-top:12px; padding:13px 17px; background:rgba(224,82,82,.11); border:1px solid rgba(224,82,82,.3); border-radius:10px; font-size:.88rem; color:#ffb3b3; line-height:1.6; }
+.crisis-warn.show { display:block; }
+.crisis-warn strong { color:#ff8080; }
+
+/* ── TOAST ── */
+.toast { position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(80px); background:var(--surface2); border:1px solid var(--border); border-radius:30px; padding:11px 22px; font-size:.88rem; color:var(--text); transition:transform .3s; z-index:999; box-shadow:0 8px 32px rgba(0,0,0,.4); pointer-events:none; }
+.toast.show { transform:translateX(-50%) translateY(0); }
+
+/* ── DASHBOARD ── */
+.stats-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; margin-bottom:18px; }
+.stat-box { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:18px; text-align:center; }
+.stat-val { font-size:1.9rem; font-weight:700; margin-bottom:4px; }
+.stat-lbl { font-size:.72rem; color:var(--dim); text-transform:uppercase; letter-spacing:1px; }
+.chart-card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:22px; margin-bottom:14px; }
+.chart-ttl { font-size:.72rem; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:var(--dim); margin-bottom:18px; }
+
+/* ── ENTRIES ── */
+.entry-item { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:18px; margin-bottom:10px; cursor:pointer; transition:border-color .2s; }
+.entry-item:hover { border-color:rgba(124,106,247,.3); }
+.entry-hdr { display:flex; align-items:center; gap:10px; }
+.entry-date { font-size:.83rem; color:var(--dim); flex:1; }
+.entry-mood { padding:3px 11px; border-radius:18px; font-size:.82rem; font-weight:600; }
+.entry-body { display:none; margin-top:14px; padding-top:14px; border-top:1px solid var(--border); }
+.entry-body.open { display:block; }
+.entry-tags { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:10px; }
+.entry-tag { padding:2px 9px; border-radius:10px; font-size:.75rem; opacity:.85; }
+.entry-ind-row { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px; }
+.ind-badge { font-size:.75rem; padding:2px 9px; background:var(--surface2); border-radius:8px; }
+.entry-text { font-family:'Lora',serif; font-size:.93rem; line-height:1.75; color:var(--dim); font-style:italic; }
+
+/* ── GLOSARIO ── */
+.glos-section { margin-bottom:24px; }
+.glos-hdr { display:flex; align-items:flex-start; gap:14px; padding:14px 18px; border-radius:12px; margin-bottom:12px; border-left:3px solid var(--cc); background:color-mix(in srgb, var(--cc) 8%, transparent); }
+.glos-hdr-icon { font-size:1.4rem; }
+.glos-hdr h3 { font-size:1rem; font-weight:600; margin-bottom:2px; }
+.glos-hdr p { font-size:.82rem; opacity:.65; font-style:italic; }
+.glos-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:7px; }
+.glos-item { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:9px 13px; }
+.glos-name { font-size:.87rem; font-weight:500; margin-bottom:2px; }
+.glos-def { font-size:.75rem; color:var(--dim); font-style:italic; line-height:1.4; }
+
+.ind-row.big { background:rgba(245,158,11,.05); border-radius:12px; padding:14px; margin-bottom:8px; border-bottom:1px solid rgba(245,158,11,.2) !important; }
+.ind-row.big .ind-name { font-size:1.05rem; font-weight:600; color:#f59e0b; }
+.ind-row.big .dot { width:32px; height:32px; font-size:.78rem; }
+.empty-state { text-align:center; padding:48px 20px; color:var(--dim); }
+.empty-icon { font-size:2.5rem; margin-bottom:12px; opacity:.5; }
+
+@media(max-width:600px) {
+  .nav-brand { display:none; }
+  .stats-grid { grid-template-columns:repeat(2,1fr); }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-brand">mi diario</div>
+  <button class="nav-tab active" onclick="showView(&#39;registro&#39;)">📝 Registro</button>
+  <button class="nav-tab" onclick="showView(&#39;dashboard&#39;)">📊 Dashboard</button>
+  <button class="nav-tab" onclick="showView(&#39;glosario&#39;)">📖 Glosario</button>
+</nav>
+
+<!-- ═══ REGISTRO ═══ -->
+<div id="view-registro" class="view active">
+<div class="wrap">
+
+  <div class="date-hdr">
+    <div class="dayname" id="dayname">Lunes</div>
+    <div class="dateline" id="dateline">2 de marzo de 2026</div>
+  </div>
+
+  <!-- ÁNIMO -->
+  <div class="card">
+    <div class="card-lbl">🌡 Ánimo del día</div>
+    <div class="mood-row">
+      <div class="mood-icon" id="moodIcon">😐</div>
+      <div>
+        <div class="mood-val" id="moodVal">0</div>
+        <div class="mood-desc" id="moodDesc">Neutro</div>
+      </div>
+    </div>
+    <input type="range" class="mood-sl" id="moodSlider" min="-5" max="5" step="1" value="0">
+    <div class="mood-scale"><span>−5 Muy mal</span><span>0 Neutro</span><span>+5 Excelente</span></div>
+  </div>
+
+  <!-- EMOCIONES -->
+  <div class="card">
+    <div class="card-lbl">💭 Emociones de hoy</div>
+    <div class="card-desc">Selecciona las categorías que sentiste y luego elige las específicas.</div>
+    <div class="emo-cats" id="emoCats"><button class="emo-cat" data-key="rabia" style="--cc: var(--rabia); color: var(--rabia);">🔴 Rabia</button><button class="emo-cat" data-key="repulsion" style="--cc: var(--repulsion); color: var(--repulsion);">🟣 Repulsión</button><button class="emo-cat" data-key="envidia" style="--cc: var(--envidia); color: var(--envidia);">🟢 Envidia</button><button class="emo-cat" data-key="miedo" style="--cc: var(--miedo); color: var(--miedo);">⚫ Miedo</button><button class="emo-cat" data-key="felicidad" style="--cc: var(--felicidad); color: var(--felicidad);">🟡 Felicidad</button><button class="emo-cat" data-key="celos" style="--cc: var(--celos); color: var(--celos);">🟦 Celos</button><button class="emo-cat" data-key="amor" style="--cc: var(--amor); color: var(--amor);">🩷 Amor</button><button class="emo-cat" data-key="tristeza" style="--cc: var(--tristeza); color: var(--tristeza);">🔵 Tristeza</button><button class="emo-cat" data-key="vergüenza" style="--cc: var(--vergüenza); color: var(--vergüenza);">🟠 Vergüenza</button><button class="emo-cat" data-key="culpa" style="--cc: var(--culpa); color: var(--culpa);">⚪ Culpa</button></div>
+    <div id="emoPanels"><div class="emo-panel" id="panel-rabia"><div class="emo-panel-title" style="color:var(--rabia)">🔴 RABIA</div><div class="chips" id="chips-rabia"><span class="chip" style="--cc: var(--rabia);">Aborrecimiento</span><span class="chip" style="--cc: var(--rabia);">Agitación</span><span class="chip" style="--cc: var(--rabia);">Amargura</span><span class="chip" style="--cc: var(--rabia);">Aversión</span><span class="chip" style="--cc: var(--rabia);">Cólera</span><span class="chip" style="--cc: var(--rabia);">Enfado</span><span class="chip" style="--cc: var(--rabia);">Enojo</span><span class="chip" style="--cc: var(--rabia);">Exasperación</span><span class="chip" style="--cc: var(--rabia);">Ferocidad</span><span class="chip" style="--cc: var(--rabia);">Frustración</span><span class="chip" style="--cc: var(--rabia);">Furia</span><span class="chip" style="--cc: var(--rabia);">Hostilidad</span><span class="chip" style="--cc: var(--rabia);">Indignación</span><span class="chip" style="--cc: var(--rabia);">Ira</span><span class="chip" style="--cc: var(--rabia);">Irritación</span><span class="chip" style="--cc: var(--rabia);">Mal humor</span><span class="chip" style="--cc: var(--rabia);">Molestia</span><span class="chip" style="--cc: var(--rabia);">Odio</span><span class="chip" style="--cc: var(--rabia);">Resentimiento</span><span class="chip" style="--cc: var(--rabia);">Rencor</span><span class="chip" style="--cc: var(--rabia);">Venganza</span></div></div><div class="emo-panel" id="panel-repulsion"><div class="emo-panel-title" style="color:var(--repulsion)">🟣 REPULSIÓN</div><div class="chips" id="chips-repulsion"><span class="chip" style="--cc: var(--repulsion);">Repulsión</span><span class="chip" style="--cc: var(--repulsion);">Aborrecimiento</span><span class="chip" style="--cc: var(--repulsion);">Animadversión</span><span class="chip" style="--cc: var(--repulsion);">Antipatía</span><span class="chip" style="--cc: var(--repulsion);">Asco</span><span class="chip" style="--cc: var(--repulsion);">Asquerosidad</span><span class="chip" style="--cc: var(--repulsion);">Aversión</span><span class="chip" style="--cc: var(--repulsion);">Desapego</span><span class="chip" style="--cc: var(--repulsion);">Desagrado</span><span class="chip" style="--cc: var(--repulsion);">Desdén</span><span class="chip" style="--cc: var(--repulsion);">Desprecio</span><span class="chip" style="--cc: var(--repulsion);">Disgusto</span><span class="chip" style="--cc: var(--repulsion);">Menosprecio</span><span class="chip" style="--cc: var(--repulsion);">Mezquindad</span><span class="chip" style="--cc: var(--repulsion);">Rechazo</span></div></div><div class="emo-panel" id="panel-envidia"><div class="emo-panel-title" style="color:var(--envidia)">🟢 ENVIDIA</div><div class="chips" id="chips-envidia"><span class="chip" style="--cc: var(--envidia);">Envidia</span><span class="chip" style="--cc: var(--envidia);">Amargura</span><span class="chip" style="--cc: var(--envidia);">Ansia</span><span class="chip" style="--cc: var(--envidia);">Ansiedad</span><span class="chip" style="--cc: var(--envidia);">Avaricia</span><span class="chip" style="--cc: var(--envidia);">Avidez</span><span class="chip" style="--cc: var(--envidia);">Codicia</span><span class="chip" style="--cc: var(--envidia);">Descontento</span><span class="chip" style="--cc: var(--envidia);">Descorazonamiento</span><span class="chip" style="--cc: var(--envidia);">Deseo</span><span class="chip" style="--cc: var(--envidia);">Disgusto</span><span class="chip" style="--cc: var(--envidia);">Insatisfacción</span><span class="chip" style="--cc: var(--envidia);">Mezquindad</span><span class="chip" style="--cc: var(--envidia);">Resentimiento</span></div></div><div class="emo-panel" id="panel-miedo"><div class="emo-panel-title" style="color:var(--miedo)">⚫ MIEDO</div><div class="chips" id="chips-miedo"><span class="chip" style="--cc: var(--miedo);">Miedo</span><span class="chip" style="--cc: var(--miedo);">Alarma</span><span class="chip" style="--cc: var(--miedo);">Ansiedad</span><span class="chip" style="--cc: var(--miedo);">Aprehensión</span><span class="chip" style="--cc: var(--miedo);">Desasosiego</span><span class="chip" style="--cc: var(--miedo);">Desconfianza</span><span class="chip" style="--cc: var(--miedo);">Espanto</span><span class="chip" style="--cc: var(--miedo);">Histeria</span><span class="chip" style="--cc: var(--miedo);">Horror</span><span class="chip" style="--cc: var(--miedo);">Nerviosismo</span><span class="chip" style="--cc: var(--miedo);">Pánico</span><span class="chip" style="--cc: var(--miedo);">Pavor</span><span class="chip" style="--cc: var(--miedo);">Preocupación</span><span class="chip" style="--cc: var(--miedo);">Recelo</span><span class="chip" style="--cc: var(--miedo);">Shock</span><span class="chip" style="--cc: var(--miedo);">Sobresalto</span><span class="chip" style="--cc: var(--miedo);">Susto</span><span class="chip" style="--cc: var(--miedo);">Temor</span><span class="chip" style="--cc: var(--miedo);">Tensión</span><span class="chip" style="--cc: var(--miedo);">Terror</span></div></div><div class="emo-panel" id="panel-felicidad"><div class="emo-panel-title" style="color:var(--felicidad)">🟡 FELICIDAD</div><div class="chips" id="chips-felicidad"><span class="chip" style="--cc: var(--felicidad);">Felicidad</span><span class="chip" style="--cc: var(--felicidad);">Afán</span><span class="chip" style="--cc: var(--felicidad);">Alegría</span><span class="chip" style="--cc: var(--felicidad);">Alivio</span><span class="chip" style="--cc: var(--felicidad);">Bienestar</span><span class="chip" style="--cc: var(--felicidad);">Contento</span><span class="chip" style="--cc: var(--felicidad);">Deleite</span><span class="chip" style="--cc: var(--felicidad);">Dicha</span><span class="chip" style="--cc: var(--felicidad);">Disfrute</span><span class="chip" style="--cc: var(--felicidad);">Diversión</span><span class="chip" style="--cc: var(--felicidad);">Embelesamiento</span><span class="chip" style="--cc: var(--felicidad);">Entusiasmo</span><span class="chip" style="--cc: var(--felicidad);">Esperanza</span><span class="chip" style="--cc: var(--felicidad);">Estremecimiento</span><span class="chip" style="--cc: var(--felicidad);">Euforia</span><span class="chip" style="--cc: var(--felicidad);">Excitación</span><span class="chip" style="--cc: var(--felicidad);">Éxtasis</span><span class="chip" style="--cc: var(--felicidad);">Fervor</span><span class="chip" style="--cc: var(--felicidad);">Gozo</span><span class="chip" style="--cc: var(--felicidad);">Ilusión</span><span class="chip" style="--cc: var(--felicidad);">Jovialidad</span><span class="chip" style="--cc: var(--felicidad);">Júbilo</span><span class="chip" style="--cc: var(--felicidad);">Optimismo</span><span class="chip" style="--cc: var(--felicidad);">Plenitud</span><span class="chip" style="--cc: var(--felicidad);">Regocijo</span><span class="chip" style="--cc: var(--felicidad);">Placer</span><span class="chip" style="--cc: var(--felicidad);">Satisfacción</span><span class="chip" style="--cc: var(--felicidad);">Triunfo</span></div></div><div class="emo-panel" id="panel-celos"><div class="emo-panel-title" style="color:var(--celos)">🟦 CELOS</div><div class="chips" id="chips-celos"><span class="chip" style="--cc: var(--celos);">Celos</span><span class="chip" style="--cc: var(--celos);">Aprehensividad</span><span class="chip" style="--cc: var(--celos);">Cautela</span><span class="chip" style="--cc: var(--celos);">Competitividad</span><span class="chip" style="--cc: var(--celos);">Defensividad</span><span class="chip" style="--cc: var(--celos);">Desconfianza</span><span class="chip" style="--cc: var(--celos);">Posesividad</span><span class="chip" style="--cc: var(--celos);">Precaución</span><span class="chip" style="--cc: var(--celos);">Recelo</span><span class="chip" style="--cc: var(--celos);">Sospecha</span><span class="chip" style="--cc: var(--celos);">Suspicacia</span><span class="chip" style="--cc: var(--celos);">Vigilancia</span></div></div><div class="emo-panel" id="panel-amor"><div class="emo-panel-title" style="color:var(--amor)">🩷 AMOR</div><div class="chips" id="chips-amor"><span class="chip" style="--cc: var(--amor);">Amor</span><span class="chip" style="--cc: var(--amor);">Adoración</span><span class="chip" style="--cc: var(--amor);">Afecto</span><span class="chip" style="--cc: var(--amor);">Afición</span><span class="chip" style="--cc: var(--amor);">Amabilidad</span><span class="chip" style="--cc: var(--amor);">Anhelo</span><span class="chip" style="--cc: var(--amor);">Añoranza</span><span class="chip" style="--cc: var(--amor);">Apego</span><span class="chip" style="--cc: var(--amor);">Atracción</span><span class="chip" style="--cc: var(--amor);">Bondad</span><span class="chip" style="--cc: var(--amor);">Calidez</span><span class="chip" style="--cc: var(--amor);">Capricho</span><span class="chip" style="--cc: var(--amor);">Cariño</span><span class="chip" style="--cc: var(--amor);">Compasión</span><span class="chip" style="--cc: var(--amor);">Deseo</span><span class="chip" style="--cc: var(--amor);">Embrujo</span><span class="chip" style="--cc: var(--amor);">Empatía</span><span class="chip" style="--cc: var(--amor);">Enamoramiento</span><span class="chip" style="--cc: var(--amor);">Encantamiento</span><span class="chip" style="--cc: var(--amor);">Encanto</span><span class="chip" style="--cc: var(--amor);">Estimación</span><span class="chip" style="--cc: var(--amor);">Excitación</span><span class="chip" style="--cc: var(--amor);">Gusto</span><span class="chip" style="--cc: var(--amor);">Interés</span><span class="chip" style="--cc: var(--amor);">Lujuria</span><span class="chip" style="--cc: var(--amor);">Pasión</span><span class="chip" style="--cc: var(--amor);">Predilección</span><span class="chip" style="--cc: var(--amor);">Preocupación</span><span class="chip" style="--cc: var(--amor);">Sentimentalismo</span><span class="chip" style="--cc: var(--amor);">Simpatía</span><span class="chip" style="--cc: var(--amor);">Ternura</span></div></div><div class="emo-panel" id="panel-tristeza"><div class="emo-panel-title" style="color:var(--tristeza)">🔵 TRISTEZA</div><div class="chips" id="chips-tristeza"><span class="chip" style="--cc: var(--tristeza);">Tristeza</span><span class="chip" style="--cc: var(--tristeza);">Abandono</span><span class="chip" style="--cc: var(--tristeza);">Aflicción</span><span class="chip" style="--cc: var(--tristeza);">Agonía</span><span class="chip" style="--cc: var(--tristeza);">Aislamiento</span><span class="chip" style="--cc: var(--tristeza);">Amargura</span><span class="chip" style="--cc: var(--tristeza);">Angustia</span><span class="chip" style="--cc: var(--tristeza);">Añoranza</span><span class="chip" style="--cc: var(--tristeza);">Congoja</span><span class="chip" style="--cc: var(--tristeza);">Consternación</span><span class="chip" style="--cc: var(--tristeza);">Decepción</span><span class="chip" style="--cc: var(--tristeza);">Depresión</span><span class="chip" style="--cc: var(--tristeza);">Derrota</span><span class="chip" style="--cc: var(--tristeza);">Desagrado</span><span class="chip" style="--cc: var(--tristeza);">Desánimo</span><span class="chip" style="--cc: var(--tristeza);">Desconexión</span><span class="chip" style="--cc: var(--tristeza);">Descontento</span><span class="chip" style="--cc: var(--tristeza);">Desencanto</span><span class="chip" style="--cc: var(--tristeza);">Desesperación</span><span class="chip" style="--cc: var(--tristeza);">Desilusión</span><span class="chip" style="--cc: var(--tristeza);">Dolor</span><span class="chip" style="--cc: var(--tristeza);">Duelo</span><span class="chip" style="--cc: var(--tristeza);">Desesperanza</span><span class="chip" style="--cc: var(--tristeza);">Infelicidad</span><span class="chip" style="--cc: var(--tristeza);">Inseguridad</span><span class="chip" style="--cc: var(--tristeza);">Lástima</span><span class="chip" style="--cc: var(--tristeza);">Melancolía</span><span class="chip" style="--cc: var(--tristeza);">Miseria</span><span class="chip" style="--cc: var(--tristeza);">Nostalgia</span><span class="chip" style="--cc: var(--tristeza);">Opresión</span><span class="chip" style="--cc: var(--tristeza);">Pena</span><span class="chip" style="--cc: var(--tristeza);">Pesadumbre</span><span class="chip" style="--cc: var(--tristeza);">Pesar</span><span class="chip" style="--cc: var(--tristeza);">Rechazo</span><span class="chip" style="--cc: var(--tristeza);">Soledad</span><span class="chip" style="--cc: var(--tristeza);">Sufrimiento</span></div></div><div class="emo-panel" id="panel-vergüenza"><div class="emo-panel-title" style="color:var(--vergüenza)">🟠 VERGÜENZA</div><div class="chips" id="chips-vergüenza"><span class="chip" style="--cc: var(--vergüenza);">Vergüenza</span><span class="chip" style="--cc: var(--vergüenza);">Arrepentimiento</span><span class="chip" style="--cc: var(--vergüenza);">Bochorno</span><span class="chip" style="--cc: var(--vergüenza);">Constricción</span><span class="chip" style="--cc: var(--vergüenza);">Culpabilidad</span><span class="chip" style="--cc: var(--vergüenza);">Desconcierto</span><span class="chip" style="--cc: var(--vergüenza);">Humillación</span><span class="chip" style="--cc: var(--vergüenza);">Incomodidad</span><span class="chip" style="--cc: var(--vergüenza);">Invalidación</span><span class="chip" style="--cc: var(--vergüenza);">Mortificación</span><span class="chip" style="--cc: var(--vergüenza);">Perturbación</span><span class="chip" style="--cc: var(--vergüenza);">Remordimiento</span><span class="chip" style="--cc: var(--vergüenza);">Timidez</span><span class="chip" style="--cc: var(--vergüenza);">Turbamiento</span></div></div><div class="emo-panel" id="panel-culpa"><div class="emo-panel-title" style="color:var(--culpa)">⚪ CULPA</div><div class="chips" id="chips-culpa"><span class="chip" style="--cc: var(--culpa);">Culpa</span><span class="chip" style="--cc: var(--culpa);">Arrepentimiento</span><span class="chip" style="--cc: var(--culpa);">Culpabilidad</span><span class="chip" style="--cc: var(--culpa);">Perdón</span><span class="chip" style="--cc: var(--culpa);">Pesar</span><span class="chip" style="--cc: var(--culpa);">Pesadumbre</span><span class="chip" style="--cc: var(--culpa);">Remordimiento</span></div></div></div>
+  </div>
+
+  <!-- INDICADORES -->
+  <div class="card">
+    <div class="card-lbl">📊 Indicadores</div>
+    <div id="indRows"><div class="ind-row big">
+      <div class="ind-info">
+        <div class="ind-name">Ánimo general</div>
+        <div class="ind-hint">0 = muy bajo · 5 = excelente</div>
+      </div>
+      <div class="dots" id="dots-animo"><div class="dot" data-val="0" style="--dc: #f59e0b;">0</div><div class="dot" data-val="1" style="--dc: #f59e0b;">1</div><div class="dot" data-val="2" style="--dc: #f59e0b;">2</div><div class="dot" data-val="3" style="--dc: #f59e0b;">3</div><div class="dot" data-val="4" style="--dc: #f59e0b;">4</div><div class="dot" data-val="5" style="--dc: #f59e0b;">5</div></div>
+    </div><div class="ind-row">
+      <div class="ind-info">
+        <div class="ind-name">Ideación suicida</div>
+        <div class="ind-hint">0 = ninguna · 5 = pensamientos constantes</div>
+      </div>
+      <div class="dots" id="dots-ideacion"><div class="dot" data-val="0" style="--dc: #e05252;">0</div><div class="dot" data-val="1" style="--dc: #e05252;">1</div><div class="dot" data-val="2" style="--dc: #e05252;">2</div><div class="dot" data-val="3" style="--dc: #e05252;">3</div><div class="dot" data-val="4" style="--dc: #e05252;">4</div><div class="dot" data-val="5" style="--dc: #e05252;">5</div></div>
+    </div><div class="ind-row">
+      <div class="ind-info">
+        <div class="ind-name">Nivel de ansiedad</div>
+        <div class="ind-hint">0 = tranquila/o · 5 = inmanejable</div>
+      </div>
+      <div class="dots" id="dots-ansiedad"><div class="dot" data-val="0" style="--dc: #f97316;">0</div><div class="dot" data-val="1" style="--dc: #f97316;">1</div><div class="dot" data-val="2" style="--dc: #f97316;">2</div><div class="dot" data-val="3" style="--dc: #f97316;">3</div><div class="dot" data-val="4" style="--dc: #f97316;">4</div><div class="dot" data-val="5" style="--dc: #f97316;">5</div></div>
+    </div><div class="ind-row">
+      <div class="ind-info">
+        <div class="ind-name">Calidad del sueño</div>
+        <div class="ind-hint">0 = muy mal · 5 = dormí muy bien</div>
+      </div>
+      <div class="dots" id="dots-sueno"><div class="dot" data-val="0" style="--dc: #60a5fa;">0</div><div class="dot" data-val="1" style="--dc: #60a5fa;">1</div><div class="dot" data-val="2" style="--dc: #60a5fa;">2</div><div class="dot" data-val="3" style="--dc: #60a5fa;">3</div><div class="dot" data-val="4" style="--dc: #60a5fa;">4</div><div class="dot" data-val="5" style="--dc: #60a5fa;">5</div></div>
+    </div><div class="ind-row">
+      <div class="ind-info">
+        <div class="ind-name">Vergüenza</div>
+        <div class="ind-hint">0 = nada · 5 = muy intensa</div>
+      </div>
+      <div class="dots" id="dots-vergüenza"><div class="dot" data-val="0" style="--dc: var(--vergüenza);">0</div><div class="dot" data-val="1" style="--dc: var(--vergüenza);">1</div><div class="dot" data-val="2" style="--dc: var(--vergüenza);">2</div><div class="dot" data-val="3" style="--dc: var(--vergüenza);">3</div><div class="dot" data-val="4" style="--dc: var(--vergüenza);">4</div><div class="dot" data-val="5" style="--dc: var(--vergüenza);">5</div></div>
+    </div><div class="ind-row">
+      <div class="ind-info">
+        <div class="ind-name">Culpa</div>
+        <div class="ind-hint">0 = nada · 5 = muy intensa</div>
+      </div>
+      <div class="dots" id="dots-culpa"><div class="dot" data-val="0" style="--dc: var(--culpa);">0</div><div class="dot" data-val="1" style="--dc: var(--culpa);">1</div><div class="dot" data-val="2" style="--dc: var(--culpa);">2</div><div class="dot" data-val="3" style="--dc: var(--culpa);">3</div><div class="dot" data-val="4" style="--dc: var(--culpa);">4</div><div class="dot" data-val="5" style="--dc: var(--culpa);">5</div></div>
+    </div><div class="ind-row">
+      <div class="ind-info">
+        <div class="ind-name">Mente sabia</div>
+        <div class="ind-hint">0 = nada de claridad · 5 = muy centrada/o</div>
+      </div>
+      <div class="dots" id="dots-mente_sabia"><div class="dot" data-val="0" style="--dc: #7c6af7;">0</div><div class="dot" data-val="1" style="--dc: #7c6af7;">1</div><div class="dot" data-val="2" style="--dc: #7c6af7;">2</div><div class="dot" data-val="3" style="--dc: #7c6af7;">3</div><div class="dot" data-val="4" style="--dc: #7c6af7;">4</div><div class="dot" data-val="5" style="--dc: #7c6af7;">5</div></div>
+    </div></div>
+    <div class="crisis-warn" id="crisisWarn">
+      <strong>⚠ Notamos que marcaste ideación suicida.</strong> Recuerda que no tienes que pasar por esto sola/solo. Puedes contactar a tu psicóloga o llamar a la línea de crisis de tu país. En Chile: <strong>600 360 7777</strong> (Saludablemente).
+    </div>
+  </div>
+
+  <!-- DIARIO -->
+  <div class="card">
+    <div class="card-lbl">✍ ¿Cómo fue tu día?</div>
+    <div class="card-desc">Escribe libremente. Puedes usar la IA para ordenar y corregir tu texto.</div>
+    <textarea class="journal-ta" id="journalTa" placeholder="Escribe lo que quieras... sin filtros, sin presión."></textarea>
+    <div class="jactions">
+      <button class="ai-btn" id="correctBtn" onclick="correctJournal()">✨ Ordenar y corregir con IA</button>
+      <button class="ai-btn" id="useCorBtn" onclick="useCorrected()" style="display:none">✓ Usar texto corregido</button>
+    </div>
+    <div class="jcorrected" id="jcorrected">
+      <div class="jcorr-lbl">Versión corregida</div>
+      <div id="jcorrText"></div>
+    </div>
+  </div>
+
+  <button class="save-btn" id="saveBtn" onclick="saveEntry()">💾 Guardar registro de hoy</button>
+
+</div>
+</div>
+
+<!-- ═══ DASHBOARD ═══ -->
+<div id="view-dashboard" class="view">
+<div class="wrap-wide">
+
+  <div style="padding-top:8px; margin-bottom:20px;">
+    <div style="font-family:&#39;Lora&#39;,serif;font-size:1.4rem;font-style:italic;margin-bottom:4px;">Resumen clínico</div>
+    <div style="font-size:.82rem;color:var(--dim);">Vista para tu psicóloga · Todos los registros guardados</div>
+  </div>
+
+  <div class="stats-grid" id="statsGrid"></div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;" class="charts-row">
+    <div class="chart-card" style="grid-column:1/-1;">
+      <div class="chart-ttl">📈 Ánimo en el tiempo</div>
+      <canvas id="moodChart" height="90"></canvas>
+    </div>
+    <div class="chart-card">
+      <div class="chart-ttl">💭 Emociones más frecuentes</div>
+      <canvas id="emoChart" height="180"></canvas>
+    </div>
+    <div class="chart-card">
+      <div class="chart-ttl">📊 Promedio de indicadores</div>
+      <canvas id="indChart" height="180"></canvas>
+    </div>
+  </div>
+
+  <div style="margin-top:18px;">
+    <div class="chart-ttl" style="margin-bottom:12px;">📋 Historial de registros</div>
+    <div id="entriesList"></div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══ GLOSARIO ═══ -->
+<div id="view-glosario" class="view">
+<div class="wrap">
+  <div style="padding-top:8px;margin-bottom:24px;">
+    <div style="font-family:&#39;Lora&#39;,serif;font-size:1.4rem;font-style:italic;margin-bottom:4px;">Glosario emocional</div>
+    <div style="font-size:.82rem;color:var(--dim);">Vocabulario de tus emociones con definiciones cortas para reconocerlas mejor.</div>
+  </div>
+  <div id="glosarioContent"><div class="glos-section">
+      <div class="glos-hdr" style="--cc:var(--rabia); color:var(--rabia)">
+        <div class="glos-hdr-icon">🔴</div>
+        <div><h3>Rabia</h3><p>Ira intensa, impulso de reaccionar o defenderse</p></div>
+      </div>
+      <div class="glos-grid"><div class="glos-item"><div class="glos-name">Aborrecimiento</div><div class="glos-def">Odio profundo y persistente</div></div><div class="glos-item"><div class="glos-name">Agitación</div><div class="glos-def">Estado de inquietud y nerviosismo extremo</div></div><div class="glos-item"><div class="glos-name">Amargura</div><div class="glos-def">Dolor emocional crónico por injusticia percibida</div></div><div class="glos-item"><div class="glos-name">Aversión</div><div class="glos-def">Rechazo intenso hacia algo o alguien</div></div><div class="glos-item"><div class="glos-name">Cólera</div><div class="glos-def">Ira violenta y desbordada</div></div><div class="glos-item"><div class="glos-name">Enfado</div><div class="glos-def">Molestia sostenida por algo injusto</div></div><div class="glos-item"><div class="glos-name">Enojo</div><div class="glos-def">Irritación moderada ante algo que no nos gusta</div></div><div class="glos-item"><div class="glos-name">Exasperación</div><div class="glos-def">Rabia acumulada por repetición</div></div><div class="glos-item"><div class="glos-name">Ferocidad</div><div class="glos-def">Agresividad intensa, instinto de ataque</div></div><div class="glos-item"><div class="glos-name">Frustración</div><div class="glos-def">Bloqueo al no lograr lo que se quiere</div></div><div class="glos-item"><div class="glos-name">Furia</div><div class="glos-def">Rabia explosiva y descontrolada</div></div><div class="glos-item"><div class="glos-name">Hostilidad</div><div class="glos-def">Actitud agresiva y de confrontación</div></div><div class="glos-item"><div class="glos-name">Indignación</div><div class="glos-def">Rabia moral ante una injusticia</div></div><div class="glos-item"><div class="glos-name">Ira</div><div class="glos-def">Emoción intensa de enojo o irritación</div></div><div class="glos-item"><div class="glos-name">Irritación</div><div class="glos-def">Molestia leve pero constante</div></div><div class="glos-item"><div class="glos-name">Mal humor</div><div class="glos-def">Estado de ánimo bajo y reactivo</div></div><div class="glos-item"><div class="glos-name">Molestia</div><div class="glos-def">Incomodidad por algo que perturba</div></div><div class="glos-item"><div class="glos-name">Odio</div><div class="glos-def">Antipatía intensa y duradera</div></div><div class="glos-item"><div class="glos-name">Resentimiento</div><div class="glos-def">Rabia acumulada no expresada</div></div><div class="glos-item"><div class="glos-name">Rencor</div><div class="glos-def">Memoria dolorosa de una ofensa</div></div><div class="glos-item"><div class="glos-name">Venganza</div><div class="glos-def">Deseo de causar daño como respuesta</div></div></div>
+    </div><div class="glos-section">
+      <div class="glos-hdr" style="--cc:var(--repulsion); color:var(--repulsion)">
+        <div class="glos-hdr-icon">🟣</div>
+        <div><h3>Repulsión</h3><p>Rechazo visceral, asco o desagrado profundo</p></div>
+      </div>
+      <div class="glos-grid"><div class="glos-item"><div class="glos-name">Repulsión</div><div class="glos-def">Rechazo físico o emocional intenso</div></div><div class="glos-item"><div class="glos-name">Aborrecimiento</div><div class="glos-def">Disgusto extremo hacia algo</div></div><div class="glos-item"><div class="glos-name">Animadversión</div><div class="glos-def">Enemistad o antipatía marcada</div></div><div class="glos-item"><div class="glos-name">Antipatía</div><div class="glos-def">Rechazo natural e instintivo</div></div><div class="glos-item"><div class="glos-name">Asco</div><div class="glos-def">Reacción de repudio físico intenso</div></div><div class="glos-item"><div class="glos-name">Asquerosidad</div><div class="glos-def">Sensación de contaminación o impureza</div></div><div class="glos-item"><div class="glos-name">Aversión</div><div class="glos-def">Rechazo profundo y duradero</div></div><div class="glos-item"><div class="glos-name">Desapego</div><div class="glos-def">Distancia emocional voluntaria</div></div><div class="glos-item"><div class="glos-name">Desagrado</div><div class="glos-def">Sensación de algo que molesta o disgusta</div></div><div class="glos-item"><div class="glos-name">Desdén</div><div class="glos-def">Desprecio con indiferencia</div></div><div class="glos-item"><div class="glos-name">Desprecio</div><div class="glos-def">Ver a algo o alguien como inferior</div></div><div class="glos-item"><div class="glos-name">Disgusto</div><div class="glos-def">Reacción negativa ante algo desagradable</div></div><div class="glos-item"><div class="glos-name">Menosprecio</div><div class="glos-def">Restar valor a algo o alguien</div></div><div class="glos-item"><div class="glos-name">Mezquindad</div><div class="glos-def">Tacañería o pequeñez de carácter</div></div><div class="glos-item"><div class="glos-name">Rechazo</div><div class="glos-def">No querer o no aceptar algo</div></div></div>
+    </div><div class="glos-section">
+      <div class="glos-hdr" style="--cc:var(--envidia); color:var(--envidia)">
+        <div class="glos-hdr-icon">🟢</div>
+        <div><h3>Envidia</h3><p>Deseo de lo que otro tiene, mezclado con malestar</p></div>
+      </div>
+      <div class="glos-grid"><div class="glos-item"><div class="glos-name">Envidia</div><div class="glos-def">Querer lo que tiene otra persona</div></div><div class="glos-item"><div class="glos-name">Amargura</div><div class="glos-def">Dolor crónico por sentir que no tienes lo que mereces</div></div><div class="glos-item"><div class="glos-name">Ansia</div><div class="glos-def">Deseo ansioso e intenso de algo</div></div><div class="glos-item"><div class="glos-name">Ansiedad</div><div class="glos-def">Preocupación por lo que podría pasar</div></div><div class="glos-item"><div class="glos-name">Avaricia</div><div class="glos-def">Deseo excesivo de tener más</div></div><div class="glos-item"><div class="glos-name">Avidez</div><div class="glos-def">Anhelo intenso y urgente</div></div><div class="glos-item"><div class="glos-name">Codicia</div><div class="glos-def">Querer lo ajeno con obsesión</div></div><div class="glos-item"><div class="glos-name">Descontento</div><div class="glos-def">Insatisfacción con lo que se tiene</div></div><div class="glos-item"><div class="glos-name">Descorazonamiento</div><div class="glos-def">Perder la motivación al compararse</div></div><div class="glos-item"><div class="glos-name">Deseo</div><div class="glos-def">Querer algo con intensidad</div></div><div class="glos-item"><div class="glos-name">Disgusto</div><div class="glos-def">Malestar por la situación ajena</div></div><div class="glos-item"><div class="glos-name">Insatisfacción</div><div class="glos-def">Sensación de que algo falta</div></div><div class="glos-item"><div class="glos-name">Mezquindad</div><div class="glos-def">Pequeñez ante los logros ajenos</div></div><div class="glos-item"><div class="glos-name">Resentimiento</div><div class="glos-def">Rabia por sentir que otros tienen más</div></div></div>
+    </div><div class="glos-section">
+      <div class="glos-hdr" style="--cc:var(--miedo); color:var(--miedo)">
+        <div class="glos-hdr-icon">⚫</div>
+        <div><h3>Miedo</h3><p>Respuesta ante amenaza real o imaginada</p></div>
+      </div>
+      <div class="glos-grid"><div class="glos-item"><div class="glos-name">Miedo</div><div class="glos-def">Emoción ante un peligro percibido</div></div><div class="glos-item"><div class="glos-name">Alarma</div><div class="glos-def">Activación ante una señal de peligro</div></div><div class="glos-item"><div class="glos-name">Ansiedad</div><div class="glos-def">Preocupación anticipatoria difusa</div></div><div class="glos-item"><div class="glos-name">Aprehensión</div><div class="glos-def">Temor anticipatorio a algo negativo</div></div><div class="glos-item"><div class="glos-name">Desasosiego</div><div class="glos-def">Inquietud difícil de calmar</div></div><div class="glos-item"><div class="glos-name">Desconfianza</div><div class="glos-def">No creer en la seguridad de algo</div></div><div class="glos-item"><div class="glos-name">Espanto</div><div class="glos-def">Miedo súbito e intenso</div></div><div class="glos-item"><div class="glos-name">Histeria</div><div class="glos-def">Respuesta emocional desbordada</div></div><div class="glos-item"><div class="glos-name">Horror</div><div class="glos-def">Miedo extremo mezclado con asco</div></div><div class="glos-item"><div class="glos-name">Nerviosismo</div><div class="glos-def">Tensión física y mental leve</div></div><div class="glos-item"><div class="glos-name">Pánico</div><div class="glos-def">Miedo extremo con pérdida de control</div></div><div class="glos-item"><div class="glos-name">Pavor</div><div class="glos-def">Miedo intenso paralizante</div></div><div class="glos-item"><div class="glos-name">Preocupación</div><div class="glos-def">Atención repetida a un peligro posible</div></div><div class="glos-item"><div class="glos-name">Recelo</div><div class="glos-def">Sospecha o desconfianza hacia algo</div></div><div class="glos-item"><div class="glos-name">Shock</div><div class="glos-def">Impacto emocional por algo inesperado</div></div><div class="glos-item"><div class="glos-name">Sobresalto</div><div class="glos-def">Reacción brusca ante algo repentino</div></div><div class="glos-item"><div class="glos-name">Susto</div><div class="glos-def">Miedo repentino y breve</div></div><div class="glos-item"><div class="glos-name">Temor</div><div class="glos-def">Miedo moderado y duradero</div></div><div class="glos-item"><div class="glos-name">Tensión</div><div class="glos-def">Estado de alerta física y mental</div></div><div class="glos-item"><div class="glos-name">Terror</div><div class="glos-def">Miedo extremo e incapacitante</div></div></div>
+    </div><div class="glos-section">
+      <div class="glos-hdr" style="--cc:var(--felicidad); color:var(--felicidad)">
+        <div class="glos-hdr-icon">🟡</div>
+        <div><h3>Felicidad</h3><p>Bienestar, plenitud y estados positivos</p></div>
+      </div>
+      <div class="glos-grid"><div class="glos-item"><div class="glos-name">Felicidad</div><div class="glos-def">Estado de bienestar general y satisfacción</div></div><div class="glos-item"><div class="glos-name">Afán</div><div class="glos-def">Deseo intenso y positivo</div></div><div class="glos-item"><div class="glos-name">Alegría</div><div class="glos-def">Emoción positiva ante algo bueno</div></div><div class="glos-item"><div class="glos-name">Alivio</div><div class="glos-def">Descanso emocional tras tensión</div></div><div class="glos-item"><div class="glos-name">Bienestar</div><div class="glos-def">Sensación de estar bien consigo mismo</div></div><div class="glos-item"><div class="glos-name">Contento</div><div class="glos-def">Satisfacción tranquila y estable</div></div><div class="glos-item"><div class="glos-name">Deleite</div><div class="glos-def">Placer refinado y profundo</div></div><div class="glos-item"><div class="glos-name">Dicha</div><div class="glos-def">Felicidad plena y completa</div></div><div class="glos-item"><div class="glos-name">Disfrute</div><div class="glos-def">Placer activo en el momento presente</div></div><div class="glos-item"><div class="glos-name">Diversión</div><div class="glos-def">Alegría ligera y lúdica</div></div><div class="glos-item"><div class="glos-name">Embelesamiento</div><div class="glos-def">Absorción placentera en algo bello</div></div><div class="glos-item"><div class="glos-name">Entusiasmo</div><div class="glos-def">Energía positiva hacia algo</div></div><div class="glos-item"><div class="glos-name">Esperanza</div><div class="glos-def">Confianza en que algo bueno vendrá</div></div><div class="glos-item"><div class="glos-name">Estremecimiento</div><div class="glos-def">Emoción intensa que recorre el cuerpo</div></div><div class="glos-item"><div class="glos-name">Euforia</div><div class="glos-def">Alegría intensa y desbordante</div></div><div class="glos-item"><div class="glos-name">Excitación</div><div class="glos-def">Activación positiva anticipatoria</div></div><div class="glos-item"><div class="glos-name">Éxtasis</div><div class="glos-def">Felicidad máxima, casi mística</div></div><div class="glos-item"><div class="glos-name">Fervor</div><div class="glos-def">Pasión intensa por algo</div></div><div class="glos-item"><div class="glos-name">Gozo</div><div class="glos-def">Alegría profunda y sentida</div></div><div class="glos-item"><div class="glos-name">Ilusión</div><div class="glos-def">Expectativa positiva ante algo</div></div><div class="glos-item"><div class="glos-name">Jovialidad</div><div class="glos-def">Alegría constante y comunicativa</div></div><div class="glos-item"><div class="glos-name">Júbilo</div><div class="glos-def">Alegría expresada con intensidad</div></div><div class="glos-item"><div class="glos-name">Optimismo</div><div class="glos-def">Tendencia a ver lo positivo</div></div><div class="glos-item"><div class="glos-name">Plenitud</div><div class="glos-def">Sensación de estar completo</div></div><div class="glos-item"><div class="glos-name">Regocijo</div><div class="glos-def">Alegría por un logro o buena noticia</div></div><div class="glos-item"><div class="glos-name">Placer</div><div class="glos-def">Satisfacción sensorial o emocional</div></div><div class="glos-item"><div class="glos-name">Satisfacción</div><div class="glos-def">Cumplimiento de una expectativa</div></div><div class="glos-item"><div class="glos-name">Triunfo</div><div class="glos-def">Alegría por superar un reto</div></div></div>
+    </div><div class="glos-section">
+      <div class="glos-hdr" style="--cc:var(--celos); color:var(--celos)">
+        <div class="glos-hdr-icon">🟦</div>
+        <div><h3>Celos</h3><p>Miedo a perder algo o a alguien que se valora</p></div>
+      </div>
+      <div class="glos-grid"><div class="glos-item"><div class="glos-name">Celos</div><div class="glos-def">Miedo a perder el afecto de alguien</div></div><div class="glos-item"><div class="glos-name">Aprehensividad</div><div class="glos-def">Temor anticipatorio a una pérdida</div></div><div class="glos-item"><div class="glos-name">Cautela</div><div class="glos-def">Cuidado excesivo para no perder</div></div><div class="glos-item"><div class="glos-name">Competitividad</div><div class="glos-def">Querer superar a un rival percibido</div></div><div class="glos-item"><div class="glos-name">Defensividad</div><div class="glos-def">Proteger lo propio de forma reactiva</div></div><div class="glos-item"><div class="glos-name">Desconfianza</div><div class="glos-def">No creer en la lealtad del otro</div></div><div class="glos-item"><div class="glos-name">Posesividad</div><div class="glos-def">Querer tener el control sobre alguien</div></div><div class="glos-item"><div class="glos-name">Precaución</div><div class="glos-def">Actuar con reserva por miedo a perder</div></div><div class="glos-item"><div class="glos-name">Recelo</div><div class="glos-def">Sospecha hacia las intenciones ajenas</div></div><div class="glos-item"><div class="glos-name">Sospecha</div><div class="glos-def">Creer que algo malo está pasando</div></div><div class="glos-item"><div class="glos-name">Suspicacia</div><div class="glos-def">Tendencia a desconfiar constantemente</div></div><div class="glos-item"><div class="glos-name">Vigilancia</div><div class="glos-def">Estado de atención constante al entorno</div></div></div>
+    </div><div class="glos-section">
+      <div class="glos-hdr" style="--cc:var(--amor); color:var(--amor)">
+        <div class="glos-hdr-icon">🩷</div>
+        <div><h3>Amor</h3><p>Conexión, cuidado, apego y atracción</p></div>
+      </div>
+      <div class="glos-grid"><div class="glos-item"><div class="glos-name">Amor</div><div class="glos-def">Vínculo profundo de cuidado y conexión</div></div><div class="glos-item"><div class="glos-name">Adoración</div><div class="glos-def">Amor intenso y reverencial</div></div><div class="glos-item"><div class="glos-name">Afecto</div><div class="glos-def">Cariño suave y constante</div></div><div class="glos-item"><div class="glos-name">Afición</div><div class="glos-def">Gusto o inclinación hacia algo</div></div><div class="glos-item"><div class="glos-name">Amabilidad</div><div class="glos-def">Disposición a cuidar y dar</div></div><div class="glos-item"><div class="glos-name">Anhelo</div><div class="glos-def">Deseo profundo de algo o alguien</div></div><div class="glos-item"><div class="glos-name">Añoranza</div><div class="glos-def">Amor por algo del pasado que se extraña</div></div><div class="glos-item"><div class="glos-name">Apego</div><div class="glos-def">Vínculo de dependencia afectiva</div></div><div class="glos-item"><div class="glos-name">Atracción</div><div class="glos-def">Deseo de acercarse a alguien</div></div><div class="glos-item"><div class="glos-name">Bondad</div><div class="glos-def">Querer el bien del otro</div></div><div class="glos-item"><div class="glos-name">Calidez</div><div class="glos-def">Ternura expresada con el cuerpo</div></div><div class="glos-item"><div class="glos-name">Capricho</div><div class="glos-def">Deseo pasajero e intenso</div></div><div class="glos-item"><div class="glos-name">Cariño</div><div class="glos-def">Afecto suave y cuidadoso</div></div><div class="glos-item"><div class="glos-name">Compasión</div><div class="glos-def">Sentir el dolor del otro como propio</div></div><div class="glos-item"><div class="glos-name">Deseo</div><div class="glos-def">Atracción intensa hacia alguien</div></div><div class="glos-item"><div class="glos-name">Embrujo</div><div class="glos-def">Fascinación que no se puede explicar</div></div><div class="glos-item"><div class="glos-name">Empatía</div><div class="glos-def">Capacidad de sentir lo que siente el otro</div></div><div class="glos-item"><div class="glos-name">Enamoramiento</div><div class="glos-def">Estado intenso de atracción romántica</div></div><div class="glos-item"><div class="glos-name">Encantamiento</div><div class="glos-def">Atracción casi mágica</div></div><div class="glos-item"><div class="glos-name">Encanto</div><div class="glos-def">Cualidad que produce atracción</div></div><div class="glos-item"><div class="glos-name">Estimación</div><div class="glos-def">Respeto y valoración profunda</div></div><div class="glos-item"><div class="glos-name">Excitación</div><div class="glos-def">Activación por la presencia del otro</div></div><div class="glos-item"><div class="glos-name">Gusto</div><div class="glos-def">Agrado suave hacia algo</div></div><div class="glos-item"><div class="glos-name">Interés</div><div class="glos-def">Atención y curiosidad por alguien</div></div><div class="glos-item"><div class="glos-name">Lujuria</div><div class="glos-def">Deseo sexual intenso</div></div><div class="glos-item"><div class="glos-name">Pasión</div><div class="glos-def">Amor intenso y consumidor</div></div><div class="glos-item"><div class="glos-name">Predilección</div><div class="glos-def">Preferencia especial por alguien</div></div><div class="glos-item"><div class="glos-name">Preocupación</div><div class="glos-def">Cuidado que se expresa como ansiedad</div></div><div class="glos-item"><div class="glos-name">Sentimentalismo</div><div class="glos-def">Emoción intensa ligada a memorias</div></div><div class="glos-item"><div class="glos-name">Simpatía</div><div class="glos-def">Afinidad natural hacia alguien</div></div><div class="glos-item"><div class="glos-name">Ternura</div><div class="glos-def">Amor delicado, suave y protector</div></div></div>
+    </div><div class="glos-section">
+      <div class="glos-hdr" style="--cc:var(--tristeza); color:var(--tristeza)">
+        <div class="glos-hdr-icon">🔵</div>
+        <div><h3>Tristeza</h3><p>Pérdida, duelo, desconexión, dolor emocional</p></div>
+      </div>
+      <div class="glos-grid"><div class="glos-item"><div class="glos-name">Tristeza</div><div class="glos-def">Emoción de pérdida o ausencia</div></div><div class="glos-item"><div class="glos-name">Abandono</div><div class="glos-def">Sentir que nadie está</div></div><div class="glos-item"><div class="glos-name">Aflicción</div><div class="glos-def">Dolor emocional por pérdida</div></div><div class="glos-item"><div class="glos-name">Agonía</div><div class="glos-def">Sufrimiento extremo y prolongado</div></div><div class="glos-item"><div class="glos-name">Aislamiento</div><div class="glos-def">Sentirse solo y desconectado</div></div><div class="glos-item"><div class="glos-name">Amargura</div><div class="glos-def">Dolor que se vuelve resentimiento</div></div><div class="glos-item"><div class="glos-name">Angustia</div><div class="glos-def">Dolor emocional con sensación de ahogo</div></div><div class="glos-item"><div class="glos-name">Añoranza</div><div class="glos-def">Tristeza por algo que ya no está</div></div><div class="glos-item"><div class="glos-name">Congoja</div><div class="glos-def">Angustia intensa y opresiva</div></div><div class="glos-item"><div class="glos-name">Consternación</div><div class="glos-def">Impacto emocional por algo grave</div></div><div class="glos-item"><div class="glos-name">Decepción</div><div class="glos-def">Tristeza por expectativa no cumplida</div></div><div class="glos-item"><div class="glos-name">Depresión</div><div class="glos-def">Estado prolongado de tristeza profunda</div></div><div class="glos-item"><div class="glos-name">Derrota</div><div class="glos-def">Sentir que se perdió algo importante</div></div><div class="glos-item"><div class="glos-name">Desagrado</div><div class="glos-def">Incomodidad emocional persistente</div></div><div class="glos-item"><div class="glos-name">Desánimo</div><div class="glos-def">Pérdida de motivación y energía</div></div><div class="glos-item"><div class="glos-name">Desconexión</div><div class="glos-def">Sentirse alejado de uno mismo o los demás</div></div><div class="glos-item"><div class="glos-name">Descontento</div><div class="glos-def">Insatisfacción crónica</div></div><div class="glos-item"><div class="glos-name">Desencanto</div><div class="glos-def">Pérdida de la ilusión inicial</div></div><div class="glos-item"><div class="glos-name">Desesperación</div><div class="glos-def">Sentir que no hay salida</div></div><div class="glos-item"><div class="glos-name">Desilusión</div><div class="glos-def">Tristeza por descubrir una realidad diferente</div></div><div class="glos-item"><div class="glos-name">Dolor</div><div class="glos-def">Sufrimiento emocional intenso</div></div><div class="glos-item"><div class="glos-name">Duelo</div><div class="glos-def">Proceso de adaptación a una pérdida</div></div><div class="glos-item"><div class="glos-name">Desesperanza</div><div class="glos-def">No ver futuro posible</div></div><div class="glos-item"><div class="glos-name">Infelicidad</div><div class="glos-def">Ausencia de bienestar sostenida</div></div><div class="glos-item"><div class="glos-name">Inseguridad</div><div class="glos-def">Duda sobre el propio valor</div></div><div class="glos-item"><div class="glos-name">Lástima</div><div class="glos-def">Compasión hacia uno mismo</div></div><div class="glos-item"><div class="glos-name">Melancolía</div><div class="glos-def">Tristeza suave, nostálgica y reflexiva</div></div><div class="glos-item"><div class="glos-name">Miseria</div><div class="glos-def">Sufrimiento intenso y sostenido</div></div><div class="glos-item"><div class="glos-name">Nostalgia</div><div class="glos-def">Dolor dulce por algo del pasado</div></div><div class="glos-item"><div class="glos-name">Opresión</div><div class="glos-def">Sensación de peso emocional</div></div><div class="glos-item"><div class="glos-name">Pena</div><div class="glos-def">Tristeza moderada y compasiva</div></div><div class="glos-item"><div class="glos-name">Pesadumbre</div><div class="glos-def">Tristeza que se siente como peso</div></div><div class="glos-item"><div class="glos-name">Pesar</div><div class="glos-def">Arrepentimiento mezclado con tristeza</div></div><div class="glos-item"><div class="glos-name">Rechazo</div><div class="glos-def">Dolor por no ser aceptado</div></div><div class="glos-item"><div class="glos-name">Soledad</div><div class="glos-def">Ausencia de conexión con otros</div></div><div class="glos-item"><div class="glos-name">Sufrimiento</div><div class="glos-def">Experiencia de dolor sostenido</div></div></div>
+    </div><div class="glos-section">
+      <div class="glos-hdr" style="--cc:var(--vergüenza); color:var(--vergüenza)">
+        <div class="glos-hdr-icon">🟠</div>
+        <div><h3>Vergüenza</h3><p>Sentirse expuesto, juzgado o equivocado</p></div>
+      </div>
+      <div class="glos-grid"><div class="glos-item"><div class="glos-name">Vergüenza</div><div class="glos-def">Sentir que uno está expuesto negativamente</div></div><div class="glos-item"><div class="glos-name">Arrepentimiento</div><div class="glos-def">Desear haber actuado diferente</div></div><div class="glos-item"><div class="glos-name">Bochorno</div><div class="glos-def">Vergüenza intensa con rubor</div></div><div class="glos-item"><div class="glos-name">Constricción</div><div class="glos-def">Encogimiento interior ante el juicio</div></div><div class="glos-item"><div class="glos-name">Culpabilidad</div><div class="glos-def">Sentir que hiciste algo malo</div></div><div class="glos-item"><div class="glos-name">Desconcierto</div><div class="glos-def">Confusión ante una situación incómoda</div></div><div class="glos-item"><div class="glos-name">Humillación</div><div class="glos-def">Vergüenza causada por otro</div></div><div class="glos-item"><div class="glos-name">Incomodidad</div><div class="glos-def">Malestar ante una situación difícil</div></div><div class="glos-item"><div class="glos-name">Invalidación</div><div class="glos-def">Sentir que tus emociones no valen</div></div><div class="glos-item"><div class="glos-name">Mortificación</div><div class="glos-def">Vergüenza intensa y paralizante</div></div><div class="glos-item"><div class="glos-name">Perturbación</div><div class="glos-def">Estado de agitación interna</div></div><div class="glos-item"><div class="glos-name">Remordimiento</div><div class="glos-def">Dolor por haber dañado a alguien</div></div><div class="glos-item"><div class="glos-name">Timidez</div><div class="glos-def">Vergüenza social, miedo al juicio</div></div><div class="glos-item"><div class="glos-name">Turbamiento</div><div class="glos-def">Confusión emocional visible</div></div></div>
+    </div><div class="glos-section">
+      <div class="glos-hdr" style="--cc:var(--culpa); color:var(--culpa)">
+        <div class="glos-hdr-icon">⚪</div>
+        <div><h3>Culpa</h3><p>Haber transgredido un valor propio</p></div>
+      </div>
+      <div class="glos-grid"><div class="glos-item"><div class="glos-name">Culpa</div><div class="glos-def">Sentir que hiciste algo incorrecto</div></div><div class="glos-item"><div class="glos-name">Arrepentimiento</div><div class="glos-def">Deseo de haber actuado diferente</div></div><div class="glos-item"><div class="glos-name">Culpabilidad</div><div class="glos-def">Convicción interna de haber fallado</div></div><div class="glos-item"><div class="glos-name">Perdón</div><div class="glos-def">Proceso de liberar la culpa propia</div></div><div class="glos-item"><div class="glos-name">Pesar</div><div class="glos-def">Tristeza ligada al arrepentimiento</div></div><div class="glos-item"><div class="glos-name">Pesadumbre</div><div class="glos-def">Carga emocional por algo hecho</div></div><div class="glos-item"><div class="glos-name">Remordimiento</div><div class="glos-def">Dolor repetido por una acción pasada</div></div></div>
+    </div></div>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ════ DATA ════
+
+const EMOTIONS = {
+  rabia: {
+    label: 'Rabia', color: 'var(--rabia)', icon: '🔴',
+    desc: 'Ira intensa, impulso de reaccionar o defenderse',
+    items: {
+      'Aborrecimiento': 'Odio profundo y persistente',
+      'Agitación': 'Estado de inquietud y nerviosismo extremo',
+      'Amargura': 'Dolor emocional crónico por injusticia percibida',
+      'Aversión': 'Rechazo intenso hacia algo o alguien',
+      'Cólera': 'Ira violenta y desbordada',
+      'Enfado': 'Molestia sostenida por algo injusto',
+      'Enojo': 'Irritación moderada ante algo que no nos gusta',
+      'Exasperación': 'Rabia acumulada por repetición',
+      'Ferocidad': 'Agresividad intensa, instinto de ataque',
+      'Frustración': 'Bloqueo al no lograr lo que se quiere',
+      'Furia': 'Rabia explosiva y descontrolada',
+      'Hostilidad': 'Actitud agresiva y de confrontación',
+      'Indignación': 'Rabia moral ante una injusticia',
+      'Ira': 'Emoción intensa de enojo o irritación',
+      'Irritación': 'Molestia leve pero constante',
+      'Mal humor': 'Estado de ánimo bajo y reactivo',
+      'Molestia': 'Incomodidad por algo que perturba',
+      'Odio': 'Antipatía intensa y duradera',
+      'Resentimiento': 'Rabia acumulada no expresada',
+      'Rencor': 'Memoria dolorosa de una ofensa',
+      'Venganza': 'Deseo de causar daño como respuesta',
+    }
+  },
+  repulsion: {
+    label: 'Repulsión', color: 'var(--repulsion)', icon: '🟣',
+    desc: 'Rechazo visceral, asco o desagrado profundo',
+    items: {
+      'Repulsión': 'Rechazo físico o emocional intenso',
+      'Aborrecimiento': 'Disgusto extremo hacia algo',
+      'Animadversión': 'Enemistad o antipatía marcada',
+      'Antipatía': 'Rechazo natural e instintivo',
+      'Asco': 'Reacción de repudio físico intenso',
+      'Asquerosidad': 'Sensación de contaminación o impureza',
+      'Aversión': 'Rechazo profundo y duradero',
+      'Desapego': 'Distancia emocional voluntaria',
+      'Desagrado': 'Sensación de algo que molesta o disgusta',
+      'Desdén': 'Desprecio con indiferencia',
+      'Desprecio': 'Ver a algo o alguien como inferior',
+      'Disgusto': 'Reacción negativa ante algo desagradable',
+      'Menosprecio': 'Restar valor a algo o alguien',
+      'Mezquindad': 'Tacañería o pequeñez de carácter',
+      'Rechazo': 'No querer o no aceptar algo',
+    }
+  },
+  envidia: {
+    label: 'Envidia', color: 'var(--envidia)', icon: '🟢',
+    desc: 'Deseo de lo que otro tiene, mezclado con malestar',
+    items: {
+      'Envidia': 'Querer lo que tiene otra persona',
+      'Amargura': 'Dolor crónico por sentir que no tienes lo que mereces',
+      'Ansia': 'Deseo ansioso e intenso de algo',
+      'Ansiedad': 'Preocupación por lo que podría pasar',
+      'Avaricia': 'Deseo excesivo de tener más',
+      'Avidez': 'Anhelo intenso y urgente',
+      'Codicia': 'Querer lo ajeno con obsesión',
+      'Descontento': 'Insatisfacción con lo que se tiene',
+      'Descorazonamiento': 'Perder la motivación al compararse',
+      'Deseo': 'Querer algo con intensidad',
+      'Disgusto': 'Malestar por la situación ajena',
+      'Insatisfacción': 'Sensación de que algo falta',
+      'Mezquindad': 'Pequeñez ante los logros ajenos',
+      'Resentimiento': 'Rabia por sentir que otros tienen más',
+    }
+  },
+  miedo: {
+    label: 'Miedo', color: 'var(--miedo)', icon: '⚫',
+    desc: 'Respuesta ante amenaza real o imaginada',
+    items: {
+      'Miedo': 'Emoción ante un peligro percibido',
+      'Alarma': 'Activación ante una señal de peligro',
+      'Ansiedad': 'Preocupación anticipatoria difusa',
+      'Aprehensión': 'Temor anticipatorio a algo negativo',
+      'Desasosiego': 'Inquietud difícil de calmar',
+      'Desconfianza': 'No creer en la seguridad de algo',
+      'Espanto': 'Miedo súbito e intenso',
+      'Histeria': 'Respuesta emocional desbordada',
+      'Horror': 'Miedo extremo mezclado con asco',
+      'Nerviosismo': 'Tensión física y mental leve',
+      'Pánico': 'Miedo extremo con pérdida de control',
+      'Pavor': 'Miedo intenso paralizante',
+      'Preocupación': 'Atención repetida a un peligro posible',
+      'Recelo': 'Sospecha o desconfianza hacia algo',
+      'Shock': 'Impacto emocional por algo inesperado',
+      'Sobresalto': 'Reacción brusca ante algo repentino',
+      'Susto': 'Miedo repentino y breve',
+      'Temor': 'Miedo moderado y duradero',
+      'Tensión': 'Estado de alerta física y mental',
+      'Terror': 'Miedo extremo e incapacitante',
+    }
+  },
+  felicidad: {
+    label: 'Felicidad', color: 'var(--felicidad)', icon: '🟡',
+    desc: 'Bienestar, plenitud y estados positivos',
+    items: {
+      'Felicidad': 'Estado de bienestar general y satisfacción',
+      'Afán': 'Deseo intenso y positivo',
+      'Alegría': 'Emoción positiva ante algo bueno',
+      'Alivio': 'Descanso emocional tras tensión',
+      'Bienestar': 'Sensación de estar bien consigo mismo',
+      'Contento': 'Satisfacción tranquila y estable',
+      'Deleite': 'Placer refinado y profundo',
+      'Dicha': 'Felicidad plena y completa',
+      'Disfrute': 'Placer activo en el momento presente',
+      'Diversión': 'Alegría ligera y lúdica',
+      'Embelesamiento': 'Absorción placentera en algo bello',
+      'Entusiasmo': 'Energía positiva hacia algo',
+      'Esperanza': 'Confianza en que algo bueno vendrá',
+      'Estremecimiento': 'Emoción intensa que recorre el cuerpo',
+      'Euforia': 'Alegría intensa y desbordante',
+      'Excitación': 'Activación positiva anticipatoria',
+      'Éxtasis': 'Felicidad máxima, casi mística',
+      'Fervor': 'Pasión intensa por algo',
+      'Gozo': 'Alegría profunda y sentida',
+      'Ilusión': 'Expectativa positiva ante algo',
+      'Jovialidad': 'Alegría constante y comunicativa',
+      'Júbilo': 'Alegría expresada con intensidad',
+      'Optimismo': 'Tendencia a ver lo positivo',
+      'Plenitud': 'Sensación de estar completo',
+      'Regocijo': 'Alegría por un logro o buena noticia',
+      'Placer': 'Satisfacción sensorial o emocional',
+      'Satisfacción': 'Cumplimiento de una expectativa',
+      'Triunfo': 'Alegría por superar un reto',
+    }
+  },
+  celos: {
+    label: 'Celos', color: 'var(--celos)', icon: '🟦',
+    desc: 'Miedo a perder algo o a alguien que se valora',
+    items: {
+      'Celos': 'Miedo a perder el afecto de alguien',
+      'Aprehensividad': 'Temor anticipatorio a una pérdida',
+      'Cautela': 'Cuidado excesivo para no perder',
+      'Competitividad': 'Querer superar a un rival percibido',
+      'Defensividad': 'Proteger lo propio de forma reactiva',
+      'Desconfianza': 'No creer en la lealtad del otro',
+      'Posesividad': 'Querer tener el control sobre alguien',
+      'Precaución': 'Actuar con reserva por miedo a perder',
+      'Recelo': 'Sospecha hacia las intenciones ajenas',
+      'Sospecha': 'Creer que algo malo está pasando',
+      'Suspicacia': 'Tendencia a desconfiar constantemente',
+      'Vigilancia': 'Estado de atención constante al entorno',
+    }
+  },
+  amor: {
+    label: 'Amor', color: 'var(--amor)', icon: '🩷',
+    desc: 'Conexión, cuidado, apego y atracción',
+    items: {
+      'Amor': 'Vínculo profundo de cuidado y conexión',
+      'Adoración': 'Amor intenso y reverencial',
+      'Afecto': 'Cariño suave y constante',
+      'Afición': 'Gusto o inclinación hacia algo',
+      'Amabilidad': 'Disposición a cuidar y dar',
+      'Anhelo': 'Deseo profundo de algo o alguien',
+      'Añoranza': 'Amor por algo del pasado que se extraña',
+      'Apego': 'Vínculo de dependencia afectiva',
+      'Atracción': 'Deseo de acercarse a alguien',
+      'Bondad': 'Querer el bien del otro',
+      'Calidez': 'Ternura expresada con el cuerpo',
+      'Capricho': 'Deseo pasajero e intenso',
+      'Cariño': 'Afecto suave y cuidadoso',
+      'Compasión': 'Sentir el dolor del otro como propio',
+      'Deseo': 'Atracción intensa hacia alguien',
+      'Embrujo': 'Fascinación que no se puede explicar',
+      'Empatía': 'Capacidad de sentir lo que siente el otro',
+      'Enamoramiento': 'Estado intenso de atracción romántica',
+      'Encantamiento': 'Atracción casi mágica',
+      'Encanto': 'Cualidad que produce atracción',
+      'Estimación': 'Respeto y valoración profunda',
+      'Excitación': 'Activación por la presencia del otro',
+      'Gusto': 'Agrado suave hacia algo',
+      'Interés': 'Atención y curiosidad por alguien',
+      'Lujuria': 'Deseo sexual intenso',
+      'Pasión': 'Amor intenso y consumidor',
+      'Predilección': 'Preferencia especial por alguien',
+      'Preocupación': 'Cuidado que se expresa como ansiedad',
+      'Sentimentalismo': 'Emoción intensa ligada a memorias',
+      'Simpatía': 'Afinidad natural hacia alguien',
+      'Ternura': 'Amor delicado, suave y protector',
+    }
+  },
+  tristeza: {
+    label: 'Tristeza', color: 'var(--tristeza)', icon: '🔵',
+    desc: 'Pérdida, duelo, desconexión, dolor emocional',
+    items: {
+      'Tristeza': 'Emoción de pérdida o ausencia',
+      'Abandono': 'Sentir que nadie está',
+      'Aflicción': 'Dolor emocional por pérdida',
+      'Agonía': 'Sufrimiento extremo y prolongado',
+      'Aislamiento': 'Sentirse solo y desconectado',
+      'Amargura': 'Dolor que se vuelve resentimiento',
+      'Angustia': 'Dolor emocional con sensación de ahogo',
+      'Añoranza': 'Tristeza por algo que ya no está',
+      'Congoja': 'Angustia intensa y opresiva',
+      'Consternación': 'Impacto emocional por algo grave',
+      'Decepción': 'Tristeza por expectativa no cumplida',
+      'Depresión': 'Estado prolongado de tristeza profunda',
+      'Derrota': 'Sentir que se perdió algo importante',
+      'Desagrado': 'Incomodidad emocional persistente',
+      'Desánimo': 'Pérdida de motivación y energía',
+      'Desconexión': 'Sentirse alejado de uno mismo o los demás',
+      'Descontento': 'Insatisfacción crónica',
+      'Desencanto': 'Pérdida de la ilusión inicial',
+      'Desesperación': 'Sentir que no hay salida',
+      'Desilusión': 'Tristeza por descubrir una realidad diferente',
+      'Dolor': 'Sufrimiento emocional intenso',
+      'Duelo': 'Proceso de adaptación a una pérdida',
+      'Desesperanza': 'No ver futuro posible',
+      'Infelicidad': 'Ausencia de bienestar sostenida',
+      'Inseguridad': 'Duda sobre el propio valor',
+      'Lástima': 'Compasión hacia uno mismo',
+      'Melancolía': 'Tristeza suave, nostálgica y reflexiva',
+      'Miseria': 'Sufrimiento intenso y sostenido',
+      'Nostalgia': 'Dolor dulce por algo del pasado',
+      'Opresión': 'Sensación de peso emocional',
+      'Pena': 'Tristeza moderada y compasiva',
+      'Pesadumbre': 'Tristeza que se siente como peso',
+      'Pesar': 'Arrepentimiento mezclado con tristeza',
+      'Rechazo': 'Dolor por no ser aceptado',
+      'Soledad': 'Ausencia de conexión con otros',
+      'Sufrimiento': 'Experiencia de dolor sostenido',
+    }
+  },
+  vergüenza: {
+    label: 'Vergüenza', color: 'var(--vergüenza)', icon: '🟠',
+    desc: 'Sentirse expuesto, juzgado o equivocado',
+    items: {
+      'Vergüenza': 'Sentir que uno está expuesto negativamente',
+      'Arrepentimiento': 'Desear haber actuado diferente',
+      'Bochorno': 'Vergüenza intensa con rubor',
+      'Constricción': 'Encogimiento interior ante el juicio',
+      'Culpabilidad': 'Sentir que hiciste algo malo',
+      'Desconcierto': 'Confusión ante una situación incómoda',
+      'Humillación': 'Vergüenza causada por otro',
+      'Incomodidad': 'Malestar ante una situación difícil',
+      'Invalidación': 'Sentir que tus emociones no valen',
+      'Mortificación': 'Vergüenza intensa y paralizante',
+      'Perturbación': 'Estado de agitación interna',
+      'Remordimiento': 'Dolor por haber dañado a alguien',
+      'Timidez': 'Vergüenza social, miedo al juicio',
+      'Turbamiento': 'Confusión emocional visible',
+    }
+  },
+  culpa: {
+    label: 'Culpa', color: 'var(--culpa)', icon: '⚪',
+    desc: 'Haber transgredido un valor propio',
+    items: {
+      'Culpa': 'Sentir que hiciste algo incorrecto',
+      'Arrepentimiento': 'Deseo de haber actuado diferente',
+      'Culpabilidad': 'Convicción interna de haber fallado',
+      'Perdón': 'Proceso de liberar la culpa propia',
+      'Pesar': 'Tristeza ligada al arrepentimiento',
+      'Pesadumbre': 'Carga emocional por algo hecho',
+      'Remordimiento': 'Dolor repetido por una acción pasada',
+    }
+  }
+};
+
+const INDICATORS = [
+  { id: 'animo', name: 'Ánimo general', hint: '0 = muy bajo · 5 = excelente', color: '#f59e0b', big: true },
+  { id: 'ideacion', name: 'Ideación suicida', hint: '0 = ninguna · 5 = pensamientos constantes', color: '#e05252', crisis: true },
+  { id: 'ansiedad', name: 'Nivel de ansiedad', hint: '0 = tranquila/o · 5 = inmanejable', color: '#f97316' },
+  { id: 'sueno', name: 'Calidad del sueño', hint: '0 = muy mal · 5 = dormí muy bien', color: '#60a5fa' },
+  { id: 'vergüenza', name: 'Vergüenza', hint: '0 = nada · 5 = muy intensa', color: 'var(--vergüenza)' },
+  { id: 'culpa', name: 'Culpa', hint: '0 = nada · 5 = muy intensa', color: 'var(--culpa)' },
+  { id: 'mente_sabia', name: 'Mente sabia', hint: '0 = nada de claridad · 5 = muy centrada/o', color: '#7c6af7' },
+];
+
+const MOOD_DATA = [
+  { range: [-5,-4], icon: '😭', label: 'Muy mal', color: '#e05252' },
+  { range: [-3,-2], icon: '😞', label: 'Mal', color: '#e07c52' },
+  { range: [-1,-1], icon: '😕', label: 'Un poco bajo', color: '#94a3b8' },
+  { range: [0,0],   icon: '😐', label: 'Neutro', color: '#7a869e' },
+  { range: [1,1],   icon: '🙂', label: 'Un poco bien', color: '#7c6af7' },
+  { range: [2,3],   icon: '😊', label: 'Bien', color: '#60a5fa' },
+  { range: [4,5],   icon: '😄', label: 'Muy bien', color: '#22c55e' },
+];
+
+// ════ STATE ════
+let state = {
+  mood: 0,
+  emotions: {},    // { rabia: ['Frustración','Ira'], ... }
+  indicators: {},  // { ideacion: 0, ... }
+  journal: '',
+  journalCorrected: ''
+};
+let moodChart = null, emoChart = null, indChart = null;
+
+// ════ INIT ════
+function init() {
+  setDateHeader();
+  buildEmotions();
+  buildIndicators();
+  setupMoodSlider();
+  loadTodayEntry();
+}
+
+function setDateHeader() {
+  const now = new Date();
+  const days = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+  const months = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  document.getElementById('dayname').textContent = days[now.getDay()];
+  document.getElementById('dateline').textContent = `${now.getDate()} de ${months[now.getMonth()]} de ${now.getFullYear()}`;
+}
+
+function setupMoodSlider() {
+  const sl = document.getElementById('moodSlider');
+  sl.addEventListener('input', () => {
+    state.mood = parseInt(sl.value);
+    updateMoodDisplay(state.mood);
+  });
+}
+
+function updateMoodDisplay(val) {
+  const md = MOOD_DATA.find(m => val >= m.range[0] && val <= m.range[1]);
+  document.getElementById('moodIcon').textContent = md.icon;
+  document.getElementById('moodVal').textContent = val > 0 ? '+' + val : val;
+  document.getElementById('moodVal').style.color = md.color;
+  document.getElementById('moodDesc').textContent = md.label;
+}
+
+function buildEmotions() {
+  const catsDiv = document.getElementById('emoCats');
+  const panelsDiv = document.getElementById('emoPanels');
+  Object.entries(EMOTIONS).forEach(([key, cat]) => {
+    const btn = document.createElement('button');
+    btn.className = 'emo-cat';
+    btn.style.setProperty('--cc', cat.color);
+    btn.style.color = cat.color;
+    btn.textContent = cat.icon + ' ' + cat.label;
+    btn.dataset.key = key;
+    btn.onclick = () => toggleCat(key);
+    catsDiv.appendChild(btn);
+
+    const panel = document.createElement('div');
+    panel.className = 'emo-panel';
+    panel.id = 'panel-' + key;
+    panel.innerHTML = `<div class="emo-panel-title" style="color:${cat.color}">${cat.icon} ${cat.label.toUpperCase()}</div><div class="chips" id="chips-${key}"></div>`;
+    panelsDiv.appendChild(panel);
+
+    const chipsDiv = panel.querySelector('#chips-' + key);
+    Object.keys(cat.items).forEach(name => {
+      const chip = document.createElement('span');
+      chip.className = 'chip';
+      chip.style.setProperty('--cc', cat.color);
+      chip.textContent = name;
+      chip.onclick = () => {
+        chip.classList.toggle('on');
+        if (!state.emotions[key]) state.emotions[key] = [];
+        if (chip.classList.contains('on')) {
+          state.emotions[key].push(name);
+        } else {
+          state.emotions[key] = state.emotions[key].filter(e => e !== name);
+        }
+      };
+      chipsDiv.appendChild(chip);
+    });
+  });
+}
+
+function toggleCat(key) {
+  const btn = document.querySelector(`.emo-cat[data-key="${key}"]`);
+  const panel = document.getElementById('panel-' + key);
+  const isOpen = panel.classList.contains('open');
+  btn.classList.toggle('open', !isOpen);
+  panel.classList.toggle('open', !isOpen);
+}
+
+function buildIndicators() {
+  const div = document.getElementById('indRows');
+  INDICATORS.forEach(ind => {
+    const row = document.createElement('div');
+    row.className = 'ind-row' + (ind.big ? ' big' : '');
+    row.innerHTML = `
+      <div class="ind-info">
+        <div class="ind-name">${ind.name}</div>
+        <div class="ind-hint">${ind.hint}</div>
+      </div>
+      <div class="dots" id="dots-${ind.id}"></div>
+    `;
+    div.appendChild(row);
+    const dotsDiv = row.querySelector('#dots-' + ind.id);
+    state.indicators[ind.id] = 0;
+    for (let i = 0; i <= 5; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'dot';
+      dot.style.setProperty('--dc', ind.color);
+      dot.textContent = i;
+      dot.dataset.val = i;
+      dot.onclick = () => {
+        state.indicators[ind.id] = i;
+        dotsDiv.querySelectorAll('.dot').forEach(d => d.classList.toggle('on', parseInt(d.dataset.val) <= i));
+        if (ind.crisis) checkCrisis();
+      };
+      dotsDiv.appendChild(dot);
+    }
+  });
+}
+
+function checkCrisis() {
+  const warn = document.getElementById('crisisWarn');
+  warn.classList.toggle('show', state.indicators.ideacion > 0);
+}
+
+// ════ JOURNAL ════
+async function correctJournal() {
+  const text = document.getElementById('journalTa').value.trim();
+  if (!text) return;
+  const btn = document.getElementById('correctBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Procesando...';
+  const jc = document.getElementById('jcorrected');
+  const jct = document.getElementById('jcorrText');
+  jc.className = 'jcorrected show';
+  jct.textContent = 'Analizando y ordenando tu texto...';
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: `Eres un asistente de escritura empático. Tu tarea es corregir ortografía, puntuación y redacción del texto de diario emocional que te envían. Mantén el tono personal, íntimo y auténtico del usuario. No cambies el sentido ni el estilo. No agregues nada. Solo devuelve el texto corregido y bien redactado. Sin explicaciones, sin saludos.`,
+        messages: [{ role: 'user', content: text }]
+      })
+    });
+    const data = await res.json();
+    const corrected = data.content?.map(b => b.text || '').join('') || text;
+    jct.textContent = corrected;
+    state.journalCorrected = corrected;
+    document.getElementById('useCorBtn').style.display = 'inline-block';
+  } catch(e) {
+    jct.textContent = 'No se pudo conectar. Verifica tu conexión.';
+  }
+  btn.disabled = false;
+  btn.textContent = '✨ Ordenar y corregir con IA';
+}
+
+function useCorrected() {
+  document.getElementById('journalTa').value = state.journalCorrected;
+  state.journal = state.journalCorrected;
+  document.getElementById('jcorrected').className = 'jcorrected';
+  document.getElementById('useCorBtn').style.display = 'none';
+  showToast('✓ Texto actualizado');
+}
+
+// ════ SAVE ════
+async function saveEntry() {
+  const btn = document.getElementById('saveBtn');
+  btn.disabled = true;
+  btn.textContent = '💾 Guardando...';
+  state.journal = document.getElementById('journalTa').value;
+
+  const today = new Date().toISOString().slice(0, 10);
+  const entry = {
+    id: today,
+    date: new Date().toISOString(),
+    mood: state.mood,
+    emotions: JSON.parse(JSON.stringify(state.emotions)),
+    indicators: { ...state.indicators },
+    journal: state.journal,
+    journalCorrected: state.journalCorrected
+  };
+
+  try {
+    let all = [];
+    try {
+      const r = await window.storage.get('diary-entries');
+      if (r) all = JSON.parse(r.value);
+    } catch(e) {}
+    const idx = all.findIndex(e => e.id === today);
+    if (idx >= 0) all[idx] = entry; else all.unshift(entry);
+    await window.storage.set('diary-entries', JSON.stringify(all));
+    showToast('✅ Registro guardado');
+  } catch(e) {
+    // fallback localStorage
+    try {
+      let all = JSON.parse(localStorage.getItem('diary-entries') || '[]');
+      const idx = all.findIndex(e => e.id === today);
+      if (idx >= 0) all[idx] = entry; else all.unshift(entry);
+      localStorage.setItem('diary-entries', JSON.stringify(all));
+      showToast('✅ Registro guardado localmente');
+    } catch(e2) { showToast('❌ Error al guardar'); }
+  }
+  btn.disabled = false;
+  btn.textContent = '💾 Guardar registro de hoy';
+}
+
+async function loadTodayEntry() {
+  const today = new Date().toISOString().slice(0, 10);
+  let all = [];
+  try {
+    const r = await window.storage.get('diary-entries');
+    if (r) all = JSON.parse(r.value);
+  } catch(e) {
+    try { all = JSON.parse(localStorage.getItem('diary-entries') || '[]'); } catch(e2) {}
+  }
+  const entry = all.find(e => e.id === today);
+  if (!entry) return;
+  // restore
+  document.getElementById('moodSlider').value = entry.mood;
+  state.mood = entry.mood;
+  updateMoodDisplay(entry.mood);
+  document.getElementById('journalTa').value = entry.journal || '';
+  // restore indicators
+  INDICATORS.forEach(ind => {
+    const val = entry.indicators[ind.id] || 0;
+    state.indicators[ind.id] = val;
+    document.querySelectorAll(`#dots-${ind.id} .dot`).forEach(d => d.classList.toggle('on', parseInt(d.dataset.val) <= val));
+  });
+  // restore emotions
+  if (entry.emotions) {
+    Object.entries(entry.emotions).forEach(([cat, names]) => {
+      if (!names.length) return;
+      state.emotions[cat] = [...names];
+      toggleCat(cat); // open panel
+      document.querySelectorAll(`#chips-${cat} .chip`).forEach(chip => {
+        if (names.includes(chip.textContent)) chip.classList.add('on');
+      });
+    });
+  }
+  showToast('📂 Registro de hoy cargado');
+}
+
+// ════ DASHBOARD ════
+async function loadDashboard() {
+  let all = [];
+  try {
+    const r = await window.storage.get('diary-entries');
+    if (r) all = JSON.parse(r.value);
+  } catch(e) {
+    try { all = JSON.parse(localStorage.getItem('diary-entries') || '[]'); } catch(e2) {}
+  }
+  if (!all.length) {
+    document.getElementById('entriesList').innerHTML = '<div class="empty-state"><div class="empty-icon">📋</div><div>Aún no hay registros</div></div>';
+    document.getElementById('statsGrid').innerHTML = '';
+    return;
+  }
+  renderStats(all);
+  renderMoodChart(all);
+  renderEmoChart(all);
+  renderIndChart(all);
+  renderEntries(all);
+}
+
+function renderStats(all) {
+  const last = all[0];
+  const moodMd = MOOD_DATA.find(m => last.mood >= m.range[0] && last.mood <= m.range[1]);
+  const totalEmo = all.reduce((acc, e) => {
+    Object.values(e.emotions || {}).forEach(arr => acc += arr.length);
+    return acc;
+  }, 0);
+  const avgMood = (all.reduce((s, e) => s + e.mood, 0) / all.length).toFixed(1);
+  const avgIdea = (all.reduce((s, e) => s + (e.indicators?.ideacion || 0), 0) / all.length).toFixed(1);
+  const g = document.getElementById('statsGrid');
+  const stats = [
+    { val: all.length, lbl: 'Registros', color: 'var(--accent)' },
+    { val: (last.mood > 0 ? '+' : '') + last.mood, lbl: 'Ánimo hoy', color: moodMd.color },
+    { val: (avgMood > 0 ? '+' : '') + avgMood, lbl: 'Ánimo promedio', color: avgMood >= 0 ? '#22c55e' : '#e05252' },
+    { val: totalEmo, lbl: 'Emociones registradas', color: 'var(--amor)' },
+    { val: avgIdea, lbl: 'Ideación promedio', color: parseFloat(avgIdea) > 1 ? '#e05252' : '#22c55e' },
+  ];
+  g.innerHTML = stats.map(s => `<div class="stat-box"><div class="stat-val" style="color:${s.color}">${s.val}</div><div class="stat-lbl">${s.lbl}</div></div>`).join('');
+}
+
+function renderMoodChart(all) {
+  const sorted = [...all].reverse().slice(-20);
+  const labels = sorted.map(e => e.id.slice(5));
+  const data = sorted.map(e => e.mood);
+  const colors = data.map(v => {
+    const md = MOOD_DATA.find(m => v >= m.range[0] && v <= m.range[1]);
+    return md.color;
+  });
+  if (moodChart) moodChart.destroy();
+  const ctx = document.getElementById('moodChart').getContext('2d');
+  moodChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        data,
+        borderColor: 'rgba(124,106,247,0.8)',
+        backgroundColor: 'rgba(124,106,247,0.1)',
+        pointBackgroundColor: colors,
+        pointRadius: 5,
+        pointHoverRadius: 7,
+        tension: 0.4,
+        fill: true
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { min: -5, max: 5, grid: { color: 'rgba(255,255,255,.05)' }, ticks: { color: '#7a869e', font: { size: 11 } } },
+        x: { grid: { color: 'rgba(255,255,255,.05)' }, ticks: { color: '#7a869e', font: { size: 11 } } }
+      }
+    }
+  });
+}
+
+function renderEmoChart(all) {
+  const freq = {};
+  all.forEach(e => {
+    Object.entries(e.emotions || {}).forEach(([cat, names]) => {
+      freq[cat] = (freq[cat] || 0) + names.length;
+    });
+  });
+  const sorted = Object.entries(freq).sort((a,b) => b[1]-a[1]).slice(0, 8);
+  if (emoChart) emoChart.destroy();
+  const ctx = document.getElementById('emoChart').getContext('2d');
+  emoChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: sorted.map(([k]) => EMOTIONS[k].label),
+      datasets: [{
+        data: sorted.map(([,v]) => v),
+        backgroundColor: sorted.map(([k]) => EMOTIONS[k].color + 'bb'),
+        borderColor: sorted.map(([k]) => EMOTIONS[k].color),
+        borderWidth: 1, borderRadius: 6
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: 'rgba(255,255,255,.05)' }, ticks: { color: '#7a869e', font: { size: 11 } } },
+        y: { grid: { display: false }, ticks: { color: '#dde4f0', font: { size: 11 } } }
+      }
+    }
+  });
+}
+
+function renderIndChart(all) {
+  const avgs = INDICATORS.map(ind => {
+    const sum = all.reduce((s, e) => s + (e.indicators?.[ind.id] || 0), 0);
+    return parseFloat((sum / all.length).toFixed(1));
+  });
+  if (indChart) indChart.destroy();
+  const ctx = document.getElementById('indChart').getContext('2d');
+  indChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: INDICATORS.map(i => i.name.split(' ').slice(0,2).join(' ')),
+      datasets: [{
+        data: avgs,
+        backgroundColor: INDICATORS.map(i => i.color + 'bb'),
+        borderColor: INDICATORS.map(i => i.color),
+        borderWidth: 1, borderRadius: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { min: 0, max: 5, grid: { color: 'rgba(255,255,255,.05)' }, ticks: { color: '#7a869e', font: { size: 11 } } },
+        x: { grid: { display: false }, ticks: { color: '#dde4f0', font: { size: 11 } } }
+      }
+    }
+  });
+}
+
+function renderEntries(all) {
+  const div = document.getElementById('entriesList');
+  div.innerHTML = '';
+  all.forEach((entry, i) => {
+    const md = MOOD_DATA.find(m => entry.mood >= m.range[0] && entry.mood <= m.range[1]);
+    const dateStr = new Date(entry.date).toLocaleDateString('es-CL', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+    const allEmos = Object.entries(entry.emotions || {}).flatMap(([cat, names]) => names.map(n => ({ name: n, color: EMOTIONS[cat]?.color || '#888' })));
+    const inds = INDICATORS.filter(ind => (entry.indicators?.[ind.id] || 0) > 0);
+
+    const item = document.createElement('div');
+    item.className = 'entry-item';
+    item.innerHTML = `
+      <div class="entry-hdr">
+        <div class="entry-date">${dateStr}</div>
+        <div class="entry-mood" style="background:${md.color}22;color:${md.color}">${md.icon} ${entry.mood > 0 ? '+' : ''}${entry.mood}</div>
+      </div>
+      <div class="entry-body" id="ebody-${i}">
+        <div class="entry-tags">${allEmos.slice(0,12).map(e => `<span class="entry-tag" style="background:${e.color}22;color:${e.color}">${e.name}</span>`).join('')}</div>
+        <div class="entry-ind-row">${inds.map(ind => `<span class="ind-badge">${ind.name}: ${entry.indicators[ind.id]}/5</span>`).join('')}</div>
+        <div class="entry-text">${entry.journal || '<em>Sin texto</em>'}</div>
+      </div>
+    `;
+    item.querySelector('.entry-hdr').onclick = () => item.querySelector('.entry-body').classList.toggle('open');
+    div.appendChild(item);
+  });
+}
+
+// ════ GLOSARIO ════
+function buildGlosario() {
+  const div = document.getElementById('glosarioContent');
+  Object.entries(EMOTIONS).forEach(([key, cat]) => {
+    const sec = document.createElement('div');
+    sec.className = 'glos-section';
+    sec.innerHTML = `
+      <div class="glos-hdr" style="--cc:${cat.color}; color:${cat.color}">
+        <div class="glos-hdr-icon">${cat.icon}</div>
+        <div><h3>${cat.label}</h3><p>${cat.desc}</p></div>
+      </div>
+      <div class="glos-grid">${Object.entries(cat.items).map(([name, def]) =>
+        `<div class="glos-item"><div class="glos-name">${name}</div><div class="glos-def">${def}</div></div>`
+      ).join('')}</div>
+    `;
+    div.appendChild(sec);
+  });
+}
+
+// ════ NAVIGATION ════
+function showView(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('view-' + id).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(t => {
+    if (t.textContent.toLowerCase().includes(id.slice(0,3))) t.classList.add('active');
+  });
+  if (id === 'dashboard') loadDashboard();
+}
+
+// ════ TOAST ════
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ════ BOOT ════
+init();
+buildGlosario();
+</script>
+
+
+</body></html>
