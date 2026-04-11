@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Medismart · Dashboard CEO · Abril 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --card: #21253a;
+    --border: #2e3354;
+    --accent: #4f6ef7;
+    --accent2: #7c3aed;
+    --green: #10b981;
+    --yellow: #f59e0b;
+    --red: #ef4444;
+    --orange: #f97316;
+    --text: #e8eaf0;
+    --muted: #8b90a8;
+    --radius: 14px;
+    --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  /* TOP HEADER */
+  .header { background: linear-gradient(135deg, #1a1d27 0%, #151829 100%); border-bottom: 1px solid var(--border); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; }
+  .header-left h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; }
+  .header-left h1 span { color: var(--accent); }
+  .header-left p { color: var(--muted); font-size: 13px; margin-top: 3px; }
+  .header-badge { background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.4); color: #fca5a5; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+  .header-badge::before { content: '●'; animation: pulse 1.4s infinite; color: var(--red); }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  /* NAV TABS */
+  .nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 40px; display: flex; gap: 4px; overflow-x: auto; }
+  .nav-tab { padding: 14px 20px; font-size: 13px; font-weight: 500; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; transition: all .2s; white-space: nowrap; }
+  .nav-tab:hover { color: var(--text); }
+  .nav-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* PAGES */
+  .page { display: none; padding: 32px 40px; max-width: 1400px; margin: 0 auto; }
+  .page.active { display: block; }
+
+  /* GRID HELPERS */
+  .grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 24px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 24px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+  .grid-2-1 { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 24px; }
+
+  /* CARDS */
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+  .card-title { font-size: 11px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+
+  /* KPI CARDS */
+  .kpi-value { font-size: 28px; font-weight: 700; line-height: 1; }
+  .kpi-label { font-size: 12px; color: var(--muted); margin-top: 6px; }
+  .kpi-delta { font-size: 12px; margin-top: 8px; font-weight: 600; }
+  .kpi-red { border-top: 3px solid var(--red); }
+  .kpi-green { border-top: 3px solid var(--green); }
+  .kpi-yellow { border-top: 3px solid var(--yellow); }
+  .kpi-blue { border-top: 3px solid var(--accent); }
+  .kpi-purple { border-top: 3px solid var(--accent2); }
+  .kpi-orange { border-top: 3px solid var(--orange); }
+  .color-red { color: var(--red); }
+  .color-green { color: var(--green); }
+  .color-yellow { color: var(--yellow); }
+  .color-blue { color: var(--accent); }
+  .color-orange { color: var(--orange); }
+
+  /* ALERTS */
+  .alert { border-radius: 10px; padding: 14px 16px; font-size: 13px; display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; line-height: 1.5; }
+  .alert-red { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #fca5a5; }
+  .alert-yellow { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3); color: #fde68a; }
+  .alert-green { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); color: #6ee7b7; }
+  .alert-blue { background: rgba(79,110,247,0.1); border: 1px solid rgba(79,110,247,0.3); color: #93c5fd; }
+  .alert-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+  /* SECTION TITLE */
+  .section-title { font-size: 16px; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .section-title .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+
+  /* TABLE */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: rgba(79,110,247,0.12); color: var(--muted); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px; padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+  td { padding: 10px 14px; border-bottom: 1px solid rgba(46,51,84,0.5); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(79,110,247,0.05); }
+  .badge { display: inline-block; padding: 3px 9px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+  .badge-red { background: rgba(239,68,68,0.15); color: #fca5a5; }
+  .badge-green { background: rgba(16,185,129,0.15); color: #6ee7b7; }
+  .badge-yellow { background: rgba(245,158,11,0.15); color: #fde68a; }
+  .badge-gray { background: rgba(139,144,168,0.15); color: var(--muted); }
+
+  /* PRIORITY ITEMS */
+  .priority-item { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; margin-bottom: 12px; display: flex; gap: 14px; align-items: flex-start; }
+  .priority-item:hover { border-color: var(--accent); }
+  .priority-num { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0; }
+  .pn-red { background: rgba(239,68,68,0.2); color: #fca5a5; }
+  .pn-yellow { background: rgba(245,158,11,0.2); color: #fde68a; }
+  .pn-blue { background: rgba(79,110,247,0.2); color: #93c5fd; }
+  .priority-item h4 { font-size: 14px; font-weight: 600; margin-bottom: 5px; }
+  .priority-item p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .priority-tag { font-size: 11px; font-weight: 700; letter-spacing: 0.5px; padding: 2px 8px; border-radius: 6px; display: inline-block; margin-bottom: 6px; }
+  .pt-red { background: rgba(239,68,68,0.15); color: #fca5a5; }
+  .pt-yellow { background: rgba(245,158,11,0.15); color: #fde68a; }
+  .pt-blue { background: rgba(79,110,247,0.15); color: #93c5fd; }
+
+  /* Q&A */
+  .qa-item { background: var(--card); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 12px; overflow: hidden; }
+  .qa-q { padding: 16px 18px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 14px; transition: background .2s; }
+  .qa-q:hover { background: rgba(79,110,247,0.08); }
+  .qa-q .tag { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 6px; margin-right: 8px; }
+  .qa-a { padding: 0 18px; max-height: 0; overflow: hidden; transition: max-height .3s ease, padding .3s; font-size: 13px; color: #c5c9db; line-height: 1.7; }
+  .qa-a.open { max-height: 400px; padding: 0 18px 16px; }
+  .qa-chevron { transition: transform .3s; font-size: 12px; color: var(--muted); }
+  .qa-chevron.open { transform: rotate(180deg); }
+
+  /* CHART CONTAINERS */
+  .chart-wrap { position: relative; height: 260px; }
+
+  /* PROGRESS BAR */
+  .progress-row { margin-bottom: 14px; }
+  .progress-label { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 13px; }
+  .progress-bar { height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 4px; transition: width 1s ease; }
+
+  /* TIMELINE */
+  .timeline { position: relative; padding-left: 24px; }
+  .timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 2px; background: var(--border); }
+  .tl-item { position: relative; margin-bottom: 18px; }
+  .tl-dot { width: 14px; height: 14px; border-radius: 50%; position: absolute; left: -20px; top: 3px; border: 2px solid var(--bg); }
+  .tl-item h4 { font-size: 13px; font-weight: 600; }
+  .tl-item p { font-size: 12px; color: var(--muted); margin-top: 3px; line-height: 1.5; }
+  .tl-date { font-size: 11px; color: var(--muted); font-weight: 600; margin-bottom: 4px; }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .grid-4, .grid-3 { grid-template-columns: 1fr 1fr; }
+    .grid-2, .grid-2-1 { grid-template-columns: 1fr; }
+    .header, .nav, .page { padding-left: 20px; padding-right: 20px; }
+  }
+  @media (max-width: 600px) {
+    .grid-4, .grid-3, .grid-2, .grid-2-1 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <h1><span>Medismart</span> · Dashboard Ejecutivo CEO</h1>
+    <p>Reporte consolidado · 9 de abril de 2026 · Uso interno — Confidencial</p>
+  </div>
+  <div class="header-badge">🔴 Situación Crítica de Caja</div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <div class="nav-tab active" onclick="showPage('resumen',this)">📊 Resumen</div>
+  <div class="nav-tab" onclick="showPage('caja',this)">💸 Flujo de Caja</div>
+  <div class="nav-tab" onclick="showPage('deudas',this)">🏦 Deudas</div>
+  <div class="nav-tab" onclick="showPage('equipo',this)">👥 Equipo</div>
+  <div class="nav-tab" onclick="showPage('acciones',this)">⚡ Acciones</div>
+  <div class="nav-tab" onclick="showPage('qa',this)">💬 Q&amp;A CEO</div>
+</div>
+
+<!-- =========================================================
+     PAGE 1 · RESUMEN
+     ========================================================= -->
+<div id="page-resumen" class="page active">
+
+  <!-- KPIs TOP -->
+  <div class="grid-4">
+    <div class="card kpi-red">
+      <div class="card-title">Saldo Caja Proyectado Ago-26</div>
+      <div class="kpi-value color-red">-$1.029 MM</div>
+      <div class="kpi-label">Sin financiamiento adicional</div>
+      <div class="kpi-delta color-red">▼ Crisis si no hay acción</div>
+    </div>
+    <div class="card kpi-yellow">
+      <div class="card-title">Deuda Bancaria Total (CLP)</div>
+      <div class="kpi-value color-yellow">$861 MM</div>
+      <div class="kpi-label">~$83M cuota mensual</div>
+      <div class="kpi-delta color-yellow">⚠ 1 pagaré vencido</div>
+    </div>
+    <div class="card kpi-orange">
+      <div class="card-title">Deuda Accionistas (USD)</div>
+      <div class="kpi-value color-orange">USD 822 K</div>
+      <div class="kpi-label">~$772 MM CLP al TC referencial</div>
+      <div class="kpi-delta color-yellow">2 sin fecha de pago</div>
+    </div>
+    <div class="card kpi-blue">
+      <div class="card-title">Ventas Promedio Mensual 2025</div>
+      <div class="kpi-value color-blue">$397 MM</div>
+      <div class="kpi-label">11 meses Ene–Nov 2025</div>
+      <div class="kpi-delta color-red">▼ 25% desde enero</div>
+    </div>
+  </div>
+
+  <div class="grid-4">
+    <div class="card kpi-red">
+      <div class="card-title">Gap Financiamiento May–Ago 26</div>
+      <div class="kpi-value color-red">$400–600 MM</div>
+      <div class="kpi-label">Capital urgente requerido</div>
+      <div class="kpi-delta color-red">Déficit mensual $143–197M</div>
+    </div>
+    <div class="card kpi-yellow">
+      <div class="card-title">Convenios TGR (CLP)</div>
+      <div class="kpi-value color-yellow">$401 MM</div>
+      <div class="kpi-label">17 resoluciones activas</div>
+      <div class="kpi-delta color-green">✓ Se reduce H2-2026</div>
+    </div>
+    <div class="card kpi-green">
+      <div class="card-title">Ingreso Mensual Clientes Chile</div>
+      <div class="kpi-value color-green">$527 MM</div>
+      <div class="kpi-label">Promedio bruto mensual</div>
+      <div class="kpi-delta color-green">Factoring activo en mayoría</div>
+    </div>
+    <div class="card kpi-red">
+      <div class="card-title">Finiquitos Pendientes</div>
+      <div class="kpi-value color-red">10+</div>
+      <div class="kpi-label">Sin monto ni fecha definida</div>
+      <div class="kpi-delta color-red">Pasivo contingente real</div>
+    </div>
+  </div>
+
+  <!-- ALERTS -->
+  <div class="section-title"><div class="dot"></div> Alertas Críticas</div>
+  <div class="alert alert-red">
+    <span class="alert-icon">🚨</span>
+    <div><strong>FINANCIAMIENTO URGENTE:</strong> El flujo de caja proyectado muestra saldo acumulado de -$1.029 MM en agosto 2026 sin financiamiento adicional. Se requieren $400–600 MM CLP antes de mayo.</div>
+  </div>
+  <div class="alert alert-red">
+    <span class="alert-icon">⚖️</span>
+    <div><strong>PAGARÉ MANDIOLA VENCIDO:</strong> Deuda de $27,6 MM CLP venció el 31/12/2024. Sigue activa con cuota registrada de $28,5 MM. Riesgo legal inmediato.</div>
+  </div>
+  <div class="alert alert-yellow">
+    <span class="alert-icon">⚠️</span>
+    <div><strong>TGR — RIESGO DE CAÍDA:</strong> Intereses atrasados de $36,4 MM. El incumplimiento de cualquiera de los 17 convenios puede reactivar la totalidad de la deuda.</div>
+  </div>
+  <div class="alert alert-yellow">
+    <span class="alert-icon">👥</span>
+    <div><strong>FINIQUITOS SIN MONTO:</strong> 10+ personas con acuerdos de salida no cuantificados. Pasivo contingente no registrado que podría ser significativo.</div>
+  </div>
+  <div class="alert alert-green">
+    <span class="alert-icon">✅</span>
+    <div><strong>BUENA NOTICIA — TGR:</strong> La carga mensual de convenios TGR baja de $80M (abr) a $24M (nov-26), liberando flujo operativo en el segundo semestre.</div>
+  </div>
+  <div class="alert alert-blue">
+    <span class="alert-icon">💡</span>
+    <div><strong>OPORTUNIDAD FACTORING:</strong> Consorcio Nacional ($17M/mes) y Southbridge ($1,5M/mes) aún no tienen factoring activo. Activarlos aceleraría la liquidez inmediatamente.</div>
+  </div>
+
+  <!-- MINI CHARTS ROW -->
+  <div class="grid-2" style="margin-top:8px;">
+    <div class="card">
+      <div class="card-title">Ventas Mensuales Chile 2025 (MM CLP)</div>
+      <div class="chart-wrap"><canvas id="chartVentas"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Distribución de Compromisos Mensuales</div>
+      <div class="chart-wrap"><canvas id="chartCompromisos"></canvas></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- =========================================================
+     PAGE 2 · FLUJO DE CAJA
+     ========================================================= -->
+<div id="page-caja" class="page">
+
+  <div class="alert alert-red">
+    <span class="alert-icon">🔴</span>
+    <div><strong>ALERTA MÁXIMA:</strong> Abril 2026 ya cerró con saldo negativo acumulado de -$384,9 MM (dato real confirmado). Sin acción, el saldo llega a -$1.029 MM en agosto.</div>
+  </div>
+
+  <div class="card" style="margin-bottom:24px;">
+    <div class="card-title">Evolución del Saldo Final Acumulado (M CLP)</div>
+    <div style="position:relative;height:300px;"><canvas id="chartCaja"></canvas></div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Detalle Mensual — Flujo de Caja</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Concepto</th><th>Mar-26 (REAL)</th><th>Abr-26 (REAL)</th><th>May-26 (PROY)</th><th>Jun-26 (PROY)</th></tr></thead>
+          <tbody>
+            <tr><td>Saldo inicial</td><td>$137.838K</td><td>$49.424K</td><td class="color-red">-$384.863K</td><td class="color-red">-$582.577K</td></tr>
+            <tr><td>Recaudación clientes</td><td class="color-green">+$340.421K</td><td class="color-green">+$289.633K</td><td class="color-green">+$337.364K</td><td class="color-green">+$340.848K</td></tr>
+            <tr><td>Recibo Colombia</td><td class="color-green">+$45.327K</td><td class="color-green">+$23.984K</td><td class="color-green">+$23.984K</td><td class="color-green">+$23.984K</td></tr>
+            <tr><td>Remuneraciones netas</td><td class="color-red">-$116.419K</td><td class="color-red">-$126.546K</td><td class="color-red">-$131.621K</td><td class="color-red">-$131.621K</td></tr>
+            <tr><td>Honorarios médicos</td><td class="color-red">-$106.740K</td><td class="color-red">-$104.977K</td><td class="color-red">-$104.977K</td><td class="color-red">-$104.977K</td></tr>
+            <tr><td>Convenios TGR</td><td class="color-red">-$78.518K</td><td class="color-red">-$80.215K</td><td class="color-yellow">-$38.508K</td><td class="color-yellow">-$38.508K</td></tr>
+            <tr><td>Reestructuración</td><td class="color-red">-$129.969K</td><td class="color-red">-$130.344K</td><td class="color-yellow">-$41.123K</td><td class="color-green">-$7.133K</td></tr>
+            <tr><td>Préstamos accionistas</td><td class="color-green">+$182.850K</td><td>$0</td><td>$0</td><td>$0</td></tr>
+            <tr style="font-weight:700;"><td>Flujo neto mes</td><td class="color-yellow">-$88.414K</td><td class="color-red">-$434.286K</td><td class="color-red">-$197.714K</td><td class="color-red">-$155.311K</td></tr>
+            <tr style="font-weight:700;"><td><strong>SALDO FINAL</strong></td><td class="color-green"><strong>$49.424K</strong></td><td class="color-red"><strong>-$384.863K</strong></td><td class="color-red"><strong>-$582.577K</strong></td><td class="color-red"><strong>-$737.888K</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Palancas de Mejora del Flujo</div>
+      <div style="margin-top:8px;">
+        <div class="progress-row">
+          <div class="progress-label"><span>Reducción reestructuración (May→Jun)</span><span class="color-green">-$123M aliviado</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:85%;background:var(--green);"></div></div>
+        </div>
+        <div class="progress-row">
+          <div class="progress-label"><span>Reducción TGR (Abr→Nov)</span><span class="color-green">-$56M aliviado</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:65%;background:var(--accent);"></div></div>
+        </div>
+        <div class="progress-row">
+          <div class="progress-label"><span>Factoring Consorcio + Southbridge</span><span class="color-blue">+$18,5M potencial</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:15%;background:var(--accent);"></div></div>
+        </div>
+        <div class="progress-row">
+          <div class="progress-label"><span>Gap financiamiento requerido</span><span class="color-red">$400–600M</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:100%;background:var(--red);"></div></div>
+        </div>
+      </div>
+
+      <div style="margin-top:20px;">
+        <div class="section-title" style="font-size:13px;"><div class="dot" style="background:var(--yellow);"></div> Cuotas TGR 2026 — Reducción Gradual</div>
+        <div class="chart-wrap" style="height:180px;"><canvas id="chartTGR"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- =========================================================
+     PAGE 3 · DEUDAS
+     ========================================================= -->
+<div id="page-deudas" class="page">
+
+  <div class="grid-3" style="margin-bottom:24px;">
+    <div class="card kpi-red">
+      <div class="card-title">Deuda Bancaria Total</div>
+      <div class="kpi-value color-red">$861 MM</div>
+      <div class="kpi-label">Cuota mensual ~$83M CLP</div>
+    </div>
+    <div class="card kpi-orange">
+      <div class="card-title">Deuda Accionistas</div>
+      <div class="kpi-value color-orange">USD 822K</div>
+      <div class="kpi-label">~$772 MM CLP · Cuota ~$17K USD/mes</div>
+    </div>
+    <div class="card kpi-yellow">
+      <div class="card-title">Intereses TGR Atrasados</div>
+      <div class="kpi-value color-yellow">$36,4 MM</div>
+      <div class="kpi-label">Sobre saldo Convenio TGR</div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Deudas Bancarias y Financieras (CLP)</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Acreedor</th><th>Saldo</th><th>Cuota/Mes</th><th>Vto.</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Convenios TGR</strong></td><td>$401.964.005</td><td>$31.898.977</td><td>Jul-2027</td><td><span class="badge badge-yellow">Vigente ⚠</span></td></tr>
+            <tr><td>Banco Estado Medical</td><td>$223.460.813</td><td>$8.325.655</td><td>Oct-2028</td><td><span class="badge badge-green">Vigente</span></td></tr>
+            <tr><td>Levannta</td><td>$124.740.029</td><td>$7.795.972</td><td>Oct-2027</td><td><span class="badge badge-green">Vigente</span></td></tr>
+            <tr><td>Santander 4176</td><td>$62.323.260</td><td>$3.340.624</td><td>Nov-2027</td><td><span class="badge badge-green">Vigente</span></td></tr>
+            <tr><td>Santander 7573</td><td>$7.153.941</td><td>$1.817.966</td><td>Jul-2026</td><td><span class="badge badge-green">Vigente</span></td></tr>
+            <tr><td>Crédito Security</td><td>$14.477.906</td><td>$1.513.883</td><td>Dic-2026</td><td><span class="badge badge-green">Vigente</span></td></tr>
+            <tr style="background:rgba(239,68,68,0.07);"><td><strong>E. Mandiola (pagaré)</strong></td><td>$27.648.940</td><td>$28.543.151</td><td>31/12/2024</td><td><span class="badge badge-red">🔴 VENCIDO</span></td></tr>
+            <tr><td>Santander COMEX</td><td>$0</td><td>—</td><td>Nov-2025</td><td><span class="badge badge-gray">Liquidado</span></td></tr>
+            <tr><td>B. Estado Teledoc</td><td>$0</td><td>—</td><td>May-2025</td><td><span class="badge badge-gray">Liquidado</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Deudas con Accionistas (en USD)</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Acreedor</th><th>Saldo USD</th><th>Cuota</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Alex Vicencio</strong></td><td>USD 467.500</td><td>USD 16.500/mes</td><td><span class="badge badge-green">Al día</span></td></tr>
+            <tr><td>Mauricio Urbina 1</td><td>USD 102.645</td><td>USD 898/mes</td><td><span class="badge badge-green">Vigente</span></td></tr>
+            <tr style="background:rgba(245,158,11,0.07);"><td>Alberto Eguiguren</td><td>USD 102.000</td><td>Sin cuota</td><td><span class="badge badge-yellow">⚠ Sin calendario</span></td></tr>
+            <tr style="background:rgba(245,158,11,0.07);"><td>Alejandro Weinstein</td><td>USD 150.000</td><td>Sin cuota</td><td><span class="badge badge-yellow">⚠ Sin calendario</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top:20px;">
+        <div class="section-title" style="font-size:13px;"><div class="dot" style="background:var(--accent2);"></div> Nota Convertible Alex Vicencio</div>
+        <div class="table-wrap">
+          <table>
+            <tbody>
+              <tr><td>Monto original</td><td><strong>USD 550.000</strong></td></tr>
+              <tr><td>Tasa anual</td><td>13,5%</td></tr>
+              <tr><td>Cuota mensual</td><td>USD 16.500–18.272</td></tr>
+              <tr><td>Saldo capital (Feb-26)</td><td>USD 401.500</td></tr>
+              <tr><td>Vencimiento</td><td>~Marzo 2028</td></tr>
+              <tr><td>Pagos Jun-25 a Feb-26</td><td><span class="badge badge-green">CONFIRMADOS</span></td></tr>
+              <tr><td>Mar-26 en adelante</td><td><span class="badge badge-yellow">PROYECTADOS</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Composición de la Deuda Total (CLP Equivalente)</div>
+    <div style="display:flex;gap:24px;align-items:center;flex-wrap:wrap;">
+      <div style="flex:0 0 260px;height:260px;"><canvas id="chartDeuda"></canvas></div>
+      <div style="flex:1;min-width:200px;">
+        <div class="alert alert-red" style="margin-bottom:10px;">
+          <span class="alert-icon">⚖️</span>
+          <div>El pagaré Mandiola ($27,6 MM) lleva más de 3 meses vencido. Sin acción legal inmediata, puede derivar en demanda civil o embargo.</div>
+        </div>
+        <div class="alert alert-yellow">
+          <span class="alert-icon">📋</span>
+          <div>Eguiguren ($102K USD) y Weinstein ($150K USD) representan $237K USD (~$223 MM CLP) sin calendar de pago. Formalizar urgente para mantener relación y claridad jurídica.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- =========================================================
+     PAGE 4 · EQUIPO
+     ========================================================= -->
+<div id="page-equipo" class="page">
+
+  <div class="grid-3" style="margin-bottom:24px;">
+    <div class="card kpi-red">
+      <div class="card-title">Costo Total Nómina Mensual</div>
+      <div class="kpi-value color-red">$220+ MM</div>
+      <div class="kpi-label">Contratados + Honorarios médicos + Externos</div>
+    </div>
+    <div class="card kpi-yellow">
+      <div class="card-title">Honorarios Médicos Mensuales</div>
+      <div class="kpi-value color-yellow">~$104–116 MM</div>
+      <div class="kpi-label">Línea separada del flujo operacional</div>
+    </div>
+    <div class="card kpi-blue">
+      <div class="card-title">Compromisos Fijos Mensuales</div>
+      <div class="kpi-value color-blue">$244 MM</div>
+      <div class="kpi-label">Proveedores + créditos + nómina</div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">C-Level y Equipo Contratado — Salarios Netos CLP</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Nombre / Cargo</th><th>Mar-26</th><th>Abr-26</th><th>May-26+</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Patricio Mujica — CEO</strong></td><td>$10.546.832</td><td>$10.546.832</td><td>$10.546.832</td></tr>
+            <tr><td>Miguel Cárdenas — CFO</td><td>$12.505.906</td><td class="color-muted" style="color:var(--muted);">—</td><td>$7.500.000</td></tr>
+            <tr><td>Maximiliano Picero — CPO</td><td>$7.019.507</td><td>$7.019.507</td><td>$7.019.507</td></tr>
+            <tr><td>Gte. RRHH (por contratar)</td><td style="color:var(--muted);">—</td><td style="color:var(--muted);">—</td><td class="color-yellow">$6.000.000</td></tr>
+            <tr><td>Javier Estay — Psiquiatra</td><td>$5.042.466</td><td>$5.042.466</td><td>$5.042.466</td></tr>
+            <tr><td>Carolina Pulgar — TI Manager</td><td>$3.056.848</td><td>$3.056.848</td><td>$3.056.848</td></tr>
+            <tr><td>Diego Aragonese — Head Finance</td><td>$2.999.935</td><td>$2.999.935</td><td>$2.999.935</td></tr>
+            <tr><td>Jorge Rios — TI Leader</td><td>$2.675.454</td><td>$2.675.454</td><td>$2.675.454</td></tr>
+            <tr><td>Soledad Paredes — TI Leader</td><td>$2.501.084</td><td>$2.501.084</td><td>$2.501.084</td></tr>
+            <tr><td>Mario Álvarez — Head Digital</td><td>$2.494.216</td><td>$2.494.216</td><td>$2.494.216</td></tr>
+            <tr><td>Carol Zamorano — Head CS</td><td>$1.971.016</td><td>$1.971.016</td><td>$1.971.016</td></tr>
+            <tr style="background:rgba(245,158,11,0.05);"><td>María Callejo — KAM Ins.</td><td>$2.194.189</td><td class="color-red">—</td><td class="color-red">—</td></tr>
+            <tr style="font-weight:700;background:rgba(79,110,247,0.06);"><td>TOTAL CONTRATADOS</td><td>$105.920.379</td><td>$91.220.284</td><td>$105.720.284</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Finiquitos Pendientes — Sin Monto Definido</div>
+      <div class="alert alert-yellow" style="margin-bottom:14px;">
+        <span class="alert-icon">⚠️</span>
+        <div>Estas personas tienen procesos de salida sin cuantificar. Son un <strong>pasivo contingente real</strong> que debe resolverse cuanto antes.</div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Persona</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr><td>Lientur Hermosilla</td><td><span class="badge badge-yellow">Pendiente</span></td></tr>
+            <tr><td>Pablo Jofré</td><td><span class="badge badge-yellow">Pendiente</span></td></tr>
+            <tr><td>Paz Fonseca</td><td><span class="badge badge-yellow">Pendiente</span></td></tr>
+            <tr><td>Karla Montecinos</td><td><span class="badge badge-yellow">Pendiente</span></td></tr>
+            <tr><td>Carolina Pulgar</td><td><span class="badge badge-yellow">Pendiente</span></td></tr>
+            <tr><td>Nelson Rojas</td><td><span class="badge badge-yellow">Pendiente</span></td></tr>
+            <tr><td>María Callejo</td><td><span class="badge badge-yellow">Pendiente</span></td></tr>
+            <tr><td>Ricardo Carvallo</td><td><span class="badge badge-yellow">Pendiente</span></td></tr>
+            <tr><td>Dr. Arriagada</td><td><span class="badge badge-yellow">Pendiente</span></td></tr>
+            <tr><td>Maximiliano Picero</td><td><span class="badge badge-yellow">Pendiente</span></td></tr>
+            <tr><td>Alex Vicencio</td><td><span class="badge badge-red">Pagaré activo</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Top Compromisos Mensuales Fijos (CLP)</div>
+    <div style="position:relative;height:240px;"><canvas id="chartProveedores"></canvas></div>
+  </div>
+
+</div>
+
+<!-- =========================================================
+     PAGE 5 · ACCIONES
+     ========================================================= -->
+<div id="page-acciones" class="page">
+
+  <div class="section-title"><div class="dot" style="background:var(--red);"></div> 🚨 Urgente — Acción Inmediata</div>
+
+  <div class="priority-item">
+    <div class="priority-num pn-red">1</div>
+    <div>
+      <span class="priority-tag pt-red">CRÍTICO · HOY</span>
+      <h4>Gestionar capital de emergencia: $400–600 MM CLP</h4>
+      <p>Sin financiamiento adicional el modelo proyecta saldo de -$1.029 MM en agosto 2026. Opciones a explorar: nuevos préstamos de accionistas, aumento de capital, línea de crédito bancaria de corto plazo, o factoring adicional. Fecha límite: antes del 1 de mayo.</p>
+    </div>
+  </div>
+
+  <div class="priority-item">
+    <div class="priority-num pn-red">2</div>
+    <div>
+      <span class="priority-tag pt-red">CRÍTICO · ESTA SEMANA</span>
+      <h4>Resolver pagaré Eduardo Mandiola ($27,6 MM CLP vencido)</h4>
+      <p>Venció el 31/12/2024. Lleva 3+ meses en mora. Existe riesgo de demanda civil, notificación al SBIF o protesto. Contactar a Mandiola esta semana para acordar pago o refinanciamiento, documentado con abogados.</p>
+    </div>
+  </div>
+
+  <div class="priority-item">
+    <div class="priority-num pn-red">3</div>
+    <div>
+      <span class="priority-tag pt-red">URGENTE · ESTE MES</span>
+      <h4>Cuantificar y provisionar los 10+ finiquitos pendientes</h4>
+      <p>Personas con acuerdos de salida sin monto ni fecha. El área legal/RRHH debe presentar al CEO un informe con monto estimado de cada finiquito dentro de los próximos 15 días. Provisionar en el modelo de caja.</p>
+    </div>
+  </div>
+
+  <div class="section-title" style="margin-top:8px;"><div class="dot" style="background:var(--yellow);"></div> ⏱ Corto Plazo — 1 a 3 meses</div>
+
+  <div class="priority-item">
+    <div class="priority-num pn-yellow">4</div>
+    <div>
+      <span class="priority-tag pt-yellow">1–3 MESES</span>
+      <h4>Formalizar calendarios de pago con Eguiguren y Weinstein</h4>
+      <p>Alberto Eguiguren ($102K USD) y Alejandro Weinstein ($150K USD) no tienen cuota ni fecha definida. Riesgo legal y de relación accionaria. Proponer esquema mensual razonable y documentarlo con pagaré o contrato de mutuo.</p>
+    </div>
+  </div>
+
+  <div class="priority-item">
+    <div class="priority-num pn-yellow">5</div>
+    <div>
+      <span class="priority-tag pt-yellow">1–3 MESES</span>
+      <h4>Activar factoring con Consorcio Nacional y Southbridge</h4>
+      <p>Consorcio Nacional ($17M/mes) y Southbridge ($1,5M/mes) no tienen factoring activo. Activarlos podría inyectar $18,5 MM CLP adicionales mensual al flujo operativo de manera inmediata y sin nueva deuda.</p>
+    </div>
+  </div>
+
+  <div class="priority-item">
+    <div class="priority-num pn-yellow">6</div>
+    <div>
+      <span class="priority-tag pt-yellow">1–3 MESES</span>
+      <h4>Monitorear nota convertible Alex Vicencio (USD 16.500/mes)</h4>
+      <p>Pagos Mar-2026 en adelante son proyectados. Confirmar cada pago mensual en tiempo y forma. El saldo de USD 401.500 a tasa 13,5% anual es una deuda costosa que debe mantenerse al día para no gatillar cláusulas de aceleración.</p>
+    </div>
+  </div>
+
+  <div class="priority-item">
+    <div class="priority-num pn-yellow">7</div>
+    <div>
+      <span class="priority-tag pt-yellow">1–3 MESES</span>
+      <h4>Mantener cumplimiento de los 17 convenios TGR ($38–41M/mes)</h4>
+      <p>El incumplimiento de un solo convenio puede reactivar la totalidad de la deuda TGR ($401 MM). Asignar responsable de seguimiento semanal. La buena noticia: la carga baja de $80M (abr) a $24M (nov). Si se mantiene el cumplimiento, se libera ~$56M de flujo en H2-2026.</p>
+    </div>
+  </div>
+
+  <div class="section-title" style="margin-top:8px;"><div class="dot" style="background:var(--accent);"></div> 📈 Mediano Plazo — 3 a 6 meses</div>
+
+  <div class="priority-item">
+    <div class="priority-num pn-blue">8</div>
+    <div>
+      <span class="priority-tag pt-blue">3–6 MESES</span>
+      <h4>Revertir tendencia de ventas 2025 (caída ~25%)</h4>
+      <p>Las ventas cayeron de $467M (ene-25) a $355M (nov-25). Revisar con el CPO la estrategia comercial 2026: retención de clientes clave, nuevos productos, expansión de cartera de aseguradoras. Definir KPIs de ventas para Q3-2026.</p>
+    </div>
+  </div>
+
+  <div class="priority-item">
+    <div class="priority-num pn-blue">9</div>
+    <div>
+      <span class="priority-tag pt-blue">3–6 MESES</span>
+      <h4>Optimizar estructura de costos — margen muy ajustado</h4>
+      <p>Con ingresos ~$364M/mes proyectados y costos de nómina + honorarios médicos + externos superando $220M, el margen operativo antes de compromisos financieros es muy estrecho. Revisar optimización de costos de TI (Azure $9,5M, AWS $8M), estructura de honorarios médicos, y contratos de consultoría.</p>
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="card" style="margin-top:8px;">
+    <div class="card-title">Línea de Tiempo de Vencimientos Clave 2026</div>
+    <div class="timeline" style="margin-top:10px;">
+      <div class="tl-item"><div class="tl-dot" style="background:var(--red);"></div><div class="tl-date">YA VENCIDO · 31 Dic 2024</div><h4>Pagaré Eduardo Mandiola</h4><p>$27,6 MM en mora — acción legal inmediata requerida</p></div>
+      <div class="tl-item"><div class="tl-dot" style="background:var(--red);"></div><div class="tl-date">AHORA · Abril 2026</div><h4>Gap de caja inicia</h4><p>Saldo ya negativo: -$384,9 MM acumulado (real confirmado)</p></div>
+      <div class="tl-item"><div class="tl-dot" style="background:var(--orange);"></div><div class="tl-date">Mayo 2026</div><h4>Deadline financiamiento</h4><p>Sin capital adicional el saldo acumulado llega a -$582 MM</p></div>
+      <div class="tl-item"><div class="tl-dot" style="background:var(--yellow);"></div><div class="tl-date">May–Jul 2026</div><h4>Vencen 6 resoluciones TGR</h4><p>Resoluciones 147232, 177499, 190150, 141228, 216610, 239610</p></div>
+      <div class="tl-item"><div class="tl-dot" style="background:var(--yellow);"></div><div class="tl-date">Julio 2026</div><h4>Santander 7573 liquida</h4><p>$7,1 MM pendientes a $1,8M/mes</p></div>
+      <div class="tl-item"><div class="tl-dot" style="background:var(--green);"></div><div class="tl-date">Agosto 2026</div><h4>TGR cae a $35,9M/mes</h4><p>Alivio de flujo de ~$44M vs. cuotas Q2 — mejora operativa real</p></div>
+      <div class="tl-item"><div class="tl-dot" style="background:var(--green);"></div><div class="tl-date">Julio 2027</div><h4>Vencimiento total Convenios TGR</h4><p>Se libera $31,9 MM mensual de flujo permanente</p></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- =========================================================
+     PAGE 6 · Q&A CEO
+     ========================================================= -->
+<div id="page-qa" class="page">
+
+  <p style="color:var(--muted);font-size:13px;margin-bottom:20px;">Preguntas frecuentes que el CEO podría hacer, con respuestas directas basadas en los datos del reporte. Haz clic en cada pregunta para ver la respuesta.</p>
+
+  <div class="section-title"><div class="dot" style="background:var(--red);"></div> Sobre la Crisis de Caja</div>
+
+  <div class="qa-item">
+    <div class="qa-q" onclick="toggleQA(this)">
+      <span><span class="tag" style="background:rgba(239,68,68,0.15);color:#fca5a5;">CRÍTICO</span>¿Cuánto tiempo tenemos antes de que la empresa no pueda pagar sus compromisos?</span>
+      <span class="qa-chevron">▼</span>
+    </div>
+    <div class="qa-a">La empresa <strong>ya está en déficit acumulado desde abril 2026</strong> (-$384,9 MM real confirmado). Sin capital adicional, el saldo negativo se profundiza mes a mes: -$582M en mayo, -$737M en junio, y -$1.029M en agosto. La pregunta no es "cuándo" sino "cómo". Los compromisos de mayo, incluyendo TGR ($38M), nómina ($131M) y honorarios médicos ($105M), necesitan financiamiento adicional urgente o un plan de priorización de pagos.</div>
+  </div>
+
+  <div class="qa-item">
+    <div class="qa-q" onclick="toggleQA(this)">
+      <span><span class="tag" style="background:rgba(239,68,68,0.15);color:#fca5a5;">CRÍTICO</span>¿De dónde podemos sacar los $400–600M que necesitamos?</span>
+      <span class="qa-chevron">▼</span>
+    </div>
+    <div class="qa-a">Las opciones son: <strong>(1) Nuevos préstamos de accionistas</strong> — ya hay precedente (en marzo se recibieron $182,9M de accionistas); <strong>(2) Aumento de capital</strong> — requiere acuerdo societario pero es la opción más "sana" financieramente; <strong>(3) Línea de crédito bancaria de corto plazo (capital de trabajo)</strong> — posible si algún banco tiene capacidad disponible; <strong>(4) Factoring adicional</strong> — activar Consorcio ($17M) y Southbridge ($1,5M) da $18,5M extra/mes. Ninguna opción individual cierra el gap, probablemente se necesita combinar al menos dos de ellas.</div>
+  </div>
+
+  <div class="qa-item">
+    <div class="qa-q" onclick="toggleQA(this)">
+      <span><span class="tag" style="background:rgba(239,68,68,0.15);color:#fca5a5;">CRÍTICO</span>¿El negocio es operacionalmente viable, o el problema es estructural?</span>
+      <span class="qa-chevron">▼</span>
+    </div>
+    <div class="qa-a">El negocio tiene una <strong>base operativa real</strong>: $527M de ingresos mensuales brutos de clientes en Chile, con factoring activo en la mayoría. El problema de caja es principalmente de <strong>timing y cargas extraordinarias</strong>: los costos de reestructuración ($130M en abril, bajando a $7M en junio) y las cuotas TGR elevadas ($80M en Q2, bajando a $24M en Q4) están comprimiendo temporalmente el flujo. A partir del segundo semestre 2026, la situación mejora automáticamente en ~$100M/mes sin acción adicional. El problema es <em>sobrevivir los próximos 4 meses</em>.</div>
+  </div>
+
+  <div class="section-title" style="margin-top:8px;"><div class="dot" style="background:var(--yellow);"></div> Sobre Deudas</div>
+
+  <div class="qa-item">
+    <div class="qa-q" onclick="toggleQA(this)">
+      <span><span class="tag" style="background:rgba(245,158,11,0.15);color:#fde68a;">DEUDA</span>¿Qué pasa si no pago el convenio TGR un mes?</span>
+      <span class="qa-chevron">▼</span>
+    </div>
+    <div class="qa-a">El impago de <strong>un solo convenio TGR puede reactivar la totalidad de la deuda de $401 MM CLP</strong> más intereses atrasados ($36,4M adicionales). Esto convertiría una deuda cuotas-mensuales en una obligación de pago inmediato, lo que sería catastrófico para la liquidez. Es la deuda más crítica de mantener al día. La buena noticia: las cuotas bajan de ~$80M (abr-26) a $24M (nov-26), por lo que en 6 meses la presión se reduce significativamente.</div>
+  </div>
+
+  <div class="qa-item">
+    <div class="qa-q" onclick="toggleQA(this)">
+      <span><span class="tag" style="background:rgba(245,158,11,0.15);color:#fde68a;">DEUDA</span>¿Qué riesgo real tiene el pagaré Mandiola vencido?</span>
+      <span class="qa-chevron">▼</span>
+    </div>
+    <div class="qa-a">Un pagaré vencido en Chile permite al acreedor: <strong>(1) Demandar ejecutivamente</strong> (juicio rápido sin necesidad de probar la deuda), <strong>(2) Solicitar embargo de cuentas o activos de la empresa</strong>, <strong>(3) Protestar el pagaré</strong> (afecta el historial crediticio). Con $27,6 MM en juego y cuota registrada de $28,5M, Mandiola tiene incentivo para actuar. El CEO debe contactarlo directamente esta semana para negociar un acuerdo.</div>
+  </div>
+
+  <div class="qa-item">
+    <div class="qa-q" onclick="toggleQA(this)">
+      <span><span class="tag" style="background:rgba(245,158,11,0.15);color:#fde68a;">DEUDA</span>¿Por qué Eguiguren y Weinstein no tienen calendario de pago?</span>
+      <span class="qa-chevron">▼</span>
+    </div>
+    <div class="qa-a">El reporte no explica el origen de esta situación, pero es probable que sean préstamos informales entre accionistas sin documentación formal. Representan $252K USD (~$237 MM CLP). Sin calendario de pago, existen dos riesgos: <strong>(1) Riesgo legal</strong> — el acreedor podría exigir pago total en cualquier momento, y <strong>(2) Riesgo de relación</strong> — puede generar tensión societaria. La acción es formalizar un mutuo o pagaré con calendario razonable, idealmente con inicio en 2027 dada la situación de caja actual.</div>
+  </div>
+
+  <div class="section-title" style="margin-top:8px;"><div class="dot" style="background:var(--accent);"></div> Sobre Ventas y Clientes</div>
+
+  <div class="qa-item">
+    <div class="qa-q" onclick="toggleQA(this)">
+      <span><span class="tag" style="background:rgba(79,110,247,0.15);color:#93c5fd;">VENTAS</span>¿Por qué cayeron las ventas un 25% en 2025 y qué hacemos al respecto?</span>
+      <span class="qa-chevron">▼</span>
+    </div>
+    <div class="qa-a">El reporte no identifica la causa específica de la caída, pero el contexto sugiere que la reestructuración del año (costos de $461M en abogados, indemnizaciones y cierre de oficinas) probablemente impactó la capacidad comercial y operativa. La caída de $467M (ene) a $355M (nov) es relevante. Para revertirla se necesita: <strong>(1) Diagnóstico con el CPO</strong> de qué clientes se perdieron y por qué, <strong>(2) Plan de retención de cuentas activas</strong> — BNP Paribas Cardif ($112M/mes) es el 21% de los ingresos, perderlo sería devastador, <strong>(3) Pipeline de nuevas aseguradoras</strong> para 2026.</div>
+  </div>
+
+  <div class="qa-item">
+    <div class="qa-q" onclick="toggleQA(this)">
+      <span><span class="tag" style="background:rgba(79,110,247,0.15);color:#93c5fd;">CLIENTES</span>¿Qué pasa si BNP Paribas Cardif cancela el contrato?</span>
+      <span class="qa-chevron">▼</span>
+    </div>
+    <div class="qa-a">BNP Paribas Cardif (Vida + Generales) representa aproximadamente <strong>$140M/mes combinados</strong>, o ~26,5% del ingreso total. Su cancelación tendría un impacto devastador en el flujo de caja, transformando un problema de financiamiento en una crisis estructural. Es el cliente más importante y debe ser protegido con dedicación directa del CEO. Se recomienda: reunión trimestral con decisores de BNP, asegurar niveles de servicio medidos, y nunca dejar atrasos en pagos de factoring hacia ellos.</div>
+  </div>
+
+  <div class="section-title" style="margin-top:8px;"><div class="dot" style="background:var(--green);"></div> Sobre Oportunidades</div>
+
+  <div class="qa-item">
+    <div class="qa-q" onclick="toggleQA(this)">
+      <span><span class="tag" style="background:rgba(16,185,129,0.15);color:#6ee7b7;">OPORTUNIDAD</span>¿Qué buenas noticias hay en medio de todo esto?</span>
+      <span class="qa-chevron">▼</span>
+    </div>
+    <div class="qa-a">Varias: <strong>(1)</strong> La reestructuración ya ocurrió — los $461M de costos de 2025 son del pasado. En junio 2026, esa carga baja a $7M/mes. <strong>(2)</strong> TGR se reduce $56M entre abril y noviembre: el alivio es automático si se mantiene el pago. <strong>(3)</strong> Santander COMEX y Banco Estado Teledoc ya están liquidados — dos deudas menos. <strong>(4)</strong> Los pagos de la nota convertible con Vicencio están al día (Jun-25 a Feb-26 confirmados). <strong>(5)</strong> Colombia aporta ~$24M/mes de flujo constante. <strong>(6)</strong> La base de clientes con factoring es sólida y genera liquidez rápida.</div>
+  </div>
+
+  <div class="qa-item">
+    <div class="qa-q" onclick="toggleQA(this)">
+      <span><span class="tag" style="background:rgba(16,185,129,0.15);color:#6ee7b7;">OPORTUNIDAD</span>¿El factoring es sostenible como palanca de liquidez?</span>
+      <span class="qa-chevron">▼</span>
+    </div>
+    <div class="qa-a">Sí, dentro de límites. El factoring permite anticipar ingresos de aseguradoras que típicamente pagan a 30-60 días. Con $527M de ingreso mensual potencial, si el 80% está factorado a tasas razonables (~1-1,5% mensual), el costo es ~$4-6M/mes en descuentos. Es manejable. Las oportunidades inmediatas son: activar Consorcio ($17M/mes) y Southbridge ($1,5M/mes). El riesgo es sobredependencia: si algún factor retira la línea, la caja colapsa. Diversificar entre 2-3 factores distintos es la práctica prudente.</div>
+  </div>
+
+</div>
+
+<!-- CHARTS JS -->
+<script>
+// VENTAS
+new Chart(document.getElementById('chartVentas'), {
+  type: 'line',
+  data: {
+    labels: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov'],
+    datasets: [{
+      label: 'Ventas MM CLP',
+      data: [467.47,410.79,401.45,412.36,421.99,403.29,381.03,408.90,348.60,365.00,355.80],
+      borderColor: '#4f6ef7',
+      backgroundColor: 'rgba(79,110,247,0.15)',
+      fill: true,
+      tension: 0.4,
+      pointBackgroundColor: '#4f6ef7',
+      pointRadius: 4,
+    }]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+    scales: { x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#8b90a8', font: { size: 11 } } },
+              y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#8b90a8', font: { size: 11 } },
+                   min: 300, max: 500 } } }
+});
+
+// COMPROMISOS
+new Chart(document.getElementById('chartCompromisos'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Impuestos F29/F50','Previred','TGR Convenios','BCF Consultoría','Azure+AWS','Levannta','B.Estado Medical','Otros'],
+    datasets: [{
+      data: [42,38,31.9,19.5,17.5,7.8,8.3,79.1],
+      backgroundColor: ['#ef4444','#f97316','#f59e0b','#10b981','#4f6ef7','#7c3aed','#06b6d4','#6b7280'],
+      borderWidth: 0,
+      hoverOffset: 8,
+    }]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: {
+    legend: { position: 'right', labels: { color: '#8b90a8', font: { size: 11 }, boxWidth: 12, padding: 10 } } } }
+});
+
+// FLUJO DE CAJA
+new Chart(document.getElementById('chartCaja'), {
+  type: 'bar',
+  data: {
+    labels: ['Mar-26\n(Real)','Abr-26\n(Real)','May-26','Jun-26','Jul-26','Ago-26'],
+    datasets: [
+      { label: 'Saldo Final Acumulado (M CLP)',
+        data: [49424,-384863,-582577,-737888,-886845,-1029948],
+        backgroundColor: ctx => ctx.parsed.y >= 0 ? 'rgba(16,185,129,0.7)' : 'rgba(239,68,68,0.7)',
+        borderRadius: 6, type: 'bar' },
+      { label: 'Flujo Neto Mensual',
+        data: [-88414,-434286,-197714,-155311,-148957,-143103],
+        borderColor: '#f59e0b', backgroundColor: 'transparent',
+        type: 'line', tension: 0.4, pointRadius: 5, pointBackgroundColor: '#f59e0b', yAxisID: 'y' }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { labels: { color: '#8b90a8', font: { size: 11 } } } },
+    scales: { x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#8b90a8', font: { size: 11 } } },
+              y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#8b90a8', font: { size: 11 },
+                   callback: v => (v/1000).toFixed(0)+'K' } } } }
+});
+
+// TGR
+new Chart(document.getElementById('chartTGR'), {
+  type: 'bar',
+  data: {
+    labels: ['Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov'],
+    datasets: [{
+      label: 'Cuota TGR (M CLP)',
+      data: [37094274,41707665,38507665,38507665,38507665,35974324,35974324,29505371,26748113,24068998].map(v=>Math.round(v/1000000)),
+      backgroundColor: ctx => ctx.parsed.y > 38 ? '#ef4444' : ctx.parsed.y > 30 ? '#f59e0b' : '#10b981',
+      borderRadius: 4,
+    }]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+    scales: { x: { grid: { display: false }, ticks: { color: '#8b90a8', font: { size: 10 } } },
+              y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#8b90a8', font: { size: 10 }, callback: v => v+'M' } } } }
+});
+
+// DEUDA DONUT
+new Chart(document.getElementById('chartDeuda'), {
+  type: 'doughnut',
+  data: {
+    labels: ['TGR Convenios','B.Estado Medical','Levannta','Santander+Security','Mandiola (vencido)','Accionistas USD'],
+    datasets: [{
+      data: [401964005,223460813,124740029,83954107,27648940,772000000].map(v=>Math.round(v/1000000)),
+      backgroundColor: ['#f59e0b','#4f6ef7','#7c3aed','#06b6d4','#ef4444','#f97316'],
+      borderWidth: 0, hoverOffset: 8,
+    }]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: {
+    legend: { position: 'right', labels: { color: '#8b90a8', font: { size: 11 }, boxWidth: 12, padding: 8 } } } }
+});
+
+// PROVEEDORES
+new Chart(document.getElementById('chartProveedores'), {
+  type: 'bar',
+  data: {
+    labels: ['F29/F50','Previred','TGR','BCF','Azure+AWS','Arr.GC','Levannta','B.Estado','Mandiola','Otros'],
+    datasets: [{
+      label: 'Monto mensual (M CLP)',
+      data: [42,38,31.9,19.5,17.5,15.15,7.8,8.3,25,39.03],
+      backgroundColor: ['#ef4444','#ef4444','#f59e0b','#10b981','#4f6ef7','#4f6ef7','#7c3aed','#7c3aed','#ef4444','#6b7280'],
+      borderRadius: 6,
+    }]
+  },
+  options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: { x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#8b90a8', font: { size: 11 }, callback: v => v+'M' } },
+              y: { grid: { display: false }, ticks: { color: '#e8eaf0', font: { size: 12 } } } } }
+});
+
+// NAV LOGIC
+function showPage(id, tab) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  tab.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// QA LOGIC
+function toggleQA(el) {
+  const ans = el.nextElementSibling;
+  const chev = el.querySelector('.qa-chevron');
+  ans.classList.toggle('open');
+  chev.classList.toggle('open');
+}
+</script>
+
+</body>
+</html>
