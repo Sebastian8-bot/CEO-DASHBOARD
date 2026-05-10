@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Medismart — Dashboard Directorio · Marzo 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0f1f3d;
+    --navy2: #162847;
+    --blue: #1a4fa0;
+    --blue-mid: #2563c0;
+    --blue-light: #d6e4f7;
+    --blue-pale: #eef4fd;
+    --red: #c0150a;
+    --red-light: #fce8e7;
+    --orange: #c75c00;
+    --orange-light: #fff0e0;
+    --yellow: #8a6500;
+    --yellow-light: #fef9e0;
+    --green: #1a5c2a;
+    --green-light: #e5f5ea;
+    --gray1: #f4f5f7;
+    --gray2: #e8eaed;
+    --gray3: #bdc1c8;
+    --gray4: #6b7280;
+    --gray5: #374151;
+    --white: #ffffff;
+    --text: #111827;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'Sora', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    background: var(--gray1);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* ── TOP BAR ── */
+  .topbar {
+    background: var(--navy);
+    padding: 10px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+    border-bottom: 2px solid var(--blue-mid);
+  }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-badge {
+    background: var(--red);
+    color: #fff;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    padding: 3px 10px;
+    border-radius: 3px;
+    animation: pulse-badge 2s ease-in-out infinite;
+  }
+  @keyframes pulse-badge { 0%,100%{opacity:1} 50%{opacity:.65} }
+  .topbar-title { color: #fff; font-size: 13px; font-weight: 500; letter-spacing: 0.02em; }
+  .topbar-sub { color: var(--gray3); font-size: 11px; font-family: var(--mono); }
+  .topbar-date { color: var(--gray3); font-size: 11px; font-family: var(--mono); }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--navy2);
+    padding: 56px 40px 48px;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+  }
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--blue-mid);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .hero-eyebrow::before { content:''; display:block; width:24px; height:1px; background:var(--blue-mid); }
+  .hero-title { color: #fff; font-size: 42px; font-weight: 700; line-height: 1.1; margin-bottom: 10px; }
+  .hero-title em { color: var(--blue-mid); font-style: normal; }
+  .hero-sub { color: var(--gray3); font-size: 15px; font-weight: 300; margin-bottom: 32px; max-width: 600px; }
+  .hero-meta {
+    display: flex; gap: 32px; flex-wrap: wrap;
+    border-top: 1px solid rgba(255,255,255,.1);
+    padding-top: 24px;
+    margin-top: 8px;
+  }
+  .hero-meta-item { display: flex; flex-direction: column; gap: 2px; }
+  .hero-meta-label { font-family: var(--mono); font-size: 10px; color: var(--gray3); text-transform: uppercase; letter-spacing: 0.08em; }
+  .hero-meta-val { color: #fff; font-size: 13px; font-weight: 500; }
+
+  /* ── ALERT BANNER ── */
+  .alert-banner {
+    background: var(--red);
+    padding: 14px 40px;
+    display: flex; align-items: center; gap: 12px;
+    color: #fff; font-size: 13px; font-weight: 500;
+  }
+  .alert-icon { font-size: 18px; flex-shrink: 0; }
+  .alert-text { opacity: .92; }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+  .section { padding: 56px 0 48px; }
+  .section-header { margin-bottom: 32px; }
+  .section-number {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--blue-mid);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+  .section-desc { color: var(--gray4); font-size: 13px; max-width: 680px; line-height: 1.7; }
+  .section-divider { border: none; border-top: 1px solid var(--gray2); margin: 0; }
+
+  /* ── KPI CARDS ── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .kpi-card {
+    background: var(--white);
+    border: 1px solid var(--gray2);
+    border-radius: 10px;
+    padding: 18px 16px;
+    position: relative;
+    overflow: hidden;
+    transition: transform .15s, box-shadow .15s;
+  }
+  .kpi-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.07); }
+  .kpi-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  }
+  .kpi-card.blue::before { background: var(--blue-mid); }
+  .kpi-card.red::before { background: var(--red); }
+  .kpi-card.green::before { background: var(--green); }
+  .kpi-card.orange::before { background: var(--orange); }
+  .kpi-label { font-size: 11px; color: var(--gray4); font-weight: 400; margin-bottom: 8px; line-height: 1.4; }
+  .kpi-value { font-size: 26px; font-weight: 700; line-height: 1; margin-bottom: 4px; font-family: var(--mono); }
+  .kpi-value.pos { color: var(--green); }
+  .kpi-value.neg { color: var(--red); }
+  .kpi-value.neutral { color: var(--navy); }
+  .kpi-sub { font-size: 11px; color: var(--gray4); font-family: var(--mono); }
+
+  /* ── INSIGHT BOX ── */
+  .insight-box {
+    background: var(--navy);
+    border-radius: 10px;
+    padding: 24px 28px;
+    display: flex; gap: 20px; align-items: flex-start;
+    margin-bottom: 40px;
+  }
+  .insight-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .insight-text { color: rgba(255,255,255,.88); font-size: 14px; line-height: 1.7; flex: 1; }
+  .insight-text strong { color: #fff; }
+
+  /* ── CHARTS ── */
+  .charts-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+  .charts-3col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+  .chart-card {
+    background: var(--white);
+    border: 1px solid var(--gray2);
+    border-radius: 10px;
+    padding: 22px 22px 18px;
+  }
+  .chart-card.full { grid-column: 1/-1; }
+  .chart-title { font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+  .chart-subtitle { font-size: 11px; color: var(--gray4); margin-bottom: 16px; font-family: var(--mono); }
+  .legend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 12px; font-size: 11px; color: var(--gray4); }
+  .legend-item { display: flex; align-items: center; gap: 5px; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+  /* ── HALLAZGOS ── */
+  .hallazgo-list { display: flex; flex-direction: column; gap: 14px; }
+  .hallazgo {
+    background: var(--white);
+    border: 1px solid var(--gray2);
+    border-radius: 10px;
+    padding: 20px 24px;
+    display: grid;
+    grid-template-columns: 100px 1fr auto;
+    gap: 16px;
+    align-items: start;
+    transition: box-shadow .15s;
+  }
+  .hallazgo:hover { box-shadow: 0 4px 16px rgba(0,0,0,.06); }
+  .hallazgo.critico { border-left: 4px solid var(--red); }
+  .hallazgo.alto { border-left: 4px solid var(--orange); }
+  .hallazgo.medio { border-left: 4px solid var(--yellow); }
+  .hbadge {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 4px 10px; border-radius: 5px;
+    font-size: 10px; font-weight: 600; letter-spacing: 0.06em;
+    text-transform: uppercase; font-family: var(--mono);
+    margin-top: 2px;
+  }
+  .hbadge.critico { background: var(--red-light); color: var(--red); }
+  .hbadge.alto { background: var(--orange-light); color: var(--orange); }
+  .hbadge.medio { background: var(--yellow-light); color: var(--yellow); }
+  .hallazgo-title { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 5px; }
+  .hallazgo-body { font-size: 13px; color: var(--gray5); line-height: 1.6; margin-bottom: 8px; }
+  .hallazgo-accion {
+    font-size: 12px; color: var(--blue-mid); font-family: var(--mono);
+    padding: 6px 10px; background: var(--blue-pale);
+    border-radius: 5px; line-height: 1.5;
+  }
+  .hallazgo-impacto { text-align: right; }
+  .hallazgo-impacto-val { font-family: var(--mono); font-size: 18px; font-weight: 600; color: var(--red); white-space: nowrap; }
+  .hallazgo-impacto-label { font-size: 10px; color: var(--gray4); margin-top: 2px; text-align: right; }
+
+  /* ── FLUJO TABLE ── */
+  .table-wrap { overflow-x: auto; }
+  .flujo-table {
+    width: 100%; border-collapse: collapse;
+    font-size: 12px; font-family: var(--mono);
+    background: var(--white);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--gray2);
+  }
+  .flujo-table th, .flujo-table td {
+    padding: 9px 12px;
+    text-align: right;
+    border-bottom: 1px solid var(--gray2);
+    white-space: nowrap;
+  }
+  .flujo-table th { background: var(--navy); color: #fff; font-weight: 500; font-size: 10px; letter-spacing: 0.06em; }
+  .flujo-table td:first-child { text-align: left; font-weight: 500; background: var(--gray1); color: var(--navy); min-width: 180px; font-family: var(--sans); font-size: 12px; }
+  .flujo-table th:first-child { text-align: left; }
+  .flujo-table tr:last-child td { border-bottom: none; }
+  .flujo-table tr.section-row td { background: var(--blue-pale) !important; color: var(--blue); font-weight: 600; }
+  .flujo-table tr.total-row td { background: var(--navy2) !important; color: #fff !important; font-weight: 700; border-top: 2px solid var(--blue-mid); }
+  .flujo-table tr.saldo-row td { background: var(--navy) !important; color: #fff !important; font-weight: 700; }
+  .flujo-table td.neg { color: var(--red); }
+  .flujo-table td.pos { color: var(--green); }
+  .flujo-table td.zero { color: var(--gray3); }
+  .flujo-table .sep-col { background: var(--gray2) !important; width: 6px; padding: 0; }
+  .flujo-table th.sep-col { background: var(--navy2) !important; }
+  .col-cia { background: #e9f0fc; }
+  .col-ind { background: #fef9e0; }
+  .flujo-table .col-cia { color: var(--blue); }
+  .flujo-table .col-ind { color: var(--yellow); }
+  .flujo-table tr.total-row .col-cia,
+  .flujo-table tr.saldo-row .col-cia { background: #c7d8f5 !important; color: var(--blue) !important; font-weight: 700; }
+  .flujo-table tr.total-row .col-ind,
+  .flujo-table tr.saldo-row .col-ind { background: #fae87a !important; color: #5a4000 !important; font-weight: 700; }
+
+  /* ── SCENARIOS ── */
+  .scenario-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+  .scenario-card {
+    background: var(--white);
+    border: 1px solid var(--gray2);
+    border-radius: 10px;
+    padding: 28px 26px;
+    position: relative;
+    overflow: hidden;
+  }
+  .scenario-card.cia { border-top: 4px solid var(--blue-mid); }
+  .scenario-card.ind { border-top: 4px solid var(--orange); }
+  .scenario-label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; }
+  .scenario-card.cia .scenario-label { color: var(--blue-mid); }
+  .scenario-card.ind .scenario-label { color: var(--orange); }
+  .scenario-card-title { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 14px; }
+  .scenario-value { font-family: var(--mono); font-size: 38px; font-weight: 700; color: var(--red); margin-bottom: 20px; }
+  .scenario-sub { font-size: 12px; color: var(--gray4); margin-top: -14px; margin-bottom: 20px; }
+  .scenario-items { display: flex; flex-direction: column; gap: 7px; }
+  .scenario-item { font-size: 12px; color: var(--gray5); padding-left: 14px; position: relative; line-height: 1.5; }
+  .scenario-item::before { content: '→'; position: absolute; left: 0; color: var(--gray3); }
+
+  /* ── DEUDA ── */
+  .deuda-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .deuda-card {
+    background: var(--white);
+    border: 1px solid var(--gray2);
+    border-radius: 10px;
+    padding: 18px 18px;
+    position: relative;
+  }
+  .deuda-card.critical { border-color: var(--red); background: #fff8f8; }
+  .deuda-card.critical::after {
+    content: '⚠ URGENTE';
+    position: absolute; top: 12px; right: 12px;
+    font-size: 9px; font-family: var(--mono); background: var(--red);
+    color: #fff; padding: 2px 7px; border-radius: 3px;
+  }
+  .deuda-name { font-size: 12px; font-weight: 600; color: var(--navy); margin-bottom: 10px; line-height: 1.4; }
+  .deuda-amount { font-family: var(--mono); font-size: 24px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+  .deuda-amount sup { font-size: 12px; font-weight: 400; }
+  .deuda-meta { font-size: 11px; color: var(--gray4); line-height: 1.6; }
+  .deuda-total {
+    background: var(--navy);
+    border-radius: 10px;
+    padding: 22px 26px;
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 16px; grid-column: 1/-1;
+  }
+  .deuda-total-label { color: rgba(255,255,255,.7); font-size: 13px; font-weight: 400; }
+  .deuda-total-val { font-family: var(--mono); font-size: 28px; font-weight: 700; color: #fff; }
+  .deuda-total-sub { color: rgba(255,255,255,.5); font-size: 11px; margin-top: 2px; }
+
+  /* ── PASOS ── */
+  .pasos-list { display: flex; flex-direction: column; gap: 12px; counter-reset: paso; }
+  .paso {
+    background: var(--white);
+    border: 1px solid var(--gray2);
+    border-radius: 10px;
+    padding: 18px 22px 18px 70px;
+    position: relative;
+    display: flex; justify-content: space-between; align-items: center; gap: 20px;
+    transition: box-shadow .15s;
+  }
+  .paso:hover { box-shadow: 0 4px 16px rgba(0,0,0,.06); }
+  .paso-num {
+    position: absolute; left: 20px; top: 50%; transform: translateY(-50%);
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 15px; font-weight: 700;
+    background: var(--blue-pale); color: var(--blue-mid);
+  }
+  .paso.urgente .paso-num { background: var(--red-light); color: var(--red); }
+  .paso-content { flex: 1; }
+  .paso-title { font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 3px; }
+  .paso-body { font-size: 12px; color: var(--gray4); line-height: 1.5; }
+  .paso-meta { text-align: right; flex-shrink: 0; }
+  .paso-plazo { font-family: var(--mono); font-size: 11px; font-weight: 600; white-space: nowrap; }
+  .paso.urgente .paso-plazo { color: var(--red); }
+  .paso-resp { font-size: 11px; color: var(--gray4); margin-top: 2px; }
+
+  /* ── CTA FINAL ── */
+  .cta-section {
+    background: var(--navy2);
+    padding: 56px 40px;
+    text-align: center;
+  }
+  .cta-lead { color: rgba(255,255,255,.6); font-size: 12px; font-family: var(--mono); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px; }
+  .cta-title { color: #fff; font-size: 22px; font-weight: 700; margin-bottom: 32px; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.4; }
+  .cta-options { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .cta-btn {
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 13px; font-weight: 600;
+    cursor: pointer; border: none;
+    transition: transform .12s, opacity .12s;
+    letter-spacing: 0.02em;
+  }
+  .cta-btn:hover { transform: translateY(-2px); opacity: .9; }
+  .cta-btn.a { background: var(--blue-mid); color: #fff; }
+  .cta-btn.b { background: var(--orange); color: #fff; }
+  .cta-btn.c { background: var(--green); color: #fff; }
+  .cta-btn.d { background: var(--gray5); color: #fff; }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--navy);
+    padding: 20px 40px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .footer-left { color: rgba(255,255,255,.4); font-size: 11px; font-family: var(--mono); }
+  .footer-right { color: rgba(255,255,255,.3); font-size: 11px; }
+
+  /* ── ANIMS ── */
+  .fade-in { opacity: 0; transform: translateY(16px); animation: fadeUp .5s ease forwards; }
+  .fade-in:nth-child(1){animation-delay:.05s}
+  .fade-in:nth-child(2){animation-delay:.1s}
+  .fade-in:nth-child(3){animation-delay:.15s}
+  .fade-in:nth-child(4){animation-delay:.2s}
+  .fade-in:nth-child(5){animation-delay:.25s}
+  @keyframes fadeUp { to { opacity:1; transform:translateY(0); } }
+
+  @media(max-width:900px){
+    .kpi-grid{grid-template-columns:repeat(2,1fr)}
+    .charts-2col,.charts-3col,.scenario-grid{grid-template-columns:1fr}
+    .deuda-grid{grid-template-columns:1fr 1fr}
+    .hallazgo{grid-template-columns:1fr; gap:10px}
+    .hallazgo-impacto{text-align:left}
+    .topbar{padding:10px 16px}
+    .container{padding:0 16px}
+    .hero{padding:36px 16px 32px}
+    .hero-title{font-size:28px}
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-badge">ALERTA LIQUIDEZ</span>
+    <span class="topbar-title">Medismart S.A. &nbsp;·&nbsp; <span style="opacity:.55">Dashboard Directorio</span></span>
+  </div>
+  <div class="topbar-date">Período: Ene–Mar 2026 (Real) · Abr–Ago 2026 (Proyectado)</div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="container">
+    <div class="hero-eyebrow">Directorio · Sesión Marzo 2026 · Análisis independiente</div>
+    <h1 class="hero-title">Medismart S.A. &nbsp;<em>Situación financiera</em></h1>
+    <p class="hero-sub">Proyección de caja · Revisión crítica · Recomendaciones al directorio</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Período analizado</span>
+        <span class="hero-meta-val">Ene-26 → Ago-26</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Unidad</span>
+        <span class="hero-meta-val">Miles de pesos CLP (M CLP)</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Preparado</span>
+        <span class="hero-meta-val">Análisis Independiente · Marzo 2026</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Clasificación</span>
+        <span class="hero-meta-val" style="color:#ef8080">CONFIDENCIAL</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ALERT BANNER -->
+<div class="alert-banner">
+  <span class="alert-icon">⚡</span>
+  <span class="alert-text">La empresa no puede operar de forma autónoma con su estructura actual de costos. Se requiere decisión de financiamiento urgente del Directorio.</span>
+</div>
+
+<!-- SECTION I: KPIs -->
+<div class="section" style="background:var(--white); border-bottom:1px solid var(--gray2);">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-number">I &nbsp;·&nbsp; Indicadores ejecutivos</div>
+      <h2 class="section-title">Situación de caja — resumen</h2>
+      <p class="section-desc">Período histórico Ene-Mar 2026 (real) y proyección oficial vs. análisis independiente conservador.</p>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card blue fade-in">
+        <div class="kpi-label">Ventas totales Q1 2026</div>
+        <div class="kpi-value neutral">1.046M</div>
+        <div class="kpi-sub">promedio 349M/mes</div>
+      </div>
+      <div class="kpi-card green fade-in">
+        <div class="kpi-label">Adjusted EBITDA Q1 2026</div>
+        <div class="kpi-value pos">+197M</div>
+        <div class="kpi-sub">margen 18.9% sobre ventas</div>
+      </div>
+      <div class="kpi-card red fade-in">
+        <div class="kpi-label">Pérdida neta Q1 2026</div>
+        <div class="kpi-value neg">−389M</div>
+        <div class="kpi-sub">deterioro mes a mes</div>
+      </div>
+      <div class="kpi-card red fade-in">
+        <div class="kpi-label">Saldo proyectado Ago-26 (Cía)</div>
+        <div class="kpi-value neg">−917M</div>
+        <div class="kpi-sub">proyección oficial compañía</div>
+      </div>
+      <div class="kpi-card orange fade-in">
+        <div class="kpi-label">Saldo proyectado Ago-26 (Indep.)</div>
+        <div class="kpi-value neg">−1.127M</div>
+        <div class="kpi-sub">escenario conservador</div>
+      </div>
+    </div>
+
+    <div class="insight-box">
+      <div class="insight-icon">💡</div>
+      <div class="insight-text">
+        <strong>El Adjusted EBITDA chileno es positivo (+197M CLP en Q1)</strong>, lo que confirma viabilidad operacional de la unidad. El problema es estructural: los Gastos Corporativos (-343M CLP) y One-Off (-61M CLP) eliminan completamente este margen. Entre octubre 2025 y marzo 2026, los accionistas inyectaron ~975M CLP para sostener la operación. La proyección asume que estas inyecciones cesan completamente desde abril 2026 sin que el flujo operacional sea suficiente para cubrirse solo.
+      </div>
+    </div>
+  </div>
+</div>
+<hr class="section-divider">
+
+<!-- SECTION II: GRÁFICOS -->
+<div class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-number">II &nbsp;·&nbsp; Evolución de caja y resultados</div>
+      <h2 class="section-title">Tendencias financieras</h2>
+      <p class="section-desc">Saldo de caja mensual, flujo operacional y composición de egresos. Histórico real Ene-Mar 2026 y proyección Abr-Ago 2026.</p>
+    </div>
+
+    <div class="charts-2col">
+      <div class="chart-card full">
+        <div class="chart-title">Saldo final de caja mensual</div>
+        <div class="chart-subtitle">Histórico real · Proyección Cía · Proyección Independiente (M CLP)</div>
+        <div style="position:relative;height:280px;">
+          <canvas id="chartSaldo" role="img" aria-label="Gráfico de saldo de caja mensual Oct-25 a Ago-26, mostrando deterioro severo desde Abr-26">Saldo caja: histórico positivo hasta Mar-26, luego proyección negativa llegando a -917M (Cía) o -1.127M (Independiente) en Ago-26.</canvas>
+        </div>
+        <div class="legend">
+          <div class="legend-item"><span class="legend-dot" style="background:#1a4fa0"></span>Histórico real</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#2563c0;opacity:.5"></span>Proyección Cía</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#c75c00;opacity:.5"></span>Proyección Independiente</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="charts-2col">
+      <div class="chart-card">
+        <div class="chart-title">Flujo total mensual</div>
+        <div class="chart-subtitle">Incluye préstamos accionistas histórico (M CLP)</div>
+        <div style="position:relative;height:240px;">
+          <canvas id="chartFlujo" role="img" aria-label="Flujo mensual de caja Ene-26 a Ago-26">Flujo mensual: positivo Feb-26 (+125M con préstamo accionistas), luego colapso a -464M en Abr-26.</canvas>
+        </div>
+        <div class="legend">
+          <div class="legend-item"><span class="legend-dot" style="background:#1a5c2a"></span>Flujo positivo</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#c0150a"></span>Flujo negativo</div>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-title">Composición de egresos</div>
+        <div class="chart-subtitle">Promedio mensual Ene-Mar 2026</div>
+        <div style="position:relative;height:240px;">
+          <canvas id="chartEgresos" role="img" aria-label="Composición de egresos operacionales promedio mensual">Egresos: Honorarios Médicos 122M 29%, Remuneraciones 120M 28%, Facturas+Prov 66M 16%, TGR+Deuda 53M 13%, Otros 27M 6%, Gastos Admin 34M 8%.</canvas>
+        </div>
+        <div class="legend">
+          <div class="legend-item"><span class="legend-dot" style="background:#1a4fa0"></span>Hon. Médicos 29%</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#2563c0"></span>Remuneraciones 28%</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#4a90d9"></span>Facturas+Prov 16%</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#c0150a"></span>TGR+Deuda 13%</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#c75c00"></span>Reestructuración 8%</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#6b7280"></span>Otros 6%</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="charts-3col">
+      <div class="chart-card">
+        <div class="chart-title">Estado de Resultados Q1</div>
+        <div class="chart-subtitle">Waterfall Ene-Mar 2026 acumulado (M CLP)</div>
+        <div style="position:relative;height:220px;">
+          <canvas id="chartEERR" role="img" aria-label="Cascada de resultados Q1 2026">Ventas 1046, Costo Directo -625, Margen Bruto 421, SGA -224, Adj.EBITDA 197, Corporativo -343, One-Off -61, EBITDA -207, No-EBITDA -182, Pérdida Neta -389.</canvas>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Recaudación vs Egresos totales</div>
+        <div class="chart-subtitle">Brecha estructural mensual Ene-Mar 2026 (M CLP)</div>
+        <div style="position:relative;height:220px;">
+          <canvas id="chartBrecha" role="img" aria-label="Recaudación versus egresos totales mensuales">Recaudación estable ~349M/mes vs egresos totales crecientes que superan los ingresos.</canvas>
+        </div>
+        <div class="legend">
+          <div class="legend-item"><span class="legend-dot" style="background:#1a5c2a"></span>Recaudación</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#c0150a"></span>Egresos Totales</div>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Préstamos accionistas</div>
+        <div class="chart-subtitle">Soporte histórico y proyección (M CLP)</div>
+        <div style="position:relative;height:220px;">
+          <canvas id="chartPrestamos" role="img" aria-label="Préstamos accionistas histórico y supuesto proyectado">Préstamos: 122M Oct, 159M Nov, 180M Dic, 119M Ene, 212M Feb, 183M Mar, luego CERO desde Abr-26.</canvas>
+        </div>
+        <div class="legend">
+          <div class="legend-item"><span class="legend-dot" style="background:#1a4fa0"></span>Histórico</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#c0150a;opacity:.4"></span>Proyectado (CERO)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<hr class="section-divider">
+
+<!-- SECTION III: HALLAZGOS -->
+<div class="section" style="background:var(--gray1);">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-number">III &nbsp;·&nbsp; Hallazgos y correcciones al modelo</div>
+      <h2 class="section-title">Análisis crítico del modelo financiero</h2>
+      <p class="section-desc">Ordenados por prioridad de impacto en la posición de caja de la compañía.</p>
+    </div>
+
+    <div class="hallazgo-list">
+      <div class="hallazgo critico">
+        <div><span class="hbadge critico">Crítico</span></div>
+        <div>
+          <div class="hallazgo-title">Saldo negativo estructural desde Abril 2026</div>
+          <div class="hallazgo-body">El colapso de caja no es coyuntural: refleja que los egresos operacionales superan sistemáticamente la recaudación. Sin inyecciones externas el modelo no es viable. La Cía proyecta -415M en Abr-26 llegando a -917M en Ago-26; el modelo independiente: -530M y -1.127M respectivamente.</div>
+          <div class="hallazgo-accion">→ El directorio debe definir urgentemente un plan de financiamiento: (1) aumento de capital, (2) crédito puente bancario, (3) reducción costos fijos, (4) liquidación de activos.</div>
+        </div>
+        <div class="hallazgo-impacto">
+          <div class="hallazgo-impacto-val">−917M</div>
+          <div class="hallazgo-impacto-label">saldo Ago-26 (Cía)</div>
+        </div>
+      </div>
+
+      <div class="hallazgo critico">
+        <div><span class="hbadge critico">Crítico</span></div>
+        <div>
+          <div class="hallazgo-title">Modelo depende estructuralmente de préstamos de accionistas</div>
+          <div class="hallazgo-body">Ene-Mar 2026: ~975M CLP inyectados en 3 meses (promedio 325M/mes). La proyección asume corte abrupto desde Abr-26 sin alternativa planteada. Es el supuesto más sensible del modelo y no está explícitamente documentado.</div>
+          <div class="hallazgo-accion">→ Definir formalmente si accionistas siguen financiando el déficit. Presentar dos escenarios: con y sin inyecciones, mostrando el punto de quiebre en cada uno.</div>
+        </div>
+        <div class="hallazgo-impacto">
+          <div class="hallazgo-impacto-val">162M</div>
+          <div class="hallazgo-impacto-label">prom. mes histórico</div>
+        </div>
+      </div>
+
+      <div class="hallazgo alto">
+        <div><span class="hbadge alto">Alto</span></div>
+        <div>
+          <div class="hallazgo-title">Caída de recaudación sin justificación explícita</div>
+          <div class="hallazgo-body">La Cía proyecta 316-327M/mes vs. histórico de 348M/mes (Ene-Mar). Una baja de 30M/mes sin driver identificado equivale a −150M adicionales en 5 meses no contabilizados en el escenario de riesgo.</div>
+          <div class="hallazgo-accion">→ Corrección sugerida: usar 330-340M como base conservadora documentada. Incluir supuestos explícitos: nro. clientes, volumen prestaciones, tasas de cobro por canal (factoring vs. directo).</div>
+        </div>
+        <div class="hallazgo-impacto">
+          <div class="hallazgo-impacto-val">~150M</div>
+          <div class="hallazgo-impacto-label">diferencia 5 meses</div>
+        </div>
+      </div>
+
+      <div class="hallazgo alto">
+        <div><span class="hbadge alto">Alto</span></div>
+        <div>
+          <div class="hallazgo-title">Honorarios médicos: reducción de 32M/mes sin respaldo contractual</div>
+          <div class="hallazgo-body">Proyección asume caída de 137M a 105M/mes desde May-26. Promedio histórico es 122M/mes. No hay contratos cancelados ni reducción de dotación que sustente esta baja de 17M/mes.</div>
+          <div class="hallazgo-accion">→ Corrección: usar 120M/mes hasta que haya evidencia de reducción de dotación médica contratada. Diferencia proyectada: ~85M en 5 meses.</div>
+        </div>
+        <div class="hallazgo-impacto">
+          <div class="hallazgo-impacto-val">~85M</div>
+          <div class="hallazgo-impacto-label">diferencia 5 meses</div>
+        </div>
+      </div>
+
+      <div class="hallazgo alto">
+        <div><span class="hbadge alto">Alto</span></div>
+        <div>
+          <div class="hallazgo-title">Recupero positivo de reestructuración no verificado</div>
+          <div class="hallazgo-body">La Cía proyecta un ingreso de +10 a +21M/mes en Jun-Ago-26 por reestructuración. Mar-26 alcanzó -170M y Abr-26 proyecta -178M. Esta reversión a positivo es inusual y no está documentada.</div>
+          <div class="hallazgo-accion">→ Separar componentes recurrentes de no recurrentes. Eliminar recuperos positivos no verificados. El escenario conservador asume cero. Diferencia acumulada: ~50M sobre proyección Cía.</div>
+        </div>
+        <div class="hallazgo-impacto">
+          <div class="hallazgo-impacto-val">~50M</div>
+          <div class="hallazgo-impacto-label">diferencia acum.</div>
+        </div>
+      </div>
+
+      <div class="hallazgo medio">
+        <div><span class="hbadge medio">Medio</span></div>
+        <div>
+          <div class="hallazgo-title">Costo del factoring oculto en márgenes</div>
+          <div class="hallazgo-body">Operaciones de 130-250M/mes con Factotal, ACF y CARDIF. El descuento financiero no aparece como línea explícita, dificultando evaluar el costo real del capital de trabajo y comparar alternativas.</div>
+          <div class="hallazgo-accion">→ Recomendación: incluir línea "costo factoring" explícita en el próximo reporte de caja para transparentar el costo real del ciclo de cobro.</div>
+        </div>
+        <div class="hallazgo-impacto">
+          <div class="hallazgo-impacto-val">N/C</div>
+          <div class="hallazgo-impacto-label">no cuantificado</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<hr class="section-divider">
+
+<!-- SECTION IV: TABLA FLUJO -->
+<div class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-number">IV &nbsp;·&nbsp; Flujo mensual detallado</div>
+      <h2 class="section-title">Flujo de caja consolidado por período</h2>
+      <p class="section-desc">Histórico Ene-Mar 2026 (real) · Proyección Cía y proyección independiente Abr-26 a Ago-26 · Valores en M CLP</p>
+    </div>
+
+    <div class="table-wrap">
+      <table class="flujo-table">
+        <thead>
+          <tr>
+            <th>Concepto</th>
+            <th>Ene-26</th><th>Feb-26</th><th>Mar-26</th>
+            <th class="sep-col"></th>
+            <th class="col-cia">Abr Cía</th><th class="col-cia">May Cía</th><th class="col-cia">Jun Cía</th><th class="col-cia">Jul Cía</th><th class="col-cia">Ago Cía</th>
+            <th class="sep-col"></th>
+            <th class="col-ind">Abr ★</th><th class="col-ind">May ★</th><th class="col-ind">Jun ★</th><th class="col-ind">Jul ★</th><th class="col-ind">Ago ★</th>
+          </tr>
+        </thead>
+        <tbody id="flujoTbody"></tbody>
+      </table>
+    </div>
+    <p style="font-size:11px;color:var(--gray4);margin-top:10px;font-family:var(--mono);">★ Proyección independiente &nbsp;·&nbsp; Fondo azul claro = Proyección oficial Cía &nbsp;·&nbsp; Fondo amarillo = Proyección independiente conservadora</p>
+  </div>
+</div>
+<hr class="section-divider">
+
+<!-- SECTION V: ESCENARIOS -->
+<div class="section" style="background:var(--gray1);">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-number">V &nbsp;·&nbsp; Escenarios al 31 de agosto 2026</div>
+      <h2 class="section-title">Proyecciones comparativas</h2>
+    </div>
+    <div class="scenario-grid">
+      <div class="scenario-card cia">
+        <div class="scenario-label">Escenario oficial compañía</div>
+        <div class="scenario-card-title">Proyección interna Cía</div>
+        <div class="scenario-value">−917M CLP</div>
+        <div class="scenario-sub">Saldo proyectado al Ago-26</div>
+        <div class="scenario-items">
+          <div class="scenario-item">Recaudación: 316-327M/mes (baja vs. histórico sin driver explicado)</div>
+          <div class="scenario-item">Honorarios: caen a 105M/mes desde May-26</div>
+          <div class="scenario-item">Recupero positivo de reestructuración Jun-Ago: +54M total</div>
+          <div class="scenario-item">Cero inyecciones de accionistas desde Abr-26</div>
+          <div class="scenario-item">Flujo mensual negativo entre −143M y −464M</div>
+        </div>
+      </div>
+      <div class="scenario-card ind">
+        <div class="scenario-label">Escenario independiente conservador</div>
+        <div class="scenario-card-title">Proyección Independiente</div>
+        <div class="scenario-value">−1.127M CLP</div>
+        <div class="scenario-sub">Saldo proyectado al Ago-26 · 210M más pesimista</div>
+        <div class="scenario-items">
+          <div class="scenario-item">Recaudación: 320-325M/mes (superior a Cía pero bajo histórico)</div>
+          <div class="scenario-item">Honorarios: 120M/mes estables (promedio histórico, sin reducción)</div>
+          <div class="scenario-item">Sin recupero de reestructuración (escenario conservador)</div>
+          <div class="scenario-item">Cero inyecciones de accionistas desde Abr-26</div>
+          <div class="scenario-item">Flujo mensual negativo entre −164M y −380M</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="charts-2col" style="margin-top:20px;">
+      <div class="chart-card">
+        <div class="chart-title">Comparación de saldo proyectado Abr–Ago 2026</div>
+        <div class="chart-subtitle">Ambos escenarios (M CLP)</div>
+        <div style="position:relative;height:220px;">
+          <canvas id="chartScenarios" role="img" aria-label="Comparación saldo proyectado dos escenarios">Escenario Cía: -415, -612, -715, -821, -917. Escenario Independiente: -530, -743, -888, -1015, -1127.</canvas>
+        </div>
+        <div class="legend">
+          <div class="legend-item"><span class="legend-dot" style="background:#2563c0"></span>Proyección Cía</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#c75c00"></span>Proyección Independiente</div>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Brecha acumulada entre escenarios</div>
+        <div class="chart-subtitle">Diferencia Independiente vs. Cía (M CLP)</div>
+        <div style="position:relative;height:220px;">
+          <canvas id="chartBrecha2" role="img" aria-label="Brecha creciente entre proyección independiente y proyección compañía">Brecha: -115M Abr, -131M May, -173M Jun, -194M Jul, -210M Ago.</canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<hr class="section-divider">
+
+<!-- SECTION VI: DEUDA -->
+<div class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-number">VI &nbsp;·&nbsp; Estructura de deuda financiera</div>
+      <h2 class="section-title">Pasivos financieros vigentes</h2>
+      <p class="section-desc">Saldo insoluto aproximado. Créditos en USD convertidos a CLP a ~900 CLP/USD. Servicio mensual = 25–45% de la recaudación.</p>
+    </div>
+
+    <div class="deuda-grid">
+      <div class="deuda-card critical">
+        <div class="deuda-name">Convenios TGR · Impuestos diferidos</div>
+        <div class="deuda-amount">~402M <sup>CLP</sup></div>
+        <div class="deuda-meta">14+ convenios activos<br>31-38M/mes · Vence Jul-2027<br>Intereses atrasados: ~36M CLP</div>
+      </div>
+      <div class="deuda-card">
+        <div class="deuda-name">Crédito Banco Estado · Medical</div>
+        <div class="deuda-amount">~223M <sup>CLP</sup></div>
+        <div class="deuda-meta">Mayor deuda bancaria<br>8.3M/mes · Tasa 0.91%/mes<br>Vence Oct-2028</div>
+      </div>
+      <div class="deuda-card">
+        <div class="deuda-name">Nota conv. Alex Vicencio (USD 550k)</div>
+        <div class="deuda-amount">~346M <sup>CLP</sup></div>
+        <div class="deuda-meta">Convertible a capital<br>13.5% anual · ~22M CLP/mes<br>Capital restante: USD 385k</div>
+      </div>
+      <div class="deuda-card">
+        <div class="deuda-name">Crédito Levanta</div>
+        <div class="deuda-amount">~125M <sup>CLP</sup></div>
+        <div class="deuda-meta">Inició Nov-2025<br>7.8M/mes · 1.4%/mes<br>Vence Oct-2027</div>
+      </div>
+      <div class="deuda-card">
+        <div class="deuda-name">Crédito Santander (4176 + 7573)</div>
+        <div class="deuda-amount">~69M <sup>CLP</sup></div>
+        <div class="deuda-meta">3.3M + 1.8M/mes<br>Vence Nov-2027 / Jul-2026</div>
+      </div>
+      <div class="deuda-card">
+        <div class="deuda-name">Notas conv. Urbina + Yesod Trust</div>
+        <div class="deuda-amount">~183M <sup>CLP</sup></div>
+        <div class="deuda-meta">USD ~203k total<br>Intereses acumulados pendientes: ~61M CLP</div>
+      </div>
+      <div class="deuda-card">
+        <div class="deuda-name">Crédito Security</div>
+        <div class="deuda-amount">~14M <sup>CLP</sup></div>
+        <div class="deuda-meta">1.5M/mes · Vence Dic-2026</div>
+      </div>
+      <div class="deuda-card critical">
+        <div class="deuda-name">Deuda E. Mandiola · VENCIDA</div>
+        <div class="deuda-amount">~28M <sup>CLP</sup></div>
+        <div class="deuda-meta">Vencida desde Dic-2024<br>Sin acuerdo formal vigente<br>Riesgo de ejecución judicial</div>
+      </div>
+      <div class="deuda-card">
+        <div class="deuda-name">Pagaré principal Alex Vicencio</div>
+        <div class="deuda-amount">~440M <sup>CLP</sup></div>
+        <div class="deuda-meta">Intereses: ~22M CLP/mes<br>Vence Ene-2030</div>
+      </div>
+
+      <div class="deuda-total">
+        <div>
+          <div class="deuda-total-label">Deuda financiera total estimada</div>
+          <div class="deuda-total-sub">incluye equivalente USD a tipo de cambio ~900 CLP/USD</div>
+        </div>
+        <div>
+          <div class="deuda-total-val">~1.830M CLP</div>
+          <div style="color:rgba(255,255,255,.45);font-size:12px;text-align:right;margin-top:3px;font-family:var(--mono);">Servicio: 80-140M CLP/mes</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<hr class="section-divider">
+
+<!-- SECTION VII: PASOS -->
+<div class="section" style="background:var(--gray1);">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-number">VII &nbsp;·&nbsp; Decisiones y próximos pasos</div>
+      <h2 class="section-title">Plan de acción para el Directorio</h2>
+      <p class="section-desc">Acciones priorizadas por urgencia e impacto en la posición de caja.</p>
+    </div>
+
+    <div class="pasos-list">
+      <div class="paso urgente">
+        <div class="paso-num">01</div>
+        <div class="paso-content">
+          <div class="paso-title">Definir plan de financiamiento Abr–Ago 26</div>
+          <div class="paso-body">¿Los accionistas continúan inyectando capital? ¿Se gestiona crédito puente bancario? ¿Se activa aumento de capital formal? Esta es la decisión más urgente que determina la viabilidad de los próximos 5 meses.</div>
+        </div>
+        <div class="paso-meta">
+          <div class="paso-plazo">Esta sesión · URGENTE</div>
+          <div class="paso-resp">Directorio</div>
+        </div>
+      </div>
+      <div class="paso">
+        <div class="paso-num">02</div>
+        <div class="paso-content">
+          <div class="paso-title">Actualizar modelo con supuestos documentados por línea</div>
+          <div class="paso-body">Cada línea del modelo debe tener supuestos explícitos: clientes activos, volumen de prestaciones, tasas de cobro por canal, contratos vigentes, y nómina confirmada.</div>
+        </div>
+        <div class="paso-meta">
+          <div class="paso-plazo">1 semana</div>
+          <div class="paso-resp">CFO + CEO</div>
+        </div>
+      </div>
+      <div class="paso">
+        <div class="paso-num">03</div>
+        <div class="paso-content">
+          <div class="paso-title">Presentar dos escenarios formales al directorio</div>
+          <div class="paso-body">Con y sin inyecciones de accionistas, mostrando el punto de quiebre de caja en cada uno. El escenario sin inyecciones debe mostrar cuándo se agota la caja y qué costos deben eliminarse para llegar a equilibrio.</div>
+        </div>
+        <div class="paso-meta">
+          <div class="paso-plazo">2 semanas</div>
+          <div class="paso-resp">CFO + CEO</div>
+        </div>
+      </div>
+      <div class="paso">
+        <div class="paso-num">04</div>
+        <div class="paso-content">
+          <div class="paso-title">Resolver deuda Mandiola y revisar crédito Santander COMEX</div>
+          <div class="paso-body">Negociar acuerdo formal para deuda vencida (~28M CLP, vencida Dic-2024). Confirmar si crédito COMEX fue renovado o completamente amortizado para corregir posibles inconsistencias en el modelo.</div>
+        </div>
+        <div class="paso-meta">
+          <div class="paso-plazo">2 semanas</div>
+          <div class="paso-resp">CFO</div>
+        </div>
+      </div>
+      <div class="paso">
+        <div class="paso-num">05</div>
+        <div class="paso-content">
+          <div class="paso-title">Revisión de estructura de costos</div>
+          <div class="paso-body">¿Existe margen real en honorarios médicos, remuneraciones corporativas o estructura TI? Identificar reducción de costos fijos sin impacto operacional crítico.</div>
+        </div>
+        <div class="paso-meta">
+          <div class="paso-plazo">1 mes</div>
+          <div class="paso-resp">CEO + CHRO</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="cta-lead">Decisión de directorio</div>
+  <div class="cta-title">La pregunta no es si habrá déficit — ya está proyectado. La pregunta es qué decisión toma el directorio hoy para enfrentarlo.</div>
+  <div class="cta-options">
+    <button class="cta-btn a" onclick="alert('A: Definir fuente de financiamiento\n\n→ Inyección accionistas / crédito puente / aumento de capital\n→ Cuantificar monto necesario: ~162M/mes para cubrir déficit\n→ Definir condiciones: tasa, plazo, garantías')">A · Definir fuente de financiamiento</button>
+    <button class="cta-btn b" onclick="alert('B: Reducir costos operacionales\n\n→ Honorarios médicos: reducir dotación a 105M/mes\n→ Remuneraciones corporativas: revisar estructura\n→ TI: diferir inversiones no esenciales\n→ Gastos corporativos: reducir estructura internacional')">B · Reducir costos operacionales</button>
+    <button class="cta-btn c" onclick="alert('C: Combinación de ambas\n\n→ Reducción parcial de costos: ~60-80M/mes\n→ Financiamiento complementario: ~80-100M/mes\n→ Escenario más equilibrado y realista')">C · Combinación de ambas</button>
+    <button class="cta-btn d" onclick="alert('D: Evaluar desinversión de activos\n\n→ Identificar activos liquidables\n→ Valorización de cartera de clientes\n→ Posible venta de participaciones o spin-off de líneas')">D · Evaluar desinversión de activos</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-left">Elaborado sobre la base del archivo Financial Frame Chile Dlvry — Marzo 2026 · Análisis independiente con supuestos conservadores · No reemplaza el juicio de la administración</div>
+  <div class="footer-right">CONFIDENCIAL</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────────
+const MESES_HIST = ['Ene-26','Feb-26','Mar-26'];
+const MESES_CIA  = ['Abr Cía','May Cía','Jun Cía','Jul Cía','Ago Cía'];
+const MESES_IND  = ['Abr ★','May ★','Jun ★','Jul ★','Ago ★'];
+
+const SALDO = {
+  hist: [13, 138, 50],
+  cia:  [-415, -612, -715, -821, -917],
+  ind:  [-530, -743, -888, -1015, -1127]
+};
+const FLUJO_TOTAL = {
+  hist: [-85, 125, -88],
+  cia:  [-464, -198, -155, -149, -143],
+  ind:  [-380, -213, -167, -164, -164]
+};
+
+// Chart defaults
+Chart.defaults.font.family = "'Sora', sans-serif";
+Chart.defaults.font.size = 11;
+Chart.defaults.color = '#6b7280';
+
+// ── SALDO CHART ───────────────────────────────────────────────────────────────
+const allLabels = [...MESES_HIST,...MESES_CIA,...MESES_IND];
+const histData  = [...SALDO.hist, null,null,null,null,null, null,null,null,null,null];
+const ciaData   = [null,null,50, ...SALDO.cia, null,null,null,null,null];
+const indData   = [null,null,50, null,null,null,null,null, ...SALDO.ind];
+
+new Chart(document.getElementById('chartSaldo'), {
+  type: 'line',
+  data: {
+    labels: allLabels,
+    datasets: [
+      { label:'Histórico real', data: histData, borderColor:'#1a4fa0', backgroundColor:'rgba(26,79,160,.08)', fill:true, tension:.35, pointRadius:4, pointBackgroundColor:'#1a4fa0', borderWidth:2.5, spanGaps:false },
+      { label:'Proyección Cía', data: ciaData, borderColor:'#2563c0', backgroundColor:'rgba(37,99,192,.05)', fill:true, tension:.3, pointRadius:3.5, pointBackgroundColor:'#2563c0', borderWidth:2, borderDash:[6,3], spanGaps:false },
+      { label:'Proyección Independiente', data: indData, borderColor:'#c75c00', backgroundColor:'rgba(199,92,0,.05)', fill:true, tension:.3, pointRadius:3.5, pointBackgroundColor:'#c75c00', borderWidth:2, borderDash:[3,3], spanGaps:false },
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: ctx => ` ${ctx.dataset.label}: ${ctx.raw !== null ? ctx.raw.toLocaleString('es-CL') + 'M' : '—'}` } } },
+    scales:{
+      x:{ grid:{display:false}, ticks:{ maxRotation:45, autoSkip:false, font:{size:10} } },
+      y:{ grid:{ color:'rgba(0,0,0,.05)' }, ticks:{ callback: v => v.toLocaleString('es-CL')+'M', font:{size:10} } }
+    }
+  }
+});
+
+// ── FLUJO CHART ───────────────────────────────────────────────────────────────
+const flujoLabels = [...MESES_HIST,...MESES_CIA];
+const flujoVals   = [...FLUJO_TOTAL.hist,...FLUJO_TOTAL.cia];
+const flujoColors = flujoVals.map(v => v >= 0 ? 'rgba(26,92,42,.75)' : 'rgba(192,21,10,.7)');
+const flujoBorder = flujoVals.map(v => v >= 0 ? '#1a5c2a' : '#c0150a');
+
+new Chart(document.getElementById('chartFlujo'), {
+  type: 'bar',
+  data: {
+    labels: flujoLabels,
+    datasets: [{ label:'Flujo total', data: flujoVals, backgroundColor: flujoColors, borderColor: flujoBorder, borderWidth:1.5, borderRadius:3 }]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: ctx => ` ${ctx.raw.toLocaleString('es-CL')}M` } } },
+    scales:{
+      x:{ grid:{display:false}, ticks:{font:{size:10}} },
+      y:{ grid:{ color:'rgba(0,0,0,.05)' }, ticks:{ callback: v => v+'M', font:{size:10} } }
+    }
+  }
+});
+
+// ── EGRESOS DONUT ─────────────────────────────────────────────────────────────
+new Chart(document.getElementById('chartEgresos'), {
+  type:'doughnut',
+  data:{
+    labels:['Hon. Médicos','Remuneraciones','Facturas+Prov','TGR+Deuda','Reestructuración','Otros'],
+    datasets:[{ data:[122,120,66,53,35,27], backgroundColor:['#1a4fa0','#2563c0','#4a90d9','#c0150a','#c75c00','#6b7280'], borderWidth:0, hoverOffset:8 }]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false, cutout:'60%',
+    plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: ctx => ` ${ctx.label}: ${ctx.raw}M (${Math.round(ctx.raw/423*100)}%)` } } }
+  }
+});
+
+// ── EERR WATERFALL ────────────────────────────────────────────────────────────
+const wfLabels = ['Ventas','C. Directo','Margen','SGA','Adj.EBITDA','Corporativo','One-Off','EBITDA','No-EBITDA','Pérd. Neta'];
+const wfData   = [1046,-625,421,-224,197,-343,-61,-207,-182,-389];
+const wfColors = wfData.map(v => v > 0 ? (v > 500 ? 'rgba(26,92,42,.8)' : 'rgba(26,92,42,.65)') : (v < -200 ? 'rgba(192,21,10,.8)' : 'rgba(199,92,0,.75)'));
+wfColors[0] = '#1a4fa0'; wfColors[2] = '#1a5c2a'; wfColors[4] = '#1a5c2a';
+
+new Chart(document.getElementById('chartEERR'), {
+  type:'bar',
+  data:{ labels:wfLabels, datasets:[{ label:'M CLP', data:wfData.map(Math.abs), backgroundColor:wfColors, borderRadius:3, borderWidth:0 }] },
+  options:{
+    responsive:true, maintainAspectRatio:false, indexAxis:'y',
+    plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: ctx => ` ${wfData[ctx.dataIndex].toLocaleString('es-CL')}M` } } },
+    scales:{ x:{ grid:{color:'rgba(0,0,0,.04)'}, ticks:{callback:v=>v+'M',font:{size:9}} }, y:{ grid:{display:false}, ticks:{font:{size:9}} } }
+  }
+});
+
+// ── BRECHA ────────────────────────────────────────────────────────────────────
+new Chart(document.getElementById('chartBrecha'), {
+  type:'bar',
+  data:{
+    labels: MESES_HIST,
+    datasets:[
+      { label:'Recaudación', data:[324,360,340], backgroundColor:'rgba(26,92,42,.7)', borderRadius:3, borderWidth:0 },
+      { label:'Egresos Totales', data:[432,487,428], backgroundColor:'rgba(192,21,10,.65)', borderRadius:3, borderWidth:0 }
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: ctx => ` ${ctx.dataset.label}: ${ctx.raw}M` } } },
+    scales:{ x:{grid:{display:false},ticks:{font:{size:10}}}, y:{grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'M',font:{size:10}}} }
+  }
+});
+
+// ── PRÉSTAMOS CHART ───────────────────────────────────────────────────────────
+const prestMeses = [...MESES_HIST.map((_,i) => ['Ene-26','Feb-26','Mar-26'][i]),...MESES_CIA];
+const prestData  = [119,212,183,0,0,0,0,0];
+const prestColors = prestData.map(v => v > 0 ? 'rgba(26,79,160,.75)' : 'rgba(192,21,10,.25)');
+
+new Chart(document.getElementById('chartPrestamos'), {
+  type:'bar',
+  data:{ labels:prestMeses, datasets:[{ label:'Préstamos', data: prestData, backgroundColor:prestColors, borderRadius:3, borderWidth:0 }] },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: ctx => ` ${ctx.raw === 0 ? 'CERO (supuesto)' : ctx.raw+'M'}` } } },
+    scales:{ x:{grid:{display:false},ticks:{font:{size:10}}}, y:{grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'M',font:{size:10}}} }
+  }
+});
+
+// ── SCENARIOS CHART ────────────────────────────────────────────────────────────
+new Chart(document.getElementById('chartScenarios'), {
+  type:'line',
+  data:{
+    labels:['Abr-26','May-26','Jun-26','Jul-26','Ago-26'],
+    datasets:[
+      { label:'Proyección Cía', data:[-415,-612,-715,-821,-917], borderColor:'#2563c0', backgroundColor:'rgba(37,99,192,.08)', fill:true, tension:.35, pointRadius:4, borderWidth:2 },
+      { label:'Proyección Independiente', data:[-530,-743,-888,-1015,-1127], borderColor:'#c75c00', backgroundColor:'rgba(199,92,0,.06)', fill:true, tension:.35, pointRadius:4, borderWidth:2, borderDash:[5,3] }
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: ctx => ` ${ctx.dataset.label}: ${ctx.raw.toLocaleString('es-CL')}M` } } },
+    scales:{ x:{grid:{display:false},ticks:{font:{size:10}}}, y:{grid:{color:'rgba(0,0,0,.04)'},ticks:{callback:v=>v.toLocaleString('es-CL')+'M',font:{size:10}}} }
+  }
+});
+
+// ── BRECHA2 ────────────────────────────────────────────────────────────────────
+new Chart(document.getElementById('chartBrecha2'), {
+  type:'bar',
+  data:{
+    labels:['Abr-26','May-26','Jun-26','Jul-26','Ago-26'],
+    datasets:[{ label:'Brecha', data:[-115,-131,-173,-194,-210], backgroundColor:'rgba(192,21,10,.65)', borderRadius:4, borderWidth:0 }]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: ctx => ` Brecha: ${ctx.raw}M` } } },
+    scales:{ x:{grid:{display:false},ticks:{font:{size:10}}}, y:{grid:{color:'rgba(0,0,0,.04)'},ticks:{callback:v=>v+'M',font:{size:10}}} }
+  }
+});
+
+// ── FLUJO TABLE ────────────────────────────────────────────────────────────────
+const flujoRows = [
+  { label:'Saldo inicial', hist:[13,138,50], cia:[50,-415,-612,-715,-821], ind:[50,-530,-743,-888,-1015], type:'section' },
+  { label:'Recaudación clientes', hist:[324,360,340], cia:[327,316,316,317,317], ind:[320,320,325,325,325] },
+  { label:'Remuneraciones + imposiciones', hist:[-153,-154,-141], cia:[-153,-160,-160,-160,-160], ind:[-155,-160,-160,-160,-160] },
+  { label:'Honorarios médicos', hist:[-120,-116,-107], cia:[-137,-105,-105,-105,-105], ind:[-120,-120,-120,-120,-120] },
+  { label:'Facturas + proveedores', hist:[-64,-62,-91], cia:[-61,-57,-57,-57,-57], ind:[-61,-57,-57,-57,-57] },
+  { label:'Impuesto F-29', hist:[0,0,0], cia:[-65,-36,-36,-36,-36], ind:[-65,-36,-36,-36,-36] },
+  { label:'Flujo operacional Chile', hist:[-45,8,-29], cia:[-128,-75,-75,-75,-75], ind:[-119,-87,-82,-82,-82], type:'section' },
+  { label:'Préstamos accionistas (+)', hist:[119,212,183], cia:[0,0,0,0,0], ind:[0,0,0,0,0] },
+  { label:'Servicio deuda bancaria', hist:[-24,-24,-24], cia:[-23,-22,-22,-22,-22], ind:[-23,-22,-22,-22,-22] },
+  { label:'Convenios TGR', hist:[-80,-3,-79], cia:[-80,-39,-39,-36,-36], ind:[-80,-39,-39,-36,-36] },
+  { label:'Indemnizaciones + reestructuración', hist:[-22,-5,-170], cia:[-178,-57,17,21,26], ind:[-125,-57,0,0,0] },
+  { label:'FLUJO TOTAL MES', hist:[-85,125,-88], cia:[-464,-198,-155,-149,-143], ind:[-380,-213,-167,-164,-164], type:'total' },
+  { label:'SALDO FINAL', hist:[13,138,50], cia:[-415,-612,-768,-917,-1060], ind:[-530,-743,-941,-1127,-1311], type:'saldo' },
+];
+
+const tbody = document.getElementById('flujoTbody');
+flujoRows.forEach(row => {
+  const tr = document.createElement('tr');
+  if(row.type==='section') tr.className='section-row';
+  if(row.type==='total') tr.className='total-row';
+  if(row.type==='saldo') tr.className='saldo-row';
+
+  const fmtCell = (v, extra='') => {
+    if(v === null || v === undefined) return `<td class="zero ${extra}">—</td>`;
+    const cls = v > 0 ? 'pos' : (v < 0 ? 'neg' : 'zero');
+    const str = v === 0 ? '—' : (v > 0 ? '+'+v.toLocaleString('es-CL') : v.toLocaleString('es-CL'));
+    return `<td class="${cls} ${extra}">${str}</td>`;
+  };
+
+  let html = `<td>${row.label}</td>`;
+  row.hist.forEach(v => html += fmtCell(v));
+  html += `<td class="sep-col"></td>`;
+  row.cia.forEach(v => html += fmtCell(v, 'col-cia'));
+  html += `<td class="sep-col"></td>`;
+  row.ind.forEach(v => html += fmtCell(v, 'col-ind'));
+
+  tr.innerHTML = html;
+  tbody.appendChild(tr);
+});
+
+</script>
+</body>
+</html>
