@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formulario de Ángulos en la Circunferencia</title>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f1117;
+  --card-bg: #181b24;
+  --card-border: #2a2e3a;
+  --accent1: #5eaeff;
+  --accent2: #ff6b8a;
+  --accent3: #50e3a4;
+  --accent4: #fbbf40;
+  --accent5: #c084fc;
+  --accent6: #fb923c;
+  --text: #e8e8ed;
+  --text-dim: #8b8ea0;
+  --formula-bg: #1e2233;
+  --formula-border: #3a4060;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.hero {
+  text-align: center;
+  padding: 60px 24px 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -100px; left: 50%; transform: translateX(-50%);
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(94,174,255,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero h1 {
+  font-family: 'Crimson Pro', serif;
+  font-size: 3.2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, var(--accent1), var(--accent5));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 10px;
+}
+
+.hero .sub {
+  font-size: 1.1rem;
+  color: var(--text-dim);
+  font-weight: 400;
+  max-width: 550px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.hero .badge {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 6px 18px;
+  border-radius: 50px;
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  font-size: 0.82rem;
+  color: var(--accent4);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+  gap: 28px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 28px 80px;
+}
+
+@media (max-width: 560px) {
+  .grid { grid-template-columns: 1fr; padding: 16px 12px 60px; gap: 20px; }
+  .hero h1 { font-size: 2rem; }
+  .hero .sub { font-size: 0.95rem; }
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 18px;
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px -15px rgba(0,0,0,0.5);
+}
+
+.card .num {
+  position: absolute;
+  top: 16px; right: 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  opacity: 0.5;
+  font-weight: 500;
+}
+
+.card .tag {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.tag-central { background: rgba(94,174,255,0.12); color: var(--accent1); }
+.tag-inscrito { background: rgba(80,227,164,0.12); color: var(--accent3); }
+.tag-interior { background: rgba(255,107,138,0.12); color: var(--accent2); }
+.tag-exterior { background: rgba(251,191,64,0.12); color: var(--accent4); }
+.tag-tangente { background: rgba(192,132,252,0.12); color: var(--accent5); }
+.tag-propiedad { background: rgba(251,146,60,0.12); color: var(--accent6); }
+
+.card h2 {
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.45rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #fff;
+}
+
+.card .desc {
+  font-size: 0.88rem;
+  color: var(--text-dim);
+  line-height: 1.55;
+  margin-bottom: 20px;
+}
+
+.diagram-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 18px;
+}
+
+.formula-box {
+  background: var(--formula-bg);
+  border: 1px solid var(--formula-border);
+  border-radius: 12px;
+  padding: 14px 20px;
+  text-align: center;
+}
+
+.formula-box .formula {
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  font-style: italic;
+  letter-spacing: 0.01em;
+}
+
+.formula-box .note {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  margin-top: 6px;
+  font-style: italic;
+}
+
+svg text {
+  font-family: 'Crimson Pro', serif;
+}
+
+.section-divider {
+  max-width: 1200px;
+  margin: 20px auto 0;
+  padding: 0 28px;
+}
+
+.section-divider h3 {
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  border-bottom: 1px solid var(--card-border);
+  padding-bottom: 10px;
+  margin-bottom: 0;
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Ángulos en la Circunferencia</h1>
+  <p class="sub">Formulario visual completo con todas las fórmulas y teoremas necesarios para resolver problemas de ángulos en la circunferencia.</p>
+  <span class="badge">IIIº Medios — Geometría</span>
+</div>
+
+<div class="grid">
+
+<!-- ========== 1. ÁNGULO CENTRAL ========== -->
+<div class="card">
+  <span class="num">01</span>
+  <span class="tag tag-central">Ángulo Central</span>
+  <h2>Ángulo Central</h2>
+  <p class="desc">El vértice está en el centro O de la circunferencia. Sus lados son radios. El ángulo central es igual a la medida del arco que intercepta.</p>
+  <div class="diagram-container">
+    <svg viewBox="0 0 280 260" width="280" height="260" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="140" cy="130" r="100" fill="none" stroke="#3a4060" stroke-width="2"/>
+      <!-- Radios -->
+      <line x1="140" y1="130" x2="225" y2="80" stroke="#5eaeff" stroke-width="2.5"/>
+      <line x1="140" y1="130" x2="225" y2="180" stroke="#5eaeff" stroke-width="2.5"/>
+      <!-- Arco coloreado -->
+      <path d="M 225 80 A 100 100 0 0 1 225 180" fill="none" stroke="#ff6b8a" stroke-width="4" stroke-linecap="round"/>
+      <!-- Ángulo -->
+      <path d="M 165 118 A 30 30 0 0 1 165 142" fill="none" stroke="#fbbf40" stroke-width="2"/>
+      <!-- Puntos -->
+      <circle cx="140" cy="130" r="4" fill="#5eaeff"/>
+      <circle cx="225" cy="80" r="4" fill="#fff"/>
+      <circle cx="225" cy="180" r="4" fill="#fff"/>
+      <!-- Labels -->
+      <text x="128" y="148" fill="#5eaeff" font-size="16" font-weight="700">O</text>
+      <text x="232" y="78" fill="#fff" font-size="15" font-weight="600">A</text>
+      <text x="232" y="188" fill="#fff" font-size="15" font-weight="600">B</text>
+      <text x="170" y="135" fill="#fbbf40" font-size="14" font-weight="600" font-style="italic">α</text>
+      <text x="245" y="135" fill="#ff6b8a" font-size="13" font-weight="600">arco AB</text>
+    </svg>
+  </div>
+  <div class="formula-box">
+    <div class="formula" style="color: #5eaeff;">α = arco AB</div>
+    <div class="note">El ángulo central es igual a su arco interceptado</div>
+  </div>
+</div>
+
+<!-- ========== 2. ÁNGULO INSCRITO ========== -->
+<div class="card">
+  <span class="num">02</span>
+  <span class="tag tag-inscrito">Ángulo Inscrito</span>
+  <h2>Ángulo Inscrito</h2>
+  <p class="desc">El vértice está sobre la circunferencia. Sus lados son cuerdas. Mide la mitad del arco que intercepta.</p>
+  <div class="diagram-container">
+    <svg viewBox="0 0 280 260" width="280" height="260" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="140" cy="130" r="100" fill="none" stroke="#3a4060" stroke-width="2"/>
+      <!-- Cuerdas -->
+      <line x1="80" y1="45" x2="230" y2="85" stroke="#50e3a4" stroke-width="2.5"/>
+      <line x1="80" y1="45" x2="230" y2="185" stroke="#50e3a4" stroke-width="2.5"/>
+      <!-- Arco coloreado -->
+      <path d="M 230 85 A 100 100 0 0 1 230 185" fill="none" stroke="#ff6b8a" stroke-width="4" stroke-linecap="round"/>
+      <!-- Ángulo -->
+      <path d="M 108 56 A 30 30 0 0 1 104 65" fill="none" stroke="#fbbf40" stroke-width="2"/>
+      <!-- Centro -->
+      <circle cx="140" cy="130" r="3" fill="#3a4060"/>
+      <!-- Puntos -->
+      <circle cx="80" cy="45" r="4" fill="#50e3a4"/>
+      <circle cx="230" cy="85" r="4" fill="#fff"/>
+      <circle cx="230" cy="185" r="4" fill="#fff"/>
+      <!-- Labels -->
+      <text x="60" y="42" fill="#50e3a4" font-size="15" font-weight="600">P</text>
+      <text x="237" y="83" fill="#fff" font-size="15" font-weight="600">A</text>
+      <text x="237" y="193" fill="#fff" font-size="15" font-weight="600">B</text>
+      <text x="130" y="128" fill="#3a4060" font-size="13">O</text>
+      <text x="100" y="75" fill="#fbbf40" font-size="14" font-weight="600" font-style="italic">α</text>
+      <text x="248" y="142" fill="#ff6b8a" font-size="13" font-weight="600">arco AB</text>
+    </svg>
+  </div>
+  <div class="formula-box">
+    <div class="formula" style="color: #50e3a4;">α = arco AB ÷ 2</div>
+    <div class="note">El ángulo inscrito es la mitad del arco que intercepta</div>
+  </div>
+</div>
+
+<!-- ========== 3. RELACIÓN CENTRAL-INSCRITO ========== -->
+<div class="card">
+  <span class="num">03</span>
+  <span class="tag tag-propiedad">Relación</span>
+  <h2>Central vs. Inscrito (mismo arco)</h2>
+  <p class="desc">Cuando un ángulo central y un ángulo inscrito interceptan el mismo arco, el central es el doble del inscrito.</p>
+  <div class="diagram-container">
+    <svg viewBox="0 0 280 260" width="280" height="260" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="140" cy="130" r="100" fill="none" stroke="#3a4060" stroke-width="2"/>
+      <!-- Radios (central) -->
+      <line x1="140" y1="130" x2="220" y2="65" stroke="#5eaeff" stroke-width="2" stroke-dasharray="6,3"/>
+      <line x1="140" y1="130" x2="220" y2="195" stroke="#5eaeff" stroke-width="2" stroke-dasharray="6,3"/>
+      <!-- Cuerdas (inscrito) -->
+      <line x1="45" y1="155" x2="220" y2="65" stroke="#50e3a4" stroke-width="2.5"/>
+      <line x1="45" y1="155" x2="220" y2="195" stroke="#50e3a4" stroke-width="2.5"/>
+      <!-- Arco -->
+      <path d="M 220 65 A 100 100 0 0 1 220 195" fill="none" stroke="#ff6b8a" stroke-width="4" stroke-linecap="round"/>
+      <!-- Ángulos -->
+      <path d="M 162 122 A 25 25 0 0 1 160 140" fill="none" stroke="#5eaeff" stroke-width="2"/>
+      <path d="M 68 150 A 25 25 0 0 1 63 162" fill="none" stroke="#50e3a4" stroke-width="2"/>
+      <!-- Puntos -->
+      <circle cx="140" cy="130" r="4" fill="#5eaeff"/>
+      <circle cx="45" cy="155" r="4" fill="#50e3a4"/>
+      <circle cx="220" cy="65" r="4" fill="#fff"/>
+      <circle cx="220" cy="195" r="4" fill="#fff"/>
+      <!-- Labels -->
+      <text x="128" y="125" fill="#5eaeff" font-size="14" font-weight="700">O</text>
+      <text x="24" y="162" fill="#50e3a4" font-size="14" font-weight="600">P</text>
+      <text x="227" y="62" fill="#fff" font-size="14" font-weight="600">A</text>
+      <text x="227" y="203" fill="#fff" font-size="14" font-weight="600">B</text>
+      <text x="164" y="136" fill="#5eaeff" font-size="13" font-weight="600">2α</text>
+      <text x="68" y="163" fill="#50e3a4" font-size="13" font-weight="600" font-style="italic">α</text>
+    </svg>
+  </div>
+  <div class="formula-box">
+    <div class="formula" style="color: #fb923c;">∠central = 2 × ∠inscrito</div>
+    <div class="note">Ambos ángulos deben interceptar el mismo arco AB</div>
+  </div>
+</div>
+
+<!-- ========== 4. ÁNGULO SEMI-INSCRITO (tangente-cuerda) ========== -->
+<div class="card">
+  <span class="num">04</span>
+  <span class="tag tag-tangente">Tangente-Cuerda</span>
+  <h2>Ángulo Semi-inscrito</h2>
+  <p class="desc">Un lado es una tangente y el otro es una cuerda. El vértice está en el punto de tangencia sobre la circunferencia.</p>
+  <div class="diagram-container">
+    <svg viewBox="0 0 280 270" width="280" height="270" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="140" cy="120" r="95" fill="none" stroke="#3a4060" stroke-width="2"/>
+      <!-- Tangente horizontal en T (abajo) -->
+      <line x1="20" y1="215" x2="265" y2="215" stroke="#c084fc" stroke-width="2.5"/>
+      <!-- Cuerda de T a A -->
+      <line x1="140" y1="215" x2="68" y2="52" stroke="#c084fc" stroke-width="2.5"/>
+      <!-- Arco coloreado (el que NO contiene el ángulo, arco menor TA del lado izquierdo) -->
+      <path d="M 140 215 A 95 95 0 0 0 68 52" fill="none" stroke="#fbbf40" stroke-width="4" stroke-linecap="round"/>
+      <!-- Arco mayor en rosa -->
+      <path d="M 140 215 A 95 95 0 0 1 68 52" fill="none" stroke="#ff6b8a" stroke-width="3" stroke-dasharray="5,4" stroke-linecap="round"/>
+      <!-- Ángulo -->
+      <path d="M 165 215 A 25 25 0 0 0 157 197" fill="none" stroke="#fbbf40" stroke-width="2.5"/>
+      <!-- Puntos -->
+      <circle cx="140" cy="215" r="4" fill="#c084fc"/>
+      <circle cx="68" cy="52" r="4" fill="#fff"/>
+      <circle cx="140" cy="120" r="3" fill="#3a4060"/>
+      <!-- Labels -->
+      <text x="143" y="232" fill="#c084fc" font-size="15" font-weight="600">T</text>
+      <text x="48" y="48" fill="#fff" font-size="15" font-weight="600">A</text>
+      <text x="168" y="210" fill="#fbbf40" font-size="14" font-weight="600" font-style="italic">α</text>
+      <text x="25" y="148" fill="#fbbf40" font-size="12" font-weight="600">arco</text>
+      <text x="25" y="162" fill="#fbbf40" font-size="12" font-weight="600">TA</text>
+      <text x="260" y="230" fill="#c084fc" font-size="12" font-style="italic">tangente</text>
+    </svg>
+  </div>
+  <div class="formula-box">
+    <div class="formula" style="color: #c084fc;">α = arco TA ÷ 2</div>
+    <div class="note">El arco usado es el interceptado por el ángulo (entre tangente y cuerda)</div>
+  </div>
+</div>
+
+<!-- ========== 5. ÁNGULO INTERIOR (dos cuerdas) ========== -->
+<div class="card">
+  <span class="num">05</span>
+  <span class="tag tag-interior">Interior</span>
+  <h2>Ángulo Interior (dos cuerdas)</h2>
+  <p class="desc">Se forma donde dos cuerdas se cruzan dentro de la circunferencia. Es la semisuma de los dos arcos opuestos.</p>
+  <div class="diagram-container">
+    <svg viewBox="0 0 280 260" width="280" height="260" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="140" cy="130" r="100" fill="none" stroke="#3a4060" stroke-width="2"/>
+      <!-- Cuerda 1: A-C -->
+      <line x1="55" y1="65" x2="230" y2="185" stroke="#ff6b8a" stroke-width="2.5"/>
+      <!-- Cuerda 2: B-D -->
+      <line x1="230" y1="70" x2="60" y2="195" stroke="#ff6b8a" stroke-width="2.5"/>
+      <!-- Arco 1 (AC lado superior derecho) -->
+      <path d="M 55 65 A 100 100 0 0 1 230 70" fill="none" stroke="#fbbf40" stroke-width="4" stroke-linecap="round"/>
+      <!-- Arco 2 (BD lado inferior) -->
+      <path d="M 230 185 A 100 100 0 0 1 60 195" fill="none" stroke="#50e3a4" stroke-width="4" stroke-linecap="round"/>
+      <!-- Punto de intersección P -->
+      <circle cx="143" cy="127" r="4" fill="#ff6b8a"/>
+      <!-- Ángulo -->
+      <path d="M 160 115 A 20 20 0 0 1 157 140" fill="none" stroke="#fff" stroke-width="2"/>
+      <!-- Puntos -->
+      <circle cx="55" cy="65" r="4" fill="#fff"/>
+      <circle cx="230" cy="185" r="4" fill="#fff"/>
+      <circle cx="230" cy="70" r="4" fill="#fff"/>
+      <circle cx="60" cy="195" r="4" fill="#fff"/>
+      <!-- Labels -->
+      <text x="35" y="60" fill="#fff" font-size="14" font-weight="600">A</text>
+      <text x="237" y="193" fill="#fff" font-size="14" font-weight="600">C</text>
+      <text x="237" y="67" fill="#fff" font-size="14" font-weight="600">B</text>
+      <text x="40" y="205" fill="#fff" font-size="14" font-weight="600">D</text>
+      <text x="148" y="118" fill="#ff6b8a" font-size="13" font-weight="700">P</text>
+      <text x="162" y="133" fill="#fff" font-size="13" font-weight="600" font-style="italic">α</text>
+      <text x="120" y="35" fill="#fbbf40" font-size="12" font-weight="600">arco₁</text>
+      <text x="118" y="245" fill="#50e3a4" font-size="12" font-weight="600">arco₂</text>
+    </svg>
+  </div>
+  <div class="formula-box">
+    <div class="formula" style="color: #ff6b8a;">α = (arco₁ + arco₂) ÷ 2</div>
+    <div class="note">Semisuma de los arcos opuestos interceptados por las cuerdas</div>
+  </div>
+</div>
+
+<!-- ========== 6. ÁNGULO EXTERIOR (dos secantes) ========== -->
+<div class="card">
+  <span class="num">06</span>
+  <span class="tag tag-exterior">Exterior</span>
+  <h2>Ángulo Exterior (dos secantes)</h2>
+  <p class="desc">El vértice P está fuera de la circunferencia. Se trazan dos secantes. El ángulo es la semidiferencia de los arcos.</p>
+  <div class="diagram-container">
+    <svg viewBox="0 0 300 260" width="300" height="260" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="160" cy="130" r="90" fill="none" stroke="#3a4060" stroke-width="2"/>
+      <!-- Secante 1: P-A-B -->
+      <line x1="22" y1="130" x2="250" y2="80" stroke="#fbbf40" stroke-width="2.2"/>
+      <!-- Secante 2: P-C-D -->
+      <line x1="22" y1="130" x2="245" y2="195" stroke="#fbbf40" stroke-width="2.2"/>
+      <!-- Arco mayor (B-D, el lejano) -->
+      <path d="M 250 80 A 90 90 0 0 1 245 195" fill="none" stroke="#ff6b8a" stroke-width="4" stroke-linecap="round"/>
+      <!-- Arco menor (A-C, el cercano) -->
+      <path d="M 82 83 A 90 90 0 0 1 78 168" fill="none" stroke="#50e3a4" stroke-width="4" stroke-linecap="round"/>
+      <!-- Ángulo -->
+      <path d="M 50 122 A 30 30 0 0 1 48 140" fill="none" stroke="#fbbf40" stroke-width="2.5"/>
+      <!-- Puntos -->
+      <circle cx="22" cy="130" r="4" fill="#fbbf40"/>
+      <circle cx="82" cy="83" r="4" fill="#fff"/>
+      <circle cx="250" cy="80" r="4" fill="#fff"/>
+      <circle cx="78" cy="168" r="4" fill="#fff"/>
+      <circle cx="245" cy="195" r="4" fill="#fff"/>
+      <!-- Labels -->
+      <text x="5" y="125" fill="#fbbf40" font-size="15" font-weight="700">P</text>
+      <text x="60" y="78" fill="#fff" font-size="13" font-weight="600">A</text>
+      <text x="255" y="78" fill="#fff" font-size="13" font-weight="600">B</text>
+      <text x="58" y="180" fill="#fff" font-size="13" font-weight="600">C</text>
+      <text x="252" y="203" fill="#fff" font-size="13" font-weight="600">D</text>
+      <text x="52" y="137" fill="#fbbf40" font-size="14" font-weight="600" font-style="italic">α</text>
+      <text x="258" y="145" fill="#ff6b8a" font-size="11" font-weight="600">arco mayor</text>
+      <text x="86" y="133" fill="#50e3a4" font-size="11" font-weight="600">arco</text>
+      <text x="86" y="146" fill="#50e3a4" font-size="11" font-weight="600">menor</text>
+    </svg>
+  </div>
+  <div class="formula-box">
+    <div class="formula" style="color: #fbbf40;">α = (arco mayor − arco menor) ÷ 2</div>
+    <div class="note">Semidiferencia de los arcos lejano (mayor) y cercano (menor)</div>
+  </div>
+</div>
+
+<!-- ========== 7. ÁNGULO EXTERIOR (tangente + secante) ========== -->
+<div class="card">
+  <span class="num">07</span>
+  <span class="tag tag-exterior">Exterior</span>
+  <h2>Tangente y Secante (exterior)</h2>
+  <p class="desc">Desde un punto exterior se traza una tangente y una secante. Misma fórmula de semidiferencia de arcos.</p>
+  <div class="diagram-container">
+    <svg viewBox="0 0 300 260" width="300" height="260" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="170" cy="125" r="88" fill="none" stroke="#3a4060" stroke-width="2"/>
+      <!-- Tangente: P → T (punto de tangencia abajo-izq) -->
+      <line x1="28" y1="175" x2="116" y2="200" stroke="#c084fc" stroke-width="2.5"/>
+      <!-- Secante: P → A → B -->
+      <line x1="28" y1="175" x2="255" y2="95" stroke="#c084fc" stroke-width="2.2"/>
+      <!-- Arco mayor (T a B, por la derecha) -->
+      <path d="M 116 200 A 88 88 0 0 0 255 95" fill="none" stroke="#ff6b8a" stroke-width="4" stroke-linecap="round"/>
+      <!-- Arco menor (T a A, por arriba-izq) -->
+      <path d="M 116 200 A 88 88 0 0 1 98 72" fill="none" stroke="#50e3a4" stroke-width="4" stroke-linecap="round"/>
+      <!-- Ángulo -->
+      <path d="M 55 168 A 28 28 0 0 1 47 183" fill="none" stroke="#fbbf40" stroke-width="2.5"/>
+      <!-- Puntos -->
+      <circle cx="28" cy="175" r="4" fill="#fbbf40"/>
+      <circle cx="116" cy="200" r="4" fill="#c084fc"/>
+      <circle cx="98" cy="72" r="4" fill="#fff"/>
+      <circle cx="255" cy="95" r="4" fill="#fff"/>
+      <!-- Labels -->
+      <text x="8" y="172" fill="#fbbf40" font-size="15" font-weight="700">P</text>
+      <text x="108" y="222" fill="#c084fc" font-size="14" font-weight="600">T</text>
+      <text x="78" y="66" fill="#fff" font-size="14" font-weight="600">A</text>
+      <text x="261" y="93" fill="#fff" font-size="14" font-weight="600">B</text>
+      <text x="50" y="182" fill="#fbbf40" font-size="14" font-weight="600" font-style="italic">α</text>
+      <text x="215" y="175" fill="#ff6b8a" font-size="11" font-weight="600">arco</text>
+      <text x="215" y="188" fill="#ff6b8a" font-size="11" font-weight="600">mayor</text>
+      <text x="58" y="118" fill="#50e3a4" font-size="11" font-weight="600">arco</text>
+      <text x="54" y="131" fill="#50e3a4" font-size="11" font-weight="600">menor</text>
+    </svg>
+  </div>
+  <div class="formula-box">
+    <div class="formula" style="color: #c084fc;">α = (arco TB − arco TA) ÷ 2</div>
+    <div class="note">Misma fórmula: semidiferencia del arco lejano menos el cercano</div>
+  </div>
+</div>
+
+<!-- ========== 8. DOS TANGENTES (exterior) ========== -->
+<div class="card">
+  <span class="num">08</span>
+  <span class="tag tag-exterior">Exterior</span>
+  <h2>Dos Tangentes (exterior)</h2>
+  <p class="desc">Desde un punto exterior se trazan dos tangentes a la circunferencia. El ángulo se forma entre las tangentes en P.</p>
+  <div class="diagram-container">
+    <svg viewBox="0 0 300 260" width="300" height="260" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="170" cy="130" r="85" fill="none" stroke="#3a4060" stroke-width="2"/>
+      <!-- Tangente 1: P-A -->
+      <line x1="30" y1="130" x2="97" y2="72" stroke="#fb923c" stroke-width="2.5"/>
+      <!-- Tangente 2: P-B -->
+      <line x1="30" y1="130" x2="97" y2="188" stroke="#fb923c" stroke-width="2.5"/>
+      <!-- Arco mayor (A a B, por la derecha) -->
+      <path d="M 97 72 A 85 85 0 0 1 97 188" fill="none" stroke="#ff6b8a" stroke-width="4" stroke-linecap="round"/>
+      <!-- Arco menor (A a B, por la izquierda) -->
+      <path d="M 97 72 A 85 85 0 0 0 97 188" fill="none" stroke="#50e3a4" stroke-width="4" stroke-linecap="round"/>
+      <!-- Radios -->
+      <line x1="170" y1="130" x2="97" y2="72" stroke="#5eaeff" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <line x1="170" y1="130" x2="97" y2="188" stroke="#5eaeff" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <!-- Ángulo recto -->
+      <rect x="97" y="72" width="10" height="10" fill="none" stroke="#5eaeff" stroke-width="1" transform="rotate(30, 97, 72)"/>
+      <rect x="87" y="178" width="10" height="10" fill="none" stroke="#5eaeff" stroke-width="1" transform="rotate(-30, 97, 188)"/>
+      <!-- Ángulo -->
+      <path d="M 56 120 A 28 28 0 0 1 56 140" fill="none" stroke="#fbbf40" stroke-width="2.5"/>
+      <!-- Puntos -->
+      <circle cx="30" cy="130" r="4" fill="#fbbf40"/>
+      <circle cx="97" cy="72" r="4" fill="#fb923c"/>
+      <circle cx="97" cy="188" r="4" fill="#fb923c"/>
+      <circle cx="170" cy="130" r="3" fill="#5eaeff"/>
+      <!-- Labels -->
+      <text x="10" y="126" fill="#fbbf40" font-size="15" font-weight="700">P</text>
+      <text x="78" y="63" fill="#fb923c" font-size="14" font-weight="600">A</text>
+      <text x="78" y="205" fill="#fb923c" font-size="14" font-weight="600">B</text>
+      <text x="174" y="127" fill="#5eaeff" font-size="13" font-weight="600">O</text>
+      <text x="59" y="135" fill="#fbbf40" font-size="14" font-weight="600" font-style="italic">α</text>
+      <text x="220" y="100" fill="#ff6b8a" font-size="11" font-weight="600">arco</text>
+      <text x="215" y="113" fill="#ff6b8a" font-size="11" font-weight="600">mayor M</text>
+      <text x="48" y="90" fill="#50e3a4" font-size="11" font-weight="600">arco</text>
+      <text x="42" y="103" fill="#50e3a4" font-size="11" font-weight="600">menor m</text>
+    </svg>
+  </div>
+  <div class="formula-box">
+    <div class="formula" style="color: #fb923c;">α = (M − m) ÷ 2</div>
+    <div class="note">Además: M + m = 360°  y  α + ∠AOB = 180° (suplementarios)</div>
+  </div>
+</div>
+
+<!-- ========== 9. ÁNGULO INSCRITO EN SEMICÍRCULO ========== -->
+<div class="card">
+  <span class="num">09</span>
+  <span class="tag tag-propiedad">Propiedad</span>
+  <h2>Ángulo Inscrito en Semicírculo</h2>
+  <p class="desc">Todo ángulo inscrito que subtende un diámetro mide exactamente 90°. Teorema de Thales.</p>
+  <div class="diagram-container">
+    <svg viewBox="0 0 280 240" width="280" height="240" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="140" cy="130" r="95" fill="none" stroke="#3a4060" stroke-width="2"/>
+      <!-- Diámetro A-B -->
+      <line x1="45" y1="130" x2="235" y2="130" stroke="#5eaeff" stroke-width="2.5"/>
+      <!-- Cuerdas a C -->
+      <line x1="45" y1="130" x2="175" y2="40" stroke="#50e3a4" stroke-width="2.2"/>
+      <line x1="235" y1="130" x2="175" y2="40" stroke="#50e3a4" stroke-width="2.2"/>
+      <!-- Ángulo recto en C -->
+      <rect x="170" y="45" width="14" height="14" fill="none" stroke="#ff6b8a" stroke-width="2" transform="rotate(20, 175, 40)"/>
+      <!-- Puntos -->
+      <circle cx="45" cy="130" r="4" fill="#fff"/>
+      <circle cx="235" cy="130" r="4" fill="#fff"/>
+      <circle cx="175" cy="40" r="4" fill="#50e3a4"/>
+      <circle cx="140" cy="130" r="3" fill="#5eaeff"/>
+      <!-- Labels -->
+      <text x="25" y="128" fill="#fff" font-size="15" font-weight="600">A</text>
+      <text x="242" y="128" fill="#fff" font-size="15" font-weight="600">B</text>
+      <text x="178" y="33" fill="#50e3a4" font-size="15" font-weight="600">C</text>
+      <text x="133" y="148" fill="#5eaeff" font-size="13" font-weight="600">O</text>
+      <text x="188" y="58" fill="#ff6b8a" font-size="16" font-weight="700">90°</text>
+    </svg>
+  </div>
+  <div class="formula-box">
+    <div class="formula" style="color: #50e3a4;">∠ACB = 90°</div>
+    <div class="note">Si AB es diámetro, todo ángulo inscrito en C sobre AB es recto</div>
+  </div>
+</div>
+
+<!-- ========== 10. CUADRILÁTERO INSCRITO ========== -->
+<div class="card">
+  <span class="num">10</span>
+  <span class="tag tag-propiedad">Propiedad</span>
+  <h2>Cuadrilátero Inscrito</h2>
+  <p class="desc">En un cuadrilátero inscrito en una circunferencia, los ángulos opuestos son suplementarios (suman 180°).</p>
+  <div class="diagram-container">
+    <svg viewBox="0 0 280 260" width="280" height="260" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="140" cy="130" r="100" fill="none" stroke="#3a4060" stroke-width="2"/>
+      <!-- Cuadrilátero -->
+      <polygon points="80,48 225,65 210,215 55,195" fill="none" stroke="#fb923c" stroke-width="2.5" stroke-linejoin="round"/>
+      <!-- Arcos de ángulos opuestos -->
+      <path d="M 100 53 A 18 18 0 0 1 90 62" fill="none" stroke="#fbbf40" stroke-width="2.5"/>
+      <path d="M 197 205 A 18 18 0 0 1 205 195" fill="none" stroke="#5eaeff" stroke-width="2.5"/>
+      <path d="M 210 75 A 18 18 0 0 1 216 88" fill="none" stroke="#ff6b8a" stroke-width="2.5"/>
+      <path d="M 68 183 A 18 18 0 0 1 63 172" fill="none" stroke="#50e3a4" stroke-width="2.5"/>
+      <!-- Puntos -->
+      <circle cx="80" cy="48" r="4" fill="#fbbf40"/>
+      <circle cx="225" cy="65" r="4" fill="#ff6b8a"/>
+      <circle cx="210" cy="215" r="4" fill="#5eaeff"/>
+      <circle cx="55" cy="195" r="4" fill="#50e3a4"/>
+      <!-- Labels -->
+      <text x="65" y="40" fill="#fbbf40" font-size="15" font-weight="700">A</text>
+      <text x="232" y="60" fill="#ff6b8a" font-size="15" font-weight="700">B</text>
+      <text x="216" y="230" fill="#5eaeff" font-size="15" font-weight="700">C</text>
+      <text x="34" y="203" fill="#50e3a4" font-size="15" font-weight="700">D</text>
+      <text x="102" y="56" fill="#fbbf40" font-size="12" font-weight="600" font-style="italic">α</text>
+      <text x="192" y="220" fill="#5eaeff" font-size="12" font-weight="600" font-style="italic">γ</text>
+      <text x="218" y="86" fill="#ff6b8a" font-size="12" font-weight="600" font-style="italic">β</text>
+      <text x="58" y="180" fill="#50e3a4" font-size="12" font-weight="600" font-style="italic">δ</text>
+    </svg>
+  </div>
+  <div class="formula-box">
+    <div class="formula" style="color: #fb923c;">α + γ = 180°  &nbsp;y&nbsp;  β + δ = 180°</div>
+    <div class="note">Los ángulos opuestos del cuadrilátero inscrito son suplementarios</div>
+  </div>
+</div>
+
+<!-- ========== 11. TANGENTE-RADIO ========== -->
+<div class="card">
+  <span class="num">11</span>
+  <span class="tag tag-tangente">Tangente</span>
+  <h2>Tangente ⊥ Radio</h2>
+  <p class="desc">La recta tangente a una circunferencia es siempre perpendicular al radio trazado al punto de tangencia.</p>
+  <div class="diagram-container">
+    <svg viewBox="0 0 280 240" width="280" height="240" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="150" cy="110" r="85" fill="none" stroke="#3a4060" stroke-width="2"/>
+      <!-- Radio -->
+      <line x1="150" y1="110" x2="150" y2="195" stroke="#5eaeff" stroke-width="2.5"/>
+      <!-- Tangente horizontal -->
+      <line x1="40" y1="195" x2="260" y2="195" stroke="#c084fc" stroke-width="2.5"/>
+      <!-- Ángulo recto -->
+      <rect x="150" y="181" width="14" height="14" fill="none" stroke="#fbbf40" stroke-width="2"/>
+      <!-- Puntos -->
+      <circle cx="150" cy="195" r="4" fill="#c084fc"/>
+      <circle cx="150" cy="110" r="4" fill="#5eaeff"/>
+      <!-- Labels -->
+      <text x="155" y="205" fill="#c084fc" font-size="15" font-weight="600">T</text>
+      <text x="155" y="107" fill="#5eaeff" font-size="15" font-weight="600">O</text>
+      <text x="170" y="190" fill="#fbbf40" font-size="16" font-weight="700">90°</text>
+      <text x="225" y="215" fill="#c084fc" font-size="12" font-style="italic">tangente</text>
+      <text x="158" y="158" fill="#5eaeff" font-size="12" font-style="italic">radio</text>
+    </svg>
+  </div>
+  <div class="formula-box">
+    <div class="formula" style="color: #c084fc;">∠OT = 90°</div>
+    <div class="note">La tangente es perpendicular al radio en el punto de tangencia T</div>
+  </div>
+</div>
+
+<!-- ========== 12. ARCOS E INSCRITOS IGUALES ========== -->
+<div class="card">
+  <span class="num">12</span>
+  <span class="tag tag-inscrito">Inscrito</span>
+  <h2>Ángulos Inscritos sobre el mismo arco</h2>
+  <p class="desc">Todos los ángulos inscritos que subtenden el mismo arco son iguales entre sí, sin importar la posición del vértice.</p>
+  <div class="diagram-container">
+    <svg viewBox="0 0 280 250" width="280" height="250" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="140" cy="125" r="95" fill="none" stroke="#3a4060" stroke-width="2"/>
+      <!-- Arco AB (inferior) -->
+      <path d="M 75 195 A 95 95 0 0 1 215 185" fill="none" stroke="#ff6b8a" stroke-width="4" stroke-linecap="round"/>
+      <!-- Cuerdas desde P1 -->
+      <line x1="82" y1="47" x2="75" y2="195" stroke="#50e3a4" stroke-width="1.8" opacity="0.7"/>
+      <line x1="82" y1="47" x2="215" y2="185" stroke="#50e3a4" stroke-width="1.8" opacity="0.7"/>
+      <!-- Cuerdas desde P2 -->
+      <line x1="140" y1="30" x2="75" y2="195" stroke="#5eaeff" stroke-width="1.8" opacity="0.7"/>
+      <line x1="140" y1="30" x2="215" y2="185" stroke="#5eaeff" stroke-width="1.8" opacity="0.7"/>
+      <!-- Cuerdas desde P3 -->
+      <line x1="210" y1="52" x2="75" y2="195" stroke="#c084fc" stroke-width="1.8" opacity="0.7"/>
+      <line x1="210" y1="52" x2="215" y2="185" stroke="#c084fc" stroke-width="1.8" opacity="0.7"/>
+      <!-- Ángulos -->
+      <path d="M 96 55 A 16 16 0 0 1 90 63" fill="none" stroke="#50e3a4" stroke-width="2"/>
+      <path d="M 153 40 A 16 16 0 0 1 148 48" fill="none" stroke="#5eaeff" stroke-width="2"/>
+      <path d="M 205 66 A 16 16 0 0 1 198 60" fill="none" stroke="#c084fc" stroke-width="2"/>
+      <!-- Puntos -->
+      <circle cx="82" cy="47" r="4" fill="#50e3a4"/>
+      <circle cx="140" cy="30" r="4" fill="#5eaeff"/>
+      <circle cx="210" cy="52" r="4" fill="#c084fc"/>
+      <circle cx="75" cy="195" r="4" fill="#fff"/>
+      <circle cx="215" cy="185" r="4" fill="#fff"/>
+      <!-- Labels -->
+      <text x="62" y="42" fill="#50e3a4" font-size="13" font-weight="600">P₁</text>
+      <text x="130" y="24" fill="#5eaeff" font-size="13" font-weight="600">P₂</text>
+      <text x="218" y="48" fill="#c084fc" font-size="13" font-weight="600">P₃</text>
+      <text x="55" y="210" fill="#fff" font-size="14" font-weight="600">A</text>
+      <text x="222" y="195" fill="#fff" font-size="14" font-weight="600">B</text>
+      <text x="100" y="64" fill="#50e3a4" font-size="11" font-weight="600" font-style="italic">α</text>
+      <text x="155" y="50" fill="#5eaeff" font-size="11" font-weight="600" font-style="italic">α</text>
+      <text x="193" y="70" fill="#c084fc" font-size="11" font-weight="600" font-style="italic">α</text>
+    </svg>
+  </div>
+  <div class="formula-box">
+    <div class="formula" style="color: #50e3a4;">∠P₁ = ∠P₂ = ∠P₃ = arco AB ÷ 2</div>
+    <div class="note">Todos son iguales mientras subtiendan el mismo arco AB</div>
+  </div>
+</div>
+
+</div><!-- /grid -->
+
+<!-- RESUMEN FINAL -->
+<div style="max-width:1200px; margin:0 auto 60px; padding:0 28px;">
+  <div style="background: linear-gradient(135deg, #1a1e2e, #1e2540); border:1px solid #2e3550; border-radius:18px; padding:36px 32px; position:relative; overflow:hidden;">
+    <div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(94,174,255,0.06) 0%,transparent 70%);pointer-events:none;"></div>
+    <h2 style="font-family:'Crimson Pro',serif; font-size:1.6rem; font-weight:700; color:#fff; margin-bottom:20px; text-align:center;">📋 Resumen Rápido de Fórmulas</h2>
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:14px;">
+      <div style="background:#181d2a;border-radius:10px;padding:14px 18px;border-left:3px solid #5eaeff;">
+        <span style="color:#5eaeff;font-weight:600;font-size:0.85rem;">CENTRAL</span>
+        <div style="font-family:'Crimson Pro',serif;font-size:1.15rem;font-style:italic;color:#fff;margin-top:4px;">α = arco</div>
+      </div>
+      <div style="background:#181d2a;border-radius:10px;padding:14px 18px;border-left:3px solid #50e3a4;">
+        <span style="color:#50e3a4;font-weight:600;font-size:0.85rem;">INSCRITO</span>
+        <div style="font-family:'Crimson Pro',serif;font-size:1.15rem;font-style:italic;color:#fff;margin-top:4px;">α = arco ÷ 2</div>
+      </div>
+      <div style="background:#181d2a;border-radius:10px;padding:14px 18px;border-left:3px solid #c084fc;">
+        <span style="color:#c084fc;font-weight:600;font-size:0.85rem;">SEMI-INSCRITO (tangente-cuerda)</span>
+        <div style="font-family:'Crimson Pro',serif;font-size:1.15rem;font-style:italic;color:#fff;margin-top:4px;">α = arco ÷ 2</div>
+      </div>
+      <div style="background:#181d2a;border-radius:10px;padding:14px 18px;border-left:3px solid #ff6b8a;">
+        <span style="color:#ff6b8a;font-weight:600;font-size:0.85rem;">INTERIOR (dos cuerdas)</span>
+        <div style="font-family:'Crimson Pro',serif;font-size:1.15rem;font-style:italic;color:#fff;margin-top:4px;">α = (arco₁ + arco₂) ÷ 2</div>
+      </div>
+      <div style="background:#181d2a;border-radius:10px;padding:14px 18px;border-left:3px solid #fbbf40;">
+        <span style="color:#fbbf40;font-weight:600;font-size:0.85rem;">EXTERIOR (secantes / tangentes)</span>
+        <div style="font-family:'Crimson Pro',serif;font-size:1.15rem;font-style:italic;color:#fff;margin-top:4px;">α = (arco mayor − arco menor) ÷ 2</div>
+      </div>
+      <div style="background:#181d2a;border-radius:10px;padding:14px 18px;border-left:3px solid #fb923c;">
+        <span style="color:#fb923c;font-weight:600;font-size:0.85rem;">CUADRILÁTERO INSCRITO</span>
+        <div style="font-family:'Crimson Pro',serif;font-size:1.15rem;font-style:italic;color:#fff;margin-top:4px;">∠opuestos = 180° (suplementarios)</div>
+      </div>
+      <div style="background:#181d2a;border-radius:10px;padding:14px 18px;border-left:3px solid #50e3a4;">
+        <span style="color:#50e3a4;font-weight:600;font-size:0.85rem;">SEMICÍRCULO (THALES)</span>
+        <div style="font-family:'Crimson Pro',serif;font-size:1.15rem;font-style:italic;color:#fff;margin-top:4px;">∠inscrito sobre diámetro = 90°</div>
+      </div>
+      <div style="background:#181d2a;border-radius:10px;padding:14px 18px;border-left:3px solid #c084fc;">
+        <span style="color:#c084fc;font-weight:600;font-size:0.85rem;">TANGENTE ⊥ RADIO</span>
+        <div style="font-family:'Crimson Pro',serif;font-size:1.15rem;font-style:italic;color:#fff;margin-top:4px;">∠(tangente, radio) = 90°</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer style="text-align:center;padding:30px;color:#555;font-size:0.82rem;">
+  Formulario de Ángulos en la Circunferencia — IIIº Medios — Colegio Pedro de Valdivia
+</footer>
+
+</body>
+</html>
