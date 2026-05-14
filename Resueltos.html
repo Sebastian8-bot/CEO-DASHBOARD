@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía Nº3 — Soluciones + Formulario Visual</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Source+Sans+3:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#090b10;--bg2:#0e1018;--card:#131620;--card2:#171b28;
+  --bdr:#1e2438;--bdr2:#2a3250;
+  --blue:#4ea5ff;--green:#3ddfa0;--red:#ff6478;--yellow:#ffc245;
+  --purple:#b07aff;--orange:#ff8c42;--pink:#ff6eb4;--cyan:#42d9e8;
+  --txt:#dfe2ea;--txt2:#8a90a8;--txt3:#555c78;
+  --blue-d:rgba(78,165,255,.1);--green-d:rgba(61,223,160,.1);
+  --red-d:rgba(255,100,120,.1);--yellow-d:rgba(255,194,69,.1);
+  --purple-d:rgba(176,122,255,.1);--orange-d:rgba(255,140,66,.1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:'Source Sans 3',sans-serif;line-height:1.65;-webkit-font-smoothing:antialiased}
+
+/* HERO */
+.hero{text-align:center;padding:70px 24px 45px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-180px;left:50%;transform:translateX(-50%);width:800px;height:800px;background:radial-gradient(ellipse,rgba(78,165,255,.06),rgba(176,122,255,.03) 50%,transparent 70%);pointer-events:none}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:800;background:linear-gradient(135deg,#fff 20%,var(--blue) 60%,var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px}
+.hero .sub{font-size:1.05rem;color:var(--txt2);max-width:680px;margin:0 auto 18px;font-weight:300}
+.hero .badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.hero .badge{padding:5px 16px;border-radius:50px;font-size:.75rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;border:1px solid var(--bdr2);background:var(--card)}
+.b-blue{color:var(--blue)}.b-green{color:var(--green)}.b-yellow{color:var(--yellow)}.b-purple{color:var(--purple)}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;background:rgba(9,11,16,.88);backdrop-filter:blur(16px);border-bottom:1px solid var(--bdr);padding:10px 20px;display:flex;gap:7px;overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav button{flex-shrink:0;padding:6px 16px;border-radius:8px;font-size:.8rem;font-weight:500;color:var(--txt2);background:0 0;border:1px solid transparent;cursor:pointer;font-family:inherit;transition:all .2s;white-space:nowrap}
+.nav button:hover{background:var(--card);border-color:var(--bdr2);color:var(--txt)}
+
+/* EXERCISE SECTION */
+.ex-section{max-width:1000px;margin:0 auto;padding:50px 24px 30px;border-bottom:1px solid var(--bdr);animation:fadeUp .5s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+
+/* Exercise header */
+.ex-head{display:flex;gap:16px;align-items:flex-start;margin-bottom:24px}
+.ex-badge{flex-shrink:0;width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:'Fira Code',monospace;font-size:1rem;font-weight:700;border:1px solid var(--bdr2)}
+.ex-title{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:#fff;margin-bottom:4px}
+.ex-desc{font-size:.92rem;color:var(--txt2);font-weight:300}
+.ex-desc em{color:var(--yellow);font-style:normal;font-weight:500}
+
+/* TWO-PANEL LAYOUT: pictorial + solution */
+.panels{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:800px){.panels{grid-template-columns:1fr}}
+
+/* LEFT: Pictorial theory card */
+.theory-card{background:var(--card);border:1px solid var(--bdr);border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:14px}
+.theory-card .th-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+.theory-card .th-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:#fff}
+.theory-card svg{width:100%;height:auto;display:block;margin:0 auto;max-width:280px}
+.theory-card .th-formula{background:var(--bg2);border:1px solid var(--bdr2);border-radius:10px;padding:12px 16px;text-align:center}
+.theory-card .th-formula .f{font-family:'Playfair Display',serif;font-size:1.2rem;font-style:italic;font-weight:600}
+.theory-card .th-formula .n{font-size:.78rem;color:var(--txt3);margin-top:4px}
+
+/* RIGHT: Solution steps */
+.solution-card{display:flex;flex-direction:column;gap:12px}
+.step{background:var(--bg2);border:1px solid var(--bdr);border-radius:10px;padding:12px 16px;display:flex;gap:12px;align-items:flex-start}
+.step-n{flex-shrink:0;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;margin-top:2px}
+.step-c{font-size:.9rem;color:var(--txt);font-weight:300;line-height:1.6}
+.step-c strong{color:#fff;font-weight:600}
+.step-c .m{font-family:'Playfair Display',serif;font-style:italic;color:var(--yellow);font-weight:400}
+
+/* Result box */
+.result{background:linear-gradient(135deg,rgba(61,223,160,.07),rgba(78,165,255,.05));border:1px solid rgba(61,223,160,.2);border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:14px}
+.result-icon{flex-shrink:0;width:38px;height:38px;border-radius:50%;background:rgba(61,223,160,.12);display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.result-val{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--green)}
+.result-sub{font-size:.8rem;color:var(--txt2);font-weight:300;margin-top:2px}
+
+/* SVG */
+svg text{font-family:'Source Sans 3',sans-serif}
+
+/* FOOTER */
+footer{text-align:center;padding:40px 24px;color:var(--txt3);font-size:.8rem;border-top:1px solid var(--bdr)}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Guía Nº3 — Completa Visual</h1>
+  <p class="sub">Cada ejercicio de la Parte II resuelto con su diagrama pictórico de la fórmula + desarrollo paso a paso. Aprende el «porqué» visual de cada solución.</p>
+  <div class="badges">
+    <span class="badge b-blue">18 Ejercicios</span>
+    <span class="badge b-green">Diagramas SVG</span>
+    <span class="badge b-yellow">Fórmula Pictórica</span>
+    <span class="badge b-purple">Paso a Paso</span>
+  </div>
+</div>
+
+<div class="nav" id="topnav"></div>
+
+<script>
+// Generate nav buttons
+const nav=document.getElementById('topnav');
+for(let i=1;i<=18;i++){const b=document.createElement('button');b.textContent='Ej. '+i;b.onclick=()=>document.getElementById('ej'+i).scrollIntoView({behavior:'smooth'});nav.appendChild(b)}
+</script>
+
+<!-- ================================================================ -->
+<!-- EJERCICIO 1 -->
+<!-- ================================================================ -->
+<section class="ex-section" id="ej1">
+  <div class="ex-head">
+    <div class="ex-badge" style="background:var(--green-d);color:var(--green)">01</div>
+    <div>
+      <div class="ex-title">α = 35°, β = 45° → hallar x</div>
+      <div class="ex-desc">Los ángulos <em>α = 35°</em> y <em>β = 45°</em> son inscritos. Hallar el ángulo <em>x</em> entre los vértices opuestos.</div>
+    </div>
+  </div>
+  <div class="panels">
+    <!-- PICTÓRICO: Ángulo inscrito -->
+    <div class="theory-card">
+      <div class="th-label" style="color:var(--green)">📐 Fórmula usada: Ángulo Inscrito</div>
+      <div class="th-title">Ángulo Inscrito = ½ arco</div>
+      <svg viewBox="0 0 260 240" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="130" cy="120" r="95" fill="none" stroke="#2a3250" stroke-width="2"/>
+        <line x1="70" y1="38" x2="215" y2="75" stroke="#3ddfa0" stroke-width="2.5"/>
+        <line x1="70" y1="38" x2="215" y2="175" stroke="#3ddfa0" stroke-width="2.5"/>
+        <path d="M 215 75 A 95 95 0 0 1 215 175" fill="none" stroke="#ff6478" stroke-width="5" stroke-linecap="round" opacity=".7"/>
+        <circle cx="70" cy="38" r="5" fill="#3ddfa0"/>
+        <circle cx="215" cy="75" r="4" fill="#fff"/>
+        <circle cx="215" cy="175" r="4" fill="#fff"/>
+        <text x="48" y="34" fill="#3ddfa0" font-size="14" font-weight="700">P</text>
+        <text x="222" y="73" fill="#fff" font-size="13" font-weight="600">A</text>
+        <text x="222" y="183" fill="#fff" font-size="13" font-weight="600">B</text>
+        <text x="88" y="58" fill="#ffc245" font-size="15" font-weight="700" font-style="italic">α</text>
+        <text x="230" y="130" fill="#ff6478" font-size="12" font-weight="600">arco</text>
+      </svg>
+      <div class="th-formula">
+        <div class="f" style="color:var(--green)">α = arco ÷ 2</div>
+        <div class="n">Invertido: arco = 2 × α</div>
+      </div>
+    </div>
+    <!-- SOLUCIÓN -->
+    <div class="solution-card">
+      <div class="step"><div class="step-n" style="background:var(--green-d);color:var(--green)">1</div><div class="step-c">α = 35° es inscrito → <span class="m">arco₁ = 2 × 35° = 70°</span></div></div>
+      <div class="step"><div class="step-n" style="background:var(--green-d);color:var(--green)">2</div><div class="step-c">β = 45° es inscrito → <span class="m">arco₂ = 2 × 45° = 90°</span></div></div>
+      <div class="step"><div class="step-n" style="background:var(--green-d);color:var(--green)">3</div><div class="step-c">Arco restante (el que subtende x): <span class="m">360° − 70° − 90° = 200°</span></div></div>
+      <div class="step"><div class="step-n" style="background:var(--green-d);color:var(--green)">4</div><div class="step-c">x es inscrito sobre ese arco: <span class="m">x = 200° ÷ 2 = 100°</span></div></div>
+      <div class="result"><div class="result-icon">✓</div><div><div class="result-val">x = 100°</div><div class="result-sub">Ángulo inscrito sobre el arco complementario</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<!-- EJERCICIO 2 -->
+<!-- ================================================================ -->
+<section class="ex-section" id="ej2">
+  <div class="ex-head">
+    <div class="ex-badge" style="background:var(--blue-d);color:var(--blue)">02</div>
+    <div>
+      <div class="ex-title">Arco AC = 94°, Arco BC = 108° → ∠ACB</div>
+      <div class="ex-desc">Hallar el ángulo inscrito <em>∠ACB</em> conociendo los arcos <em>AC = 94°</em> y <em>BC = 108°</em>.</div>
+    </div>
+  </div>
+  <div class="panels">
+    <div class="theory-card">
+      <div class="th-label" style="color:var(--green)">📐 Ángulo Inscrito</div>
+      <div class="th-title">El inscrito subtende el arco opuesto a su vértice</div>
+      <svg viewBox="0 0 260 240" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="130" cy="120" r="95" fill="none" stroke="#2a3250" stroke-width="2"/>
+        <line x1="120" y1="26" x2="38" y2="155" stroke="#3ddfa0" stroke-width="2"/>
+        <line x1="120" y1="26" x2="220" y2="145" stroke="#3ddfa0" stroke-width="2"/>
+        <path d="M 38 155 A 95 95 0 0 1 220 145" fill="none" stroke="#ff6478" stroke-width="5" stroke-linecap="round" opacity=".6"/>
+        <circle cx="120" cy="26" r="5" fill="#3ddfa0"/>
+        <circle cx="38" cy="155" r="4" fill="#4ea5ff"/>
+        <circle cx="220" cy="145" r="4" fill="#4ea5ff"/>
+        <text x="108" y="18" fill="#3ddfa0" font-size="14" font-weight="700">C</text>
+        <text x="16" y="162" fill="#4ea5ff" font-size="13" font-weight="600">A</text>
+        <text x="226" y="152" fill="#4ea5ff" font-size="13" font-weight="600">B</text>
+        <text x="100" y="228" fill="#ff6478" font-size="12" font-weight="700">arco AB (opuesto a C)</text>
+        <text x="120" y="52" fill="#ffc245" font-size="14" font-weight="700" font-style="italic">∠C</text>
+      </svg>
+      <div class="th-formula">
+        <div class="f" style="color:var(--green)">∠ACB = arco AB ÷ 2</div>
+        <div class="n">El arco AB es el que NO contiene al vértice C</div>
+      </div>
+    </div>
+    <div class="solution-card">
+      <div class="step"><div class="step-n" style="background:var(--blue-d);color:var(--blue)">1</div><div class="step-c">Arco AC + Arco BC = <span class="m">94° + 108° = 202°</span></div></div>
+      <div class="step"><div class="step-n" style="background:var(--blue-d);color:var(--blue)">2</div><div class="step-c">Arco AB (opuesto a C) = <span class="m">360° − 202° = 158°</span></div></div>
+      <div class="step"><div class="step-n" style="background:var(--blue-d);color:var(--blue)">3</div><div class="step-c">∠ACB es inscrito sobre arco AB: <span class="m">∠ACB = 158° ÷ 2 = 79°</span></div></div>
+      <div class="result"><div class="result-icon">✓</div><div><div class="result-val">∠ACB = 79°</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<!-- EJERCICIO 3 -->
+<!-- ================================================================ -->
+<section class="ex-section" id="ej3">
+  <div class="ex-head">
+    <div class="ex-badge" style="background:var(--purple-d);color:var(--purple)">03</div>
+    <div>
+      <div class="ex-title">Dos tangentes, ∠APB = 40° → ∠AOB</div>
+      <div class="ex-desc"><em>AP</em> y <em>BP</em> son tangentes. Si <em>∠APB = 40°</em>, hallar <em>∠AOB</em>.</div>
+    </div>
+  </div>
+  <div class="panels">
+    <div class="theory-card">
+      <div class="th-label" style="color:var(--purple)">📐 Dos Tangentes (Exterior)</div>
+      <div class="th-title">∠P = (M − m) ÷ 2 donde M + m = 360°</div>
+      <svg viewBox="0 0 280 240" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="155" cy="120" r="80" fill="none" stroke="#2a3250" stroke-width="2"/>
+        <line x1="25" y1="120" x2="88" y2="62" stroke="#b07aff" stroke-width="2.5"/>
+        <line x1="25" y1="120" x2="88" y2="178" stroke="#b07aff" stroke-width="2.5"/>
+        <line x1="155" y1="120" x2="88" y2="62" stroke="#4ea5ff" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <line x1="155" y1="120" x2="88" y2="178" stroke="#4ea5ff" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <path d="M 88 62 A 80 80 0 0 1 88 178" fill="none" stroke="#ff6478" stroke-width="5" stroke-linecap="round" opacity=".6"/>
+        <path d="M 88 62 A 80 80 0 0 0 88 178" fill="none" stroke="#3ddfa0" stroke-width="5" stroke-linecap="round" opacity=".6"/>
+        <circle cx="25" cy="120" r="5" fill="#ffc245"/>
+        <circle cx="88" cy="62" r="4" fill="#b07aff"/>
+        <circle cx="88" cy="178" r="4" fill="#b07aff"/>
+        <circle cx="155" cy="120" r="3" fill="#4ea5ff"/>
+        <text x="5" y="115" fill="#ffc245" font-size="14" font-weight="700">P</text>
+        <text x="69" y="55" fill="#b07aff" font-size="13" font-weight="600">A</text>
+        <text x="69" y="195" fill="#b07aff" font-size="13" font-weight="600">B</text>
+        <text x="160" y="117" fill="#4ea5ff" font-size="12" font-weight="600">O</text>
+        <text x="200" y="90" fill="#ff6478" font-size="11" font-weight="600">M</text>
+        <text x="42" y="82" fill="#3ddfa0" font-size="11" font-weight="600">m</text>
+      </svg>
+      <div class="th-formula">
+        <div class="f" style="color:var(--purple)">∠P = (M − m) ÷ 2</div>
+        <div class="n">También: ∠P + ∠AOB = 180° (suplementarios)</div>
+      </div>
+    </div>
+    <div class="solution-card">
+      <div class="step"><div class="step-n" style="background:var(--purple-d);color:var(--purple)">1</div><div class="step-c">Sea M (arco mayor) y m (arco menor): <span class="m">M + m = 360°</span></div></div>
+      <div class="step"><div class="step-n" style="background:var(--purple-d);color:var(--purple)">2</div><div class="step-c"><span class="m">40° = (M − m) ÷ 2 → M − m = 80°</span></div></div>
+      <div class="step"><div class="step-n" style="background:var(--purple-d);color:var(--purple)">3</div><div class="step-c">Sumando: <span class="m">2M = 440° → M = 220°, m = 140°</span></div></div>
+      <div class="step"><div class="step-n" style="background:var(--purple-d);color:var(--purple)">4</div><div class="step-c">∠AOB = arco menor = <span class="m">140°</span></div></div>
+      <div class="step"><div class="step-n" style="background:var(--green-d);color:var(--green)">✓</div><div class="step-c"><strong>Verificación:</strong> 40° + 140° = 180° ✓ suplementarios</div></div>
+      <div class="result"><div class="result-icon">✓</div><div><div class="result-val">∠AOB = 140°</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EJERCICIO 4 -->
+<section class="ex-section" id="ej4">
+  <div class="ex-head">
+    <div class="ex-badge" style="background:var(--red-d);color:var(--red)">04</div>
+    <div>
+      <div class="ex-title">Arco AC = 86°, Arco BD = 144° → ∠APD</div>
+      <div class="ex-desc">Cuerdas cruzadas dentro de la circunferencia. P es el punto de intersección interior.</div>
+    </div>
+  </div>
+  <div class="panels">
+    <div class="theory-card">
+      <div class="th-label" style="color:var(--red)">📐 Ángulo Interior (Cuerdas cruzadas)</div>
+      <div class="th-title">Semisuma de arcos opuestos</div>
+      <svg viewBox="0 0 260 240" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="130" cy="120" r="95" fill="none" stroke="#2a3250" stroke-width="2"/>
+        <line x1="48" y1="58" x2="218" y2="178" stroke="#ff6478" stroke-width="2.5"/>
+        <line x1="218" y1="58" x2="48" y2="182" stroke="#ff6478" stroke-width="2.5"/>
+        <path d="M 48 58 A 95 95 0 0 1 218 58" fill="none" stroke="#ffc245" stroke-width="5" stroke-linecap="round" opacity=".6"/>
+        <path d="M 218 178 A 95 95 0 0 1 48 182" fill="none" stroke="#3ddfa0" stroke-width="5" stroke-linecap="round" opacity=".6"/>
+        <circle cx="131" cy="118" r="5" fill="#ff6478"/>
+        <text x="116" y="112" fill="#ff6478" font-size="13" font-weight="700">P</text>
+        <text x="136" y="133" fill="#fff" font-size="13" font-weight="700" font-style="italic">α</text>
+        <text x="108" y="30" fill="#ffc245" font-size="11" font-weight="700">arco₁</text>
+        <text x="106" y="232" fill="#3ddfa0" font-size="11" font-weight="700">arco₂</text>
+      </svg>
+      <div class="th-formula">
+        <div class="f" style="color:var(--red)">α = (arco₁ + arco₂) ÷ 2</div>
+        <div class="n">Semisuma de los arcos opuestos al ángulo</div>
+      </div>
+    </div>
+    <div class="solution-card">
+      <div class="step"><div class="step-n" style="background:var(--red-d);color:var(--red)">1</div><div class="step-c">Arcos conocidos: AC = 86° y BD = 144°. Suma: <span class="m">86° + 144° = 230°</span></div></div>
+      <div class="step"><div class="step-n" style="background:var(--red-d);color:var(--red)">2</div><div class="step-c">Arcos opuestos (AD + BC): <span class="m">360° − 230° = 130°</span></div></div>
+      <div class="step"><div class="step-n" style="background:var(--red-d);color:var(--red)">3</div><div class="step-c"><span class="m">∠APD = 130° ÷ 2 = 65°</span></div></div>
+      <div class="result"><div class="result-icon">✓</div><div><div class="result-val">∠APD = 65°</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EJERCICIO 5 -->
+<section class="ex-section" id="ej5">
+  <div class="ex-head">
+    <div class="ex-badge" style="background:var(--orange-d);color:var(--orange)">05</div>
+    <div>
+      <div class="ex-title">AB diámetro, α = 58° → hallar x</div>
+      <div class="ex-desc"><em>AB</em> es diámetro. El ángulo <em>α = 58°</em> es inscrito en el semicírculo superior. Hallar <em>x</em>.</div>
+    </div>
+  </div>
+  <div class="panels">
+    <div class="theory-card">
+      <div class="th-label" style="color:var(--orange)">📐 Teorema de Thales (Semicírculo)</div>
+      <div class="th-title">∠inscrito sobre diámetro = 90°</div>
+      <svg viewBox="0 0 260 220" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="130" cy="115" r="90" fill="none" stroke="#2a3250" stroke-width="2"/>
+        <line x1="40" y1="115" x2="220" y2="115" stroke="#4ea5ff" stroke-width="2.5"/>
+        <line x1="40" y1="115" x2="165" y2="30" stroke="#3ddfa0" stroke-width="2"/>
+        <line x1="220" y1="115" x2="165" y2="30" stroke="#3ddfa0" stroke-width="2"/>
+        <rect x="160" y="35" width="12" height="12" fill="none" stroke="#ff6478" stroke-width="2" transform="rotate(20,165,30)"/>
+        <circle cx="40" cy="115" r="4" fill="#fff"/>
+        <circle cx="220" cy="115" r="4" fill="#fff"/>
+        <circle cx="165" cy="30" r="4" fill="#3ddfa0"/>
+        <circle cx="130" cy="115" r="3" fill="#4ea5ff"/>
+        <text x="20" y="112" fill="#fff" font-size="14" font-weight="700">A</text>
+        <text x="226" y="112" fill="#fff" font-size="14" font-weight="700">B</text>
+        <text x="170" y="24" fill="#3ddfa0" font-size="14" font-weight="700">C</text>
+        <text x="175" y="50" fill="#ff6478" font-size="16" font-weight="700">90°</text>
+      </svg>
+      <div class="th-formula">
+        <div class="f" style="color:var(--orange)">∠ACB = 90° siempre</div>
+        <div class="n">Todo ángulo inscrito sobre un diámetro es recto</div>
+      </div>
+    </div>
+    <div class="solution-card">
+      <div class="step"><div class="step-n" style="background:var(--orange-d);color:var(--orange)">1</div><div class="step-c">AB es diámetro → <strong>∠ACB = 90°</strong> (Thales)</div></div>
+      <div class="step"><div class="step-n" style="background:var(--orange-d);color:var(--orange)">2</div><div class="step-c">α = ∠ABC = 58° → arco AC = <span class="m">2 × 58° = 116°</span></div></div>
+      <div class="step"><div class="step-n" style="background:var(--orange-d);color:var(--orange)">3</div><div class="step-c">En △ACB: <span class="m">∠BAC = 180° − 90° − 58° = 32°</span></div></div>
+      <div class="step"><div class="step-n" style="background:var(--orange-d);color:var(--orange)">4</div><div class="step-c">x subtende el mismo arco que ∠BAC: <span class="m">x = 32°</span></div></div>
+      <div class="result"><div class="result-icon">✓</div><div><div class="result-val">x = 32°</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EJERCICIO 6 -->
+<section class="ex-section" id="ej6">
+  <div class="ex-head">
+    <div class="ex-badge" style="background:var(--green-d);color:var(--green)">06</div>
+    <div>
+      <div class="ex-title">Ángulos 40° y 50° → hallar x e y</div>
+      <div class="ex-desc">Inscritos que subtienden el mismo arco. Hallar <em>x</em> e <em>y</em>.</div>
+    </div>
+  </div>
+  <div class="panels">
+    <div class="theory-card">
+      <div class="th-label" style="color:var(--green)">📐 Inscritos sobre el mismo arco</div>
+      <div class="th-title">Todos son iguales entre sí</div>
+      <svg viewBox="0 0 260 230" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="130" cy="115" r="90" fill="none" stroke="#2a3250" stroke-width="2"/>
+        <path d="M 68 182 A 90 90 0 0 1 200 172" fill="none" stroke="#ff6478" stroke-width="5" stroke-linecap="round" opacity=".6"/>
+        <line x1="75" y1="42" x2="68" y2="182" stroke="#3ddfa0" stroke-width="1.8" opacity=".7"/>
+        <line x1="75" y1="42" x2="200" y2="172" stroke="#3ddfa0" stroke-width="1.8" opacity=".7"/>
+        <line x1="190" y1="42" x2="68" y2="182" stroke="#b07aff" stroke-width="1.8" opacity=".7"/>
+        <line x1="190" y1="42" x2="200" y2="172" stroke="#b07aff" stroke-width="1.8" opacity=".7"/>
+        <circle cx="75" cy="42" r="4" fill="#3ddfa0"/>
+        <circle cx="190" cy="42" r="4" fill="#b07aff"/>
+        <circle cx="68" cy="182" r="4" fill="#fff"/>
+        <circle cx="200" cy="172" r="4" fill="#fff"/>
+        <text x="64" y="34" fill="#3ddfa0" font-size="12" font-weight="700">P₁ α</text>
+        <text x="195" y="35" fill="#b07aff" font-size="12" font-weight="700">P₂ α</text>
+        <text x="48" y="196" fill="#fff" font-size="13" font-weight="600">A</text>
+        <text x="206" y="182" fill="#fff" font-size="13" font-weight="600">B</text>
+      </svg>
+      <div class="th-formula">
+        <div class="f" style="color:var(--green)">∠P₁ = ∠P₂ = arco AB ÷ 2</div>
+        <div class="n">Ángulos inscritos sobre el mismo arco son iguales</div>
+      </div>
+    </div>
+    <div class="solution-card">
+      <div class="step"><div class="step-n" style="background:var(--green-d);color:var(--green)">1</div><div class="step-c">40° y <strong>y</strong> subtienden el mismo arco → <span class="m">y = 40°</span></div></div>
+      <div class="step"><div class="step-n" style="background:var(--green-d);color:var(--green)">2</div><div class="step-c">50° y <strong>x</strong> subtienden el mismo arco → <span class="m">x = 50°</span></div></div>
+      <div class="result"><div class="result-icon">✓</div><div><div class="result-val">x = 50°, y = 40°</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EJERCICIO 7 -->
+<section class="ex-section" id="ej7">
+  <div class="ex-head">
+    <div class="ex-badge" style="background:var(--blue-d);color:var(--blue)">07</div>
+    <div>
+      <div class="ex-title">AB diámetro, arcos en razón 1:2:3</div>
+      <div class="ex-desc">Arcos <em>CB : BD : DA = 1 : 2 : 3</em>. Hallar <em>x</em>.</div>
+    </div>
+  </div>
+  <div class="panels">
+    <div class="theory-card">
+      <div class="th-label" style="color:var(--blue)">📐 Diámetro = semicírculo 180°</div>
+      <div class="th-title">Arcos del semicírculo suman 180°</div>
+      <svg viewBox="0 0 260 220" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="130" cy="110" r="90" fill="none" stroke="#2a3250" stroke-width="2"/>
+        <line x1="40" y1="110" x2="220" y2="110" stroke="#4ea5ff" stroke-width="2.5"/>
+        <path d="M 220 110 A 90 90 0 0 1 40 110" fill="none" stroke="#ffc245" stroke-width="4" stroke-linecap="round" opacity=".5"/>
+        <text x="100" y="205" fill="#ffc245" font-size="12" font-weight="700">semicírculo = 180°</text>
+        <circle cx="40" cy="110" r="4" fill="#fff"/>
+        <circle cx="220" cy="110" r="4" fill="#fff"/>
+        <text x="20" y="108" fill="#fff" font-size="14" font-weight="700">A</text>
+        <text x="226" y="108" fill="#fff" font-size="14" font-weight="700">B</text>
+      </svg>
+      <div class="th-formula">
+        <div class="f" style="color:var(--blue)">k + 2k + 3k = 180°</div>
+        <div class="n">Los arcos de un lado del diámetro suman 180°</div>
+      </div>
+    </div>
+    <div class="solution-card">
+      <div class="step"><div class="step-n" style="background:var(--blue-d);color:var(--blue)">1</div><div class="step-c"><span class="m">6k = 180° → k = 30°</span></div></div>
+      <div class="step"><div class="step-n" style="background:var(--blue-d);color:var(--blue)">2</div><div class="step-c">Arcos: CB = 30°, BD = 60°, DA = <span class="m">90°</span></div></div>
+      <div class="step"><div class="step-n" style="background:var(--blue-d);color:var(--blue)">3</div><div class="step-c">x = ∠DBA es inscrito sobre arco DA: <span class="m">x = 90° ÷ 2 = 45°</span></div></div>
+      <div class="result"><div class="result-icon">✓</div><div><div class="result-val">x = 45°</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EJERCICIO 8 -->
+<section class="ex-section" id="ej8">
+  <div class="ex-head">
+    <div class="ex-badge" style="background:var(--yellow-d);color:var(--yellow)">08</div>
+    <div>
+      <div class="ex-title">Arco AC = 144°, Arco DB = 76° → ∠APC (exterior)</div>
+      <div class="ex-desc">P está fuera de la circunferencia. Hallar <em>∠APC</em>.</div>
+    </div>
+  </div>
+  <div class="panels">
+    <div class="theory-card">
+      <div class="th-label" style="color:var(--yellow)">📐 Ángulo Exterior (Dos secantes)</div>
+      <div class="th-title">Semidiferencia de arcos</div>
+      <svg viewBox="0 0 280 230" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="150" cy="115" r="85" fill="none" stroke="#2a3250" stroke-width="2"/>
+        <line x1="18" y1="115" x2="233" y2="70" stroke="#ffc245" stroke-width="2"/>
+        <line x1="18" y1="115" x2="228" y2="175" stroke="#ffc245" stroke-width="2"/>
+        <path d="M 233 70 A 85 85 0 0 1 228 175" fill="none" stroke="#ff6478" stroke-width="5" stroke-linecap="round" opacity=".6"/>
+        <path d="M 77 68 A 85 85 0 0 1 73 155" fill="none" stroke="#3ddfa0" stroke-width="5" stroke-linecap="round" opacity=".6"/>
+        <circle cx="18" cy="115" r="5" fill="#ffc245"/>
+        <text x="3" y="108" fill="#ffc245" font-size="14" font-weight="700">P</text>
+        <text x="245" y="125" fill="#ff6478" font-size="11" font-weight="600">mayor</text>
+        <text x="80" y="118" fill="#3ddfa0" font-size="11" font-weight="600">menor</text>
+      </svg>
+      <div class="th-formula">
+        <div class="f" style="color:var(--yellow)">∠P = (mayor − menor) ÷ 2</div>
+      </div>
+    </div>
+    <div class="solution-card">
+      <div class="step"><div class="step-n" style="background:var(--yellow-d);color:var(--yellow)">1</div><div class="step-c"><span class="m">∠APC = (144° − 76°) ÷ 2 = 68° ÷ 2 = 34°</span></div></div>
+      <div class="result"><div class="result-icon">✓</div><div><div class="result-val">∠APC = 34°</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EJERCICIO 9 -->
+<section class="ex-section" id="ej9">
+  <div class="ex-head">
+    <div class="ex-badge" style="background:var(--red-d);color:var(--red)">09</div>
+    <div>
+      <div class="ex-title">Arco AC = 108°, Arco DB = 62° → x (ext) e y (int)</div>
+      <div class="ex-desc">Hallar <em>x</em> (ángulo exterior) e <em>y</em> (ángulo interior).</div>
+    </div>
+  </div>
+  <div class="panels">
+    <div class="theory-card">
+      <div class="th-label" style="color:var(--red)">📐 Exterior + Interior combinados</div>
+      <div class="th-title">Exterior: semidiferencia / Interior: semisuma</div>
+      <svg viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg">
+        <rect x="10" y="10" width="240" height="80" rx="10" fill="#131620" stroke="#2a3250" stroke-width="1"/>
+        <text x="20" y="38" fill="#ffc245" font-size="13" font-weight="600">EXTERIOR:</text>
+        <text x="20" y="60" fill="#fff" font-size="14" font-style="italic" font-family="'Playfair Display',serif">α = (mayor − menor) ÷ 2</text>
+        <rect x="10" y="105" width="240" height="80" rx="10" fill="#131620" stroke="#2a3250" stroke-width="1"/>
+        <text x="20" y="133" fill="#ff6478" font-size="13" font-weight="600">INTERIOR:</text>
+        <text x="20" y="155" fill="#fff" font-size="14" font-style="italic" font-family="'Playfair Display',serif">α = (arco₁ + arco₂) ÷ 2</text>
+      </svg>
+      <div class="th-formula">
+        <div class="f" style="color:var(--red)">Dos fórmulas diferentes</div>
+        <div class="n">Exterior usa resta, interior usa suma</div>
+      </div>
+    </div>
+    <div class="solution-card">
+      <div class="step"><div class="step-n" style="background:var(--yellow-d);color:var(--yellow)">1</div><div class="step-c"><strong>x</strong> (exterior): <span class="m">x = (108° − 62°) ÷ 2 = 23°</span></div></div>
+      <div class="step"><div class="step-n" style="background:var(--red-d);color:var(--red)">2</div><div class="step-c"><strong>y</strong> (interior): <span class="m">y = (108° + 62°) ÷ 2 = 85°</span></div></div>
+      <div class="result"><div class="result-icon">✓</div><div><div class="result-val">x = 23°, y = 85°</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EJERCICIO 10 -->
+<section class="ex-section" id="ej10">
+  <div class="ex-head">
+    <div class="ex-badge" style="background:var(--purple-d);color:var(--purple)">10</div>
+    <div>
+      <div class="ex-title">PQ tangente en T, arco RS = 135°, arco TS = 55°</div>
+      <div class="ex-desc">Hallar <em>∠TQR</em> (tangente-secante exterior).</div>
+    </div>
+  </div>
+  <div class="panels">
+    <div class="theory-card">
+      <div class="th-label" style="color:var(--purple)">📐 Tangente + Secante (Exterior)</div>
+      <div class="th-title">Semidiferencia de arcos</div>
+      <svg viewBox="0 0 260 220" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="130" cy="110" r="85" fill="none" stroke="#2a3250" stroke-width="2"/>
+        <line x1="130" y1="195" x2="248" y2="195" stroke="#b07aff" stroke-width="2.5"/>
+        <line x1="248" y1="195" x2="100" y2="28" stroke="#b07aff" stroke-width="2"/>
+        <circle cx="130" cy="195" r="4" fill="#b07aff"/>
+        <circle cx="248" cy="195" r="5" fill="#ffc245"/>
+        <circle cx="100" cy="28" r="4" fill="#fff"/>
+        <text x="118" y="215" fill="#b07aff" font-size="13" font-weight="600">T</text>
+        <text x="252" y="200" fill="#ffc245" font-size="13" font-weight="700">Q</text>
+        <text x="80" y="22" fill="#fff" font-size="13" font-weight="600">R</text>
+      </svg>
+      <div class="th-formula">
+        <div class="f" style="color:var(--purple)">∠TQR = (arco TR − arco TS) ÷ 2</div>
+      </div>
+    </div>
+    <div class="solution-card">
+      <div class="step"><div class="step-n" style="background:var(--purple-d);color:var(--purple)">1</div><div class="step-c">Arco TR = <span class="m">360° − 135° − 55° = 170°</span></div></div>
+      <div class="step"><div class="step-n" style="background:var(--purple-d);color:var(--purple)">2</div><div class="step-c"><span class="m">∠TQR = (170° − 55°) ÷ 2 = 57,5°</span></div></div>
+      <div class="result"><div class="result-icon">✓</div><div><div class="result-val">∠TQR = 57,5°</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EJERCICIO 11 -->
+<section class="ex-section" id="ej11">
+  <div class="ex-head">
+    <div class="ex-badge" style="background:var(--red-d);color:var(--red)">11</div>
+    <div>
+      <div class="ex-title">∠APD = 75°, arco BD = 95° → arco AC</div>
+      <div class="ex-desc">Despejamos el arco AC usando la fórmula del ángulo interior.</div>
+    </div>
+  </div>
+  <div class="panels">
+    <div class="theory-card">
+      <div class="th-label" style="color:var(--red)">📐 Interior — Fórmula invertida</div>
+      <div class="th-title">Despejamos el arco desconocido</div>
+      <svg viewBox="0 0 260 140" xmlns="http://www.w3.org/2000/svg">
+        <rect x="10" y="10" width="240" height="120" rx="12" fill="#131620" stroke="#2a3250" stroke-width="1"/>
+        <text x="20" y="38" fill="#ff6478" font-size="13" font-weight="600">FÓRMULA ORIGINAL:</text>
+        <text x="20" y="62" fill="#fff" font-size="14" font-style="italic" font-family="'Playfair Display',serif">∠P = (arco₁ + arco₂) ÷ 2</text>
+        <text x="20" y="88" fill="#ffc245" font-size="13" font-weight="600">DESPEJADA:</text>
+        <text x="20" y="112" fill="#ffc245" font-size="14" font-style="italic" font-family="'Playfair Display',serif">arco₁ = 2∠P − arco₂</text>
+      </svg>
+      <div class="th-formula">
+        <div class="f" style="color:var(--red)">arco AC = 2×∠P − arco BD</div>
+      </div>
+    </div>
+    <div class="solution-card">
+      <div class="step"><div class="step-n" style="background:var(--red-d);color:var(--red)">1</div><div class="step-c"><span class="m">75° = (arco AC + 95°) ÷ 2</span></div></div>
+      <div class="step"><div class="step-n" style="background:var(--red-d);color:var(--red)">2</div><div class="step-c"><span class="m">150° = arco AC + 95°</span></div></div>
+      <div class="step"><div class="step-n" style="background:var(--red-d);color:var(--red)">3</div><div class="step-c"><span class="m">arco AC = 55°</span></div></div>
+      <div class="result"><div class="result-icon">✓</div><div><div class="result-val">arco AC = 55°</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EJERCICIO 12 -->
+<section class="ex-section" id="ej12">
+  <div class="ex-head">
+    <div class="ex-badge" style="background:var(--orange-d);color:var(--orange)">12</div>
+    <div>
+      <div class="ex-title">∠ADC = 64°, ∠APC = 34° → arco BD</div>
+      <div class="ex-desc">Combinando inscrito (para hallar arco AC) y exterior (para despejar arco BD).</div>
+    </div>
+  </div>
+  <div class="panels">
+    <div class="theory-card">
+      <div class="th-label" style="color:var(--orange)">📐 Inscrito + Exterior combinados</div>
+      <div class="th-title">Dos ecuaciones, una incógnita</div>
+      <svg viewBox="0 0 260 140" xmlns="http://www.w3.org/2000/svg">
+        <rect x="10" y="10" width="240" height="55" rx="10" fill="#131620" stroke="#3ddfa0" stroke-width="1"/>
+        <text x="20" y="28" fill="#3ddfa0" font-size="11" font-weight="700">INSCRITO:</text>
+        <text x="20" y="50" fill="#fff" font-size="13" font-style="italic" font-family="'Playfair Display',serif">∠ADC = arco AC ÷ 2 → arco AC = 128°</text>
+        <rect x="10" y="78" width="240" height="55" rx="10" fill="#131620" stroke="#ffc245" stroke-width="1"/>
+        <text x="20" y="96" fill="#ffc245" font-size="11" font-weight="700">EXTERIOR:</text>
+        <text x="20" y="118" fill="#fff" font-size="13" font-style="italic" font-family="'Playfair Display',serif">∠APC = (arco AC − arco BD) ÷ 2</text>
+      </svg>
+      <div class="th-formula">
+        <div class="f" style="color:var(--orange)">arco BD = arco AC − 2×∠APC</div>
+      </div>
+    </div>
+    <div class="solution-card">
+      <div class="step"><div class="step-n" style="background:var(--green-d);color:var(--green)">1</div><div class="step-c">∠ADC = 64° inscrito → <span class="m">arco AC = 2 × 64° = 128°</span></div></div>
+      <div class="step"><div class="step-n" style="background:var(--yellow-d);color:var(--yellow)">2</div><div class="step-c"><span class="m">34° = (128° − arco BD) ÷ 2 → 68° = 128° − arco BD</span></div></div>
+      <div class="step"><div class="step-n" style="background:var(--orange-d);color:var(--orange)">3</div><div class="step-c"><span class="m">arco BD = 128° − 68° = 60°</span></div></div>
+      <div class="result"><div class="result-icon">✓</div><div><div class="result-val">arco BD = 60°</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EJERCICIO 13 -->
+<section class="ex-section" id="ej13">
+  <div class="ex-head">
+    <div class="ex-badge" style="background:var(--blue-d);color:var(--blue)">13</div>
+    <div>
+      <div class="ex-title">Cuadrilátero ABCD inscrito, ∠ABC = 102°</div>
+      <div class="ex-desc">Hallar <em>∠ADC</em> usando la propiedad de cuadrilátero inscrito.</div>
+    </div>
+  </div>
+  <div class="panels">
+    <div class="theory-card">
+      <div class="th-label" style="color:var(--blue)">📐 Cuadrilátero Inscrito</div>
+      <div class="th-title">Ángulos opuestos = 180°</div>
+      <svg viewBox="0 0 260 230" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="130" cy="115" r="90" fill="none" stroke="#2a3250" stroke-width="2"/>
+        <polygon points="72,42 210,58 195,195 48,180" fill="none" stroke="#ff8c42" stroke-width="2.5" stroke-linejoin="round"/>
+        <circle cx="72" cy="42" r="4" fill="#ffc245"/>
+        <circle cx="210" cy="58" r="4" fill="#ff6478"/>
+        <circle cx="195" cy="195" r="4" fill="#4ea5ff"/>
+        <circle cx="48" cy="180" r="4" fill="#3ddfa0"/>
+        <text x="56" y="34" fill="#ffc245" font-size="14" font-weight="700">A α</text>
+        <text x="216" y="54" fill="#ff6478" font-size="14" font-weight="700">B β</text>
+        <text x="200" y="210" fill="#4ea5ff" font-size="14" font-weight="700">C γ</text>
+        <text x="26" y="194" fill="#3ddfa0" font-size="14" font-weight="700">D δ</text>
+      </svg>
+      <div class="th-formula">
+        <div class="f" style="color:var(--blue)">α + γ = 180° y β + δ = 180°</div>
+        <div class="n">Ángulos opuestos son suplementarios</div>
+      </div>
+    </div>
+    <div class="solution-card">
+      <div class="step"><div class="step-n" style="background:var(--blue-d);color:var(--blue)">1</div><div class="step-c">∠ABC y ∠ADC son opuestos en el cuadrilátero inscrito</div></div>
+      <div class="step"><div class="step-n" style="background:var(--blue-d);color:var(--blue)">2</div><div class="step-c"><span class="m">∠ADC = 180° − 102° = 78°</span></div></div>
+      <div class="result"><div class="result-icon">✓</div><div><div class="result-val">∠ADC = 78°</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EJERCICIO 14 -->
+<section class="ex-section" id="ej14">
+  <div class="ex-head">
+    <div class="ex-badge" style="background:var(--red-d);color:var(--red)">14</div>
+    <div>
+      <div class="ex-title">Arco AB = 124°, Arco CD = 66° → ∠AQB (interior)</div>
+      <div class="ex-desc">Q es punto de intersección interior de cuerdas.</div>
+    </div>
+  </div>
+  <div class="panels">
+    <div class="theory-card">
+      <div class="th-label" style="color:var(--red)">📐 Interior (Cuerdas cruzadas)</div>
+      <div class="th-title">Semisuma de arcos opuestos</div>
+      <svg viewBox="0 0 260 140" xmlns="http://www.w3.org/2000/svg">
+        <rect x="10" y="10" width="240" height="120" rx="12" fill="#131620" stroke="#ff6478" stroke-width="1.5"/>
+        <text x="130" y="48" fill="#ff6478" font-size="15" font-weight="700" text-anchor="middle">∠Q = (arco AB + arco CD) ÷ 2</text>
+        <text x="130" y="78" fill="#ffc245" font-size="14" text-anchor="middle" font-style="italic" font-family="'Playfair Display',serif">= (124° + 66°) ÷ 2</text>
+        <text x="130" y="108" fill="#3ddfa0" font-size="18" font-weight="700" text-anchor="middle">= 95°</text>
+      </svg>
+      <div class="th-formula">
+        <div class="f" style="color:var(--red)">Semisuma directa</div>
+      </div>
+    </div>
+    <div class="solution-card">
+      <div class="step"><div class="step-n" style="background:var(--red-d);color:var(--red)">1</div><div class="step-c"><span class="m">∠AQB = (124° + 66°) ÷ 2 = 190° ÷ 2 = 95°</span></div></div>
+      <div class="result"><div class="result-icon">✓</div><div><div class="result-val">∠AQB = 95°</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EJERCICIO 15 -->
+<section class="ex-section" id="ej15">
+  <div class="ex-head">
+    <div class="ex-badge" style="background:var(--yellow-d);color:var(--yellow)">15</div>
+    <div>
+      <div class="ex-title">∠MPQ = 27°, arco NR = 42° → arco MQ</div>
+      <div class="ex-desc">Despejamos arco MQ del ángulo exterior.</div>
+    </div>
+  </div>
+  <div class="panels">
+    <div class="theory-card">
+      <div class="th-label" style="color:var(--yellow)">📐 Exterior — Fórmula invertida</div>
+      <div class="th-title">Despejamos arco mayor</div>
+      <svg viewBox="0 0 260 140" xmlns="http://www.w3.org/2000/svg">
+        <rect x="10" y="10" width="240" height="120" rx="12" fill="#131620" stroke="#ffc245" stroke-width="1.5"/>
+        <text x="20" y="38" fill="#ffc245" font-size="13" font-weight="600">FÓRMULA:</text>
+        <text x="20" y="60" fill="#fff" font-size="14" font-style="italic" font-family="'Playfair Display',serif">∠P = (arco MQ − arco NR) ÷ 2</text>
+        <text x="20" y="88" fill="#3ddfa0" font-size="13" font-weight="600">DESPEJADA:</text>
+        <text x="20" y="112" fill="#3ddfa0" font-size="14" font-style="italic" font-family="'Playfair Display',serif">arco MQ = 2∠P + arco NR</text>
+      </svg>
+      <div class="th-formula">
+        <div class="f" style="color:var(--yellow)">arco MQ = 2 × 27° + 42°</div>
+      </div>
+    </div>
+    <div class="solution-card">
+      <div class="step"><div class="step-n" style="background:var(--yellow-d);color:var(--yellow)">1</div><div class="step-c"><span class="m">27° = (arco MQ − 42°) ÷ 2 → 54° = arco MQ − 42°</span></div></div>
+      <div class="step"><div class="step-n" style="background:var(--yellow-d);color:var(--yellow)">2</div><div class="step-c"><span class="m">arco MQ = 96°</span></div></div>
+      <div class="result"><div class="result-icon">✓</div><div><div class="result-val">arco MQ = 96°</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EJERCICIO 16 -->
+<section class="ex-section" id="ej16">
+  <div class="ex-head">
+    <div class="ex-badge" style="background:var(--green-d);color:var(--green)">16</div>
+    <div>
+      <div class="ex-title">Arcos (2x+10)°, (x+40)°, 100° → hallar α</div>
+      <div class="ex-desc">Primero hallamos <em>x</em> usando que la circunferencia = 360°, luego α.</div>
+    </div>
+  </div>
+  <div class="panels">
+    <div class="theory-card">
+      <div class="th-label" style="color:var(--green)">📐 Propiedad fundamental</div>
+      <div class="th-title">Suma de arcos = 360°</div>
+      <svg viewBox="0 0 260 180" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="130" cy="90" r="75" fill="none" stroke="#2a3250" stroke-width="2"/>
+        <path d="M 55 85 A 75 75 0 0 0 90 158" fill="none" stroke="#4ea5ff" stroke-width="5" stroke-linecap="round" opacity=".6"/>
+        <path d="M 90 158 A 75 75 0 0 0 200 125" fill="none" stroke="#3ddfa0" stroke-width="5" stroke-linecap="round" opacity=".6"/>
+        <path d="M 200 125 A 75 75 0 0 0 55 85" fill="none" stroke="#ff6478" stroke-width="5" stroke-linecap="round" opacity=".6"/>
+        <text x="15" y="140" fill="#4ea5ff" font-size="11" font-weight="600">(2x+10)°</text>
+        <text x="115" y="175" fill="#3ddfa0" font-size="11" font-weight="600">(x+40)°</text>
+        <text x="175" y="60" fill="#ff6478" font-size="11" font-weight="600">100°</text>
+      </svg>
+      <div class="th-formula">
+        <div class="f" style="color:var(--green)">(2x+10) + 100 + (x+40) = 360°</div>
+      </div>
+    </div>
+    <div class="solution-card">
+      <div class="step"><div class="step-n" style="background:var(--green-d);color:var(--green)">1</div><div class="step-c"><span class="m">3x + 150 = 360° → x = 70°</span></div></div>
+      <div class="step"><div class="step-n" style="background:var(--green-d);color:var(--green)">2</div><div class="step-c">Arcos: <span class="m">150°, 100°, 110°</span></div></div>
+      <div class="step"><div class="step-n" style="background:var(--green-d);color:var(--green)">3</div><div class="step-c">α = semidiferencia: <span class="m">(150° − 110°) ÷ 2 = 20°</span></div></div>
+      <div class="result"><div class="result-icon">✓</div><div><div class="result-val">α = 20°</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EJERCICIO 17 -->
+<section class="ex-section" id="ej17">
+  <div class="ex-head">
+    <div class="ex-badge" style="background:var(--yellow-d);color:var(--yellow)">17</div>
+    <div>
+      <div class="ex-title">∠APC = 38°, arco AC = 145° → arco BD</div>
+      <div class="ex-desc">Despejamos arco BD del ángulo exterior.</div>
+    </div>
+  </div>
+  <div class="panels">
+    <div class="theory-card">
+      <div class="th-label" style="color:var(--yellow)">📐 Exterior invertido</div>
+      <div class="th-title">arco BD = arco AC − 2∠P</div>
+      <svg viewBox="0 0 260 120" xmlns="http://www.w3.org/2000/svg">
+        <rect x="10" y="10" width="240" height="100" rx="12" fill="#131620" stroke="#ffc245" stroke-width="1.5"/>
+        <text x="130" y="42" fill="#ffc245" font-size="14" font-weight="700" text-anchor="middle">38° = (145° − arco BD) ÷ 2</text>
+        <text x="130" y="72" fill="#fff" font-size="14" text-anchor="middle" font-style="italic" font-family="'Playfair Display',serif">76° = 145° − arco BD</text>
+        <text x="130" y="98" fill="#3ddfa0" font-size="16" font-weight="700" text-anchor="middle">arco BD = 69°</text>
+      </svg>
+      <div class="th-formula">
+        <div class="f" style="color:var(--yellow)">arco BD = 145° − 76° = 69°</div>
+      </div>
+    </div>
+    <div class="solution-card">
+      <div class="step"><div class="step-n" style="background:var(--yellow-d);color:var(--yellow)">1</div><div class="step-c"><span class="m">38° = (145° − arco BD) ÷ 2 → 76° = 145° − arco BD</span></div></div>
+      <div class="step"><div class="step-n" style="background:var(--yellow-d);color:var(--yellow)">2</div><div class="step-c"><span class="m">arco BD = 69°</span></div></div>
+      <div class="result"><div class="result-icon">✓</div><div><div class="result-val">arco BD = 69°</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EJERCICIO 18 -->
+<section class="ex-section" id="ej18">
+  <div class="ex-head">
+    <div class="ex-badge" style="background:var(--blue-d);color:var(--blue)">18</div>
+    <div>
+      <div class="ex-title">CD diámetro, arco AB = 115°, arco BD = 12°</div>
+      <div class="ex-desc">Hallar <em>arco AC</em> y <em>∠BPD</em>.</div>
+    </div>
+  </div>
+  <div class="panels">
+    <div class="theory-card">
+      <div class="th-label" style="color:var(--blue)">📐 Diámetro → Semicírculo = 180°</div>
+      <div class="th-title">Los arcos de un lado del diámetro suman 180°</div>
+      <svg viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="130" cy="100" r="85" fill="none" stroke="#2a3250" stroke-width="2"/>
+        <line x1="45" y1="100" x2="215" y2="100" stroke="#4ea5ff" stroke-width="2.5"/>
+        <path d="M 45 100 A 85 85 0 0 1 215 100" fill="none" stroke="#ffc245" stroke-width="4" stroke-linecap="round" opacity=".5"/>
+        <text x="85" y="16" fill="#ffc245" font-size="12" font-weight="700">semicírculo = 180°</text>
+        <text x="52" y="120" fill="#ff6478" font-size="11" font-weight="600">CA</text>
+        <text x="110" y="190" fill="#3ddfa0" font-size="11" font-weight="600">AB=115°</text>
+        <text x="190" y="120" fill="#b07aff" font-size="11" font-weight="600">BD=12°</text>
+        <text x="25" y="98" fill="#4ea5ff" font-size="14" font-weight="700">C</text>
+        <text x="220" y="98" fill="#4ea5ff" font-size="14" font-weight="700">D</text>
+      </svg>
+      <div class="th-formula">
+        <div class="f" style="color:var(--blue)">CA + AB + BD = 180°</div>
+      </div>
+    </div>
+    <div class="solution-card">
+      <div class="step"><div class="step-n" style="background:var(--blue-d);color:var(--blue)">1</div><div class="step-c"><span class="m">arco CA + 115° + 12° = 180°</span></div></div>
+      <div class="step"><div class="step-n" style="background:var(--blue-d);color:var(--blue)">2</div><div class="step-c"><span class="m">arco CA = 180° − 127° = 53°</span></div></div>
+      <div class="step"><div class="step-n" style="background:var(--blue-d);color:var(--blue)">3</div><div class="step-c">∠BPD (semi-inscrito en D): <span class="m">∠BPD = 12° ÷ 2 = 6°</span></div></div>
+      <div class="result"><div class="result-icon">✓</div><div><div class="result-val">arco AC = 53°, ∠BPD = 6°</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- RESUMEN FINAL -->
+<div style="max-width:1000px;margin:40px auto 0;padding:0 24px">
+<div style="background:linear-gradient(135deg,#111528,#151a30);border:1px solid var(--bdr2);border-radius:18px;padding:32px 28px;position:relative;overflow:hidden">
+<div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(78,165,255,.06),transparent 70%);pointer-events:none"></div>
+<h2 style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:#fff;text-align:center;margin-bottom:20px">📋 Resumen Rápido de Fórmulas</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px">
+  <div style="background:var(--bg);border-radius:10px;padding:12px 16px;border-left:3px solid var(--blue)"><span style="color:var(--blue);font-weight:600;font-size:.82rem">CENTRAL</span><div style="font-family:'Playfair Display',serif;font-size:1.1rem;font-style:italic;color:#fff;margin-top:3px">α = arco</div></div>
+  <div style="background:var(--bg);border-radius:10px;padding:12px 16px;border-left:3px solid var(--green)"><span style="color:var(--green);font-weight:600;font-size:.82rem">INSCRITO</span><div style="font-family:'Playfair Display',serif;font-size:1.1rem;font-style:italic;color:#fff;margin-top:3px">α = arco ÷ 2</div></div>
+  <div style="background:var(--bg);border-radius:10px;padding:12px 16px;border-left:3px solid var(--purple)"><span style="color:var(--purple);font-weight:600;font-size:.82rem">SEMI-INSCRITO</span><div style="font-family:'Playfair Display',serif;font-size:1.1rem;font-style:italic;color:#fff;margin-top:3px">α = arco ÷ 2</div></div>
+  <div style="background:var(--bg);border-radius:10px;padding:12px 16px;border-left:3px solid var(--red)"><span style="color:var(--red);font-weight:600;font-size:.82rem">INTERIOR (cuerdas)</span><div style="font-family:'Playfair Display',serif;font-size:1.1rem;font-style:italic;color:#fff;margin-top:3px">α = (arco₁ + arco₂) ÷ 2</div></div>
+  <div style="background:var(--bg);border-radius:10px;padding:12px 16px;border-left:3px solid var(--yellow)"><span style="color:var(--yellow);font-weight:600;font-size:.82rem">EXTERIOR (secantes)</span><div style="font-family:'Playfair Display',serif;font-size:1.1rem;font-style:italic;color:#fff;margin-top:3px">α = (mayor − menor) ÷ 2</div></div>
+  <div style="background:var(--bg);border-radius:10px;padding:12px 16px;border-left:3px solid var(--orange)"><span style="color:var(--orange);font-weight:600;font-size:.82rem">CUADRILÁTERO INSCRITO</span><div style="font-family:'Playfair Display',serif;font-size:1.1rem;font-style:italic;color:#fff;margin-top:3px">∠opuestos = 180°</div></div>
+  <div style="background:var(--bg);border-radius:10px;padding:12px 16px;border-left:3px solid var(--cyan)"><span style="color:var(--cyan);font-weight:600;font-size:.82rem">THALES (semicírculo)</span><div style="font-family:'Playfair Display',serif;font-size:1.1rem;font-style:italic;color:#fff;margin-top:3px">∠sobre diámetro = 90°</div></div>
+  <div style="background:var(--bg);border-radius:10px;padding:12px 16px;border-left:3px solid var(--pink)"><span style="color:var(--pink);font-weight:600;font-size:.82rem">TANGENTE ⊥ RADIO</span><div style="font-family:'Playfair Display',serif;font-size:1.1rem;font-style:italic;color:#fff;margin-top:3px">∠(tangente, radio) = 90°</div></div>
+</div>
+</div>
+</div>
+
+<footer>Guía Nº3 — Ángulos en la Circunferencia — IIIº Medios — Colegio Pedro de Valdivia, Peñalolén</footer>
+</body>
+</html>
