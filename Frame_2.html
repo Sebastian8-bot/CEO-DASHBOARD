@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Medismart — Informe Ejecutivo Q1 2026 · Dashboard Directorio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root {
+    --bg: #f5f4ef;
+    --bg-card: #ffffff;
+    --bg-soft: #faf9f5;
+    --ink: #11181f;
+    --ink-soft: #2a3540;
+    --ink-mute: #5b6773;
+    --ink-faint: #8c97a3;
+    --line: #e3e0d8;
+    --line-soft: #ebe8e0;
+    --navy: #0e2240;
+    --navy-deep: #081628;
+    --accent: #b8923a;          /* gold accent */
+    --accent-soft: #e9d9a8;
+    --green: #2f6a4a;
+    --green-soft: #d9e7df;
+    --amber: #b97a16;
+    --amber-soft: #f3e3c2;
+    --red: #a52a2a;
+    --red-soft: #efd3d3;
+    --blue: #2c5282;
+    --blue-soft: #d8e3f0;
+    --serif: 'Fraunces', 'Times New Roman', serif;
+    --sans: 'Inter', -apple-system, system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+
+body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+/* ============ TOP STRIP ============ */
+.top-strip {
+    background: var(--navy-deep);
+    color: #d6dde5;
+    padding: 10px 0;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    border-bottom: 1px solid #1a2c47;
+}
+.top-strip .inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+.top-strip .dot {
+    display: inline-block;
+    width: 7px; height: 7px;
+    background: #d97706;
+    border-radius: 50%;
+    margin-right: 8px;
+    box-shadow: 0 0 0 3px rgba(217,119,6,0.18);
+}
+.top-strip .right { color: #8b96a5; }
+
+/* ============ HEADER ============ */
+.hero {
+    background: var(--navy);
+    color: #f0ece3;
+    padding: 56px 0 40px;
+    border-bottom: 1px solid #1d3357;
+    position: relative;
+    overflow: hidden;
+}
+.hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 80% 0%, rgba(184,146,58,0.13), transparent 60%);
+    pointer-events: none;
+}
+.hero .inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 40px;
+    position: relative;
+}
+.hero .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--accent-soft);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+.hero .eyebrow .rule {
+    width: 32px; height: 1px;
+    background: var(--accent);
+}
+.hero h1 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 56px;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin: 0 0 14px;
+    color: #f5f0e3;
+}
+.hero h1 em {
+    font-style: italic;
+    color: var(--accent-soft);
+    font-weight: 300;
+}
+.hero .lede {
+    font-size: 16px;
+    line-height: 1.55;
+    color: #b9c1cf;
+    max-width: 720px;
+    margin: 0 0 32px;
+}
+.meta-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border-top: 1px solid #1d3357;
+    padding-top: 22px;
+}
+.meta-grid .cell {
+    padding-right: 24px;
+}
+.meta-grid .cell + .cell {
+    border-left: 1px solid #1d3357;
+    padding-left: 24px;
+}
+.meta-grid .label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #7a8699;
+    margin-bottom: 6px;
+}
+.meta-grid .value {
+    font-family: var(--serif);
+    font-size: 18px;
+    color: #f0ece3;
+    font-weight: 500;
+}
+
+/* ============ ALERT BANNER ============ */
+.alert-bar {
+    background: #2b1d10;
+    border-top: 1px solid #4a3318;
+    border-bottom: 1px solid #4a3318;
+    color: #f3e3c2;
+}
+.alert-bar .inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 14px 40px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 13px;
+}
+.alert-bar .icon {
+    font-size: 16px;
+}
+.alert-bar strong { color: #f9d77e; font-weight: 600; }
+
+/* ============ MAIN ============ */
+main {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 56px 40px 80px;
+}
+
+section { margin-bottom: 72px; }
+
+.sec-head {
+    display: flex;
+    align-items: baseline;
+    gap: 18px;
+    margin-bottom: 28px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--line);
+}
+.sec-num {
+    font-family: var(--serif);
+    font-size: 13px;
+    letter-spacing: 0.16em;
+    color: var(--ink-mute);
+    font-weight: 500;
+    white-space: nowrap;
+}
+.sec-head h2 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    margin: 0;
+    color: var(--ink);
+    flex: 1;
+}
+.sec-head .deck {
+    font-size: 13px;
+    color: var(--ink-mute);
+    max-width: 360px;
+    text-align: right;
+    line-height: 1.5;
+}
+
+/* ============ KPI CARDS ============ */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+.kpi {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    padding: 22px 22px 20px;
+    position: relative;
+}
+.kpi .label {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.kpi .pill {
+    font-family: var(--mono);
+    font-size: 9px;
+    padding: 2px 7px;
+    border-radius: 2px;
+    letter-spacing: 0.08em;
+}
+.pill-green { background: var(--green-soft); color: var(--green); }
+.pill-amber { background: var(--amber-soft); color: var(--amber); }
+.pill-red { background: var(--red-soft); color: var(--red); }
+.pill-blue { background: var(--blue-soft); color: var(--blue); }
+
+.kpi .value {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 34px;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 6px;
+}
+.kpi .value.neg { color: var(--red); }
+.kpi .value.pos { color: var(--green); }
+.kpi .sub {
+    font-size: 12px;
+    color: var(--ink-mute);
+    line-height: 1.45;
+}
+
+/* Larger headline KPIs (top row) */
+.kpi-grid.headline { grid-template-columns: repeat(3, 1fr); }
+.kpi-grid.headline .kpi { padding: 28px 26px 24px; border-top: 2px solid var(--ink); }
+.kpi-grid.headline .kpi .value { font-size: 44px; }
+
+/* ============ MESSAGE CARDS ============ */
+.msg-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 8px;
+}
+.msg {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--ink-mute);
+    padding: 20px 22px;
+}
+.msg.positive { border-left-color: var(--green); }
+.msg.critical { border-left-color: var(--red); }
+.msg.attention { border-left-color: var(--amber); }
+.msg.info { border-left-color: var(--blue); }
+.msg .tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+.msg.positive .tag { color: var(--green); }
+.msg.critical .tag { color: var(--red); }
+.msg.attention .tag { color: var(--amber); }
+.msg.info .tag { color: var(--blue); }
+.msg h4 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 1.25;
+    margin: 0 0 8px;
+    color: var(--ink);
+}
+.msg p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+}
+
+/* ============ CHARTS ============ */
+.chart-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 16px;
+}
+.chart-grid.two { grid-template-columns: 1fr 1fr; }
+.chart-grid.three { grid-template-columns: repeat(3, 1fr); }
+
+.chart-card {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    padding: 24px 26px 22px;
+}
+.chart-card h3 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 1.25;
+    margin: 0 0 4px;
+    color: var(--ink);
+}
+.chart-card .chart-sub {
+    font-size: 12px;
+    color: var(--ink-mute);
+    margin-bottom: 18px;
+    letter-spacing: 0.01em;
+}
+.chart-wrap {
+    position: relative;
+    height: 280px;
+}
+.chart-wrap.tall { height: 360px; }
+.chart-wrap.short { height: 220px; }
+
+.legend-row {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+    font-size: 11px;
+    color: var(--ink-mute);
+    letter-spacing: 0.02em;
+}
+.legend-row .item { display: flex; align-items: center; gap: 7px; }
+.legend-row .sw {
+    width: 10px; height: 10px;
+    display: inline-block;
+}
+
+/* ============ TABLES ============ */
+.tbl-wrap {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    overflow-x: auto;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+thead th {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    text-align: right;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--line);
+    background: var(--bg-soft);
+    white-space: nowrap;
+}
+thead th:first-child { text-align: left; }
+tbody td {
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--line-soft);
+    text-align: right;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    white-space: nowrap;
+}
+tbody td:first-child {
+    text-align: left;
+    font-family: var(--sans);
+    color: var(--ink);
+    font-weight: 500;
+}
+tbody tr.subtotal td {
+    background: var(--bg-soft);
+    font-weight: 600;
+    color: var(--ink);
+    border-top: 1px solid var(--line);
+}
+tbody tr.subtotal td:first-child { font-weight: 600; }
+tbody tr.total td {
+    background: var(--navy);
+    color: #f0ece3;
+    font-weight: 600;
+}
+tbody tr.total td:first-child { color: #f5f0e3; }
+tbody tr:hover:not(.total):not(.subtotal) td { background: #fafaf5; }
+
+.neg-cell { color: var(--red); }
+.pos-cell { color: var(--green); }
+
+/* ============ FINDINGS (NODES) ============ */
+.findings { display: flex; flex-direction: column; gap: 14px; }
+.finding {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: 110px 1fr 200px;
+    gap: 0;
+}
+.finding .sev {
+    background: var(--bg-soft);
+    border-right: 1px solid var(--line);
+    padding: 22px 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+.finding .sev .level {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 2px;
+    margin-bottom: 8px;
+}
+.finding .sev .num {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 28px;
+    color: var(--ink-faint);
+    line-height: 1;
+}
+.finding.critical .sev .level { background: var(--red-soft); color: var(--red); }
+.finding.high .sev .level { background: var(--amber-soft); color: var(--amber); }
+.finding.medium .sev .level { background: var(--blue-soft); color: var(--blue); }
+
+.finding .body { padding: 22px 26px; }
+.finding .body h4 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 1.25;
+    margin: 0 0 8px;
+    color: var(--ink);
+}
+.finding .body p {
+    margin: 0 0 10px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+}
+.finding .body .recommend {
+    background: var(--bg-soft);
+    border-left: 2px solid var(--ink);
+    padding: 10px 14px;
+    margin-top: 12px;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    line-height: 1.55;
+}
+.finding .body .recommend strong { color: var(--ink); }
+
+.finding .stat {
+    border-left: 1px solid var(--line);
+    padding: 22px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: right;
+}
+.finding .stat .big {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 28px;
+    color: var(--ink);
+    line-height: 1.05;
+    margin-bottom: 4px;
+}
+.finding .stat .lbl {
+    font-size: 11px;
+    color: var(--ink-mute);
+    letter-spacing: 0.02em;
+    line-height: 1.4;
+}
+
+/* ============ DECISIONS (Q&A) ============ */
+.q-table {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+}
+.q-row {
+    display: grid;
+    grid-template-columns: 60px 1fr 240px;
+    border-bottom: 1px solid var(--line-soft);
+}
+.q-row:last-child { border-bottom: none; }
+.q-row .qn {
+    background: var(--bg-soft);
+    border-right: 1px solid var(--line-soft);
+    padding: 20px;
+    font-family: var(--serif);
+    font-size: 22px;
+    color: var(--ink-mute);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+}
+.q-row .q-body { padding: 18px 24px; }
+.q-row .q-body .topic {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+.q-row .q-body .text {
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    line-height: 1.55;
+}
+.q-row .q-decision {
+    border-left: 1px solid var(--line-soft);
+    padding: 18px 22px;
+    background: var(--bg-soft);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.q-row .q-decision .lbl {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+.q-row .q-decision .text {
+    font-size: 12.5px;
+    color: var(--ink);
+    line-height: 1.45;
+    font-weight: 500;
+}
+
+/* ============ FX TABLE ============ */
+.fx-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+}
+.fx-grid .fx {
+    padding: 18px 20px;
+    border-right: 1px solid var(--line-soft);
+}
+.fx-grid .fx:last-child { border-right: none; }
+.fx .pair {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-mute);
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+}
+.fx .v {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 22px;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 6px;
+}
+.fx .range {
+    font-size: 11px;
+    color: var(--ink-faint);
+    font-family: var(--mono);
+}
+
+/* ============ FOOTER ============ */
+footer {
+    background: var(--navy-deep);
+    color: #8b96a5;
+    padding: 32px 0 28px;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-top: 40px;
+}
+footer .inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 18px;
+}
+footer .brand {
+    color: #f0ece3;
+    font-family: var(--serif);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: none;
+    font-size: 14px;
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 980px) {
+    .hero h1 { font-size: 40px; }
+    .meta-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .meta-grid .cell + .cell { border-left: none; padding-left: 0; }
+    .kpi-grid, .kpi-grid.headline, .msg-grid { grid-template-columns: 1fr; }
+    .chart-grid, .chart-grid.two, .chart-grid.three { grid-template-columns: 1fr; }
+    .finding, .q-row { grid-template-columns: 1fr; }
+    .finding .sev, .finding .stat { border: none; border-bottom: 1px solid var(--line); }
+    .q-row .qn { padding: 10px; }
+    .fx-grid { grid-template-columns: repeat(2, 1fr); }
+    main { padding: 32px 20px 60px; }
+    .hero .inner, .top-strip .inner, .alert-bar .inner, footer .inner { padding: 0 20px; }
+    .sec-head { flex-direction: column; align-items: flex-start; }
+    .sec-head .deck { text-align: left; max-width: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOP STRIP -->
+<div class="top-strip">
+    <div class="inner">
+        <div><span class="dot"></span>CONFIDENCIAL · DIRECTORIO · Q1 2026</div>
+        <div class="right">Medismart · Consolidado Multi-País · Mayo 2026</div>
+    </div>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+    <div class="inner">
+        <div class="eyebrow"><span class="rule"></span>Informe Financiero Ejecutivo · Resultados Q1 2026</div>
+        <h1>Medismart Consolidado <em>Q1 2026</em></h1>
+        <p class="lede">Resultados acumulados enero–marzo 2026. Margen operacional sólido del 46,8%, Adjusted EBITDA positivo de USD 461K y pérdida neta consolidada de USD (256K) por absorción íntegra de gastos corporativos en Chile.</p>
+        <div class="meta-grid">
+            <div class="cell">
+                <div class="label">Período</div>
+                <div class="value">Ene–Mar 2026</div>
+            </div>
+            <div class="cell">
+                <div class="label">Cobertura</div>
+                <div class="value">6 Países · Consolidado</div>
+            </div>
+            <div class="cell">
+                <div class="label">Moneda Reporte</div>
+                <div class="value">USD (TC promedio mensual)</div>
+            </div>
+            <div class="cell">
+                <div class="label">Preparado</div>
+                <div class="value">Para el Directorio · Mayo 2026</div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- ALERT -->
+<div class="alert-bar">
+    <div class="inner">
+        <span class="icon">⚡</span>
+        <span><strong>Decisión solicitada al directorio:</strong> definir metodología de distribución de gastos corporativos (USD 387K cargados íntegramente a Chile) y umbral de viabilidad para México y Farmazon antes de la próxima sesión.</span>
+    </div>
+</div>
+
+<main>
+
+<!-- ============ SECTION I: KPIs ============ -->
+<section>
+    <div class="sec-head">
+        <span class="sec-num">I · Indicadores Ejecutivos</span>
+        <h2>Resumen consolidado Q1 2026</h2>
+        <div class="deck">Ocho indicadores clave de desempeño con estado semáforo y referencia contra meta.</div>
+    </div>
+
+    <div class="kpi-grid headline">
+        <div class="kpi">
+            <div class="label">Ingresos Totales <span class="pill pill-amber">Q1 Real</span></div>
+            <div class="value">USD 2,59M</div>
+            <div class="sub">Acumulado enero–marzo 2026 · Solo 3 meses disponibles</div>
+        </div>
+        <div class="kpi">
+            <div class="label">Margen Explotación <span class="pill pill-green">Sobre meta</span></div>
+            <div class="value pos">46,8%</div>
+            <div class="sub">Meta &gt; 40% · Colombia 49,8% · Costa Rica 69,3%</div>
+        </div>
+        <div class="kpi">
+            <div class="label">Utilidad Neta Consolidada <span class="pill pill-red">Pérdida</span></div>
+            <div class="value neg">USD (256K)</div>
+            <div class="sub">Deterioro estructural por gastos corporativos en Chile</div>
+        </div>
+    </div>
+
+    <div class="kpi-grid">
+        <div class="kpi">
+            <div class="label">Adjusted EBITDA <span class="pill pill-green">+</span></div>
+            <div class="value pos">USD 461K</div>
+            <div class="sub">17,8% sobre ventas · sin costos corporativos</div>
+        </div>
+        <div class="kpi">
+            <div class="label">EBITDA Reportado <span class="pill pill-amber">Marginal</span></div>
+            <div class="value">USD 5,8K</div>
+            <div class="sub">0,2% sobre ventas · absorbido por corporativos</div>
+        </div>
+        <div class="kpi">
+            <div class="label">Gastos Corporativos <span class="pill pill-red">Presión</span></div>
+            <div class="value neg">USD 387K</div>
+            <div class="sub">84% del Adjusted EBITDA · todos en Chile</div>
+        </div>
+        <div class="kpi">
+            <div class="label">Países Rentables <span class="pill pill-amber">2 / 6</span></div>
+            <div class="value">2 / 6</div>
+            <div class="sub">Colombia y Costa Rica con EBITDA positivo</div>
+        </div>
+    </div>
+
+    <div class="msg-grid">
+        <div class="msg positive">
+            <div class="tag">● Positivo — Margen operacional sólido</div>
+            <h4>El modelo tiene rentabilidad estructural</h4>
+            <p>Margen de explotación del 46,8% es robusto. Colombia lidera con 49,8% y Costa Rica alcanza 69,3%. Adjusted EBITDA positivo de USD 461K confirma viabilidad sin considerar costos corporativos.</p>
+        </div>
+        <div class="msg critical">
+            <div class="tag">● Crítico — Pérdida neta de USD (256K)</div>
+            <h4>Distribución de costos corporativos pendiente</h4>
+            <p>Gastos corporativos centralizados (USD 387K) absorbidos íntegramente por Chile, generando pérdida de USD (438K) en la entidad local. El directorio debe definir modelo de distribución entre países.</p>
+        </div>
+        <div class="msg attention">
+            <div class="tag">▲ Atención — México y Farmazon en rojo</div>
+            <h4>Unidades sin cubrir sus propios costos</h4>
+            <p>México registra Adjusted EBITDA de USD (42K) y Farmazon USD (20K). Ambas consumen caja sin cubrir costos operacionales. Se requiere definir umbrales de viabilidad y plan de break-even.</p>
+        </div>
+        <div class="msg info">
+            <div class="tag">■ Dato — Solo 3 meses de información</div>
+            <h4>Interpretar como tendencia trimestral</h4>
+            <p>El EERR cubre únicamente enero–marzo 2026. Abril–diciembre reportan cero. Las cifras deben interpretarse como tendencia trimestral, no como proyección anual cerrada.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ============ SECTION II: REVENUE TREND & WATERFALL ============ -->
+<section>
+    <div class="sec-head">
+        <span class="sec-num">II · Evolución y Cascada</span>
+        <h2>Tendencia de ingresos y rentabilidad</h2>
+        <div class="deck">Evolución mensual de ventas por país y cascada de rentabilidad desde ventas hasta utilidad neta.</div>
+    </div>
+
+    <div class="chart-grid">
+        <div class="chart-card">
+            <h3>Evolución mensual de ventas por país</h3>
+            <div class="chart-sub">Ene–Mar 2026 · USD · Crecimiento consolidado +7,9% Ene→Mar</div>
+            <div class="chart-wrap tall"><canvas id="salesTrend"></canvas></div>
+        </div>
+        <div class="chart-card">
+            <h3>Composición consolidada Q1</h3>
+            <div class="chart-sub">Participación de ventas por país · USD 2,59M total</div>
+            <div class="chart-wrap tall"><canvas id="countryDonut"></canvas></div>
+        </div>
+    </div>
+
+    <div style="margin-top: 16px;">
+        <div class="chart-card">
+            <h3>Cascada de rentabilidad Q1 2026</h3>
+            <div class="chart-sub">De ventas a utilidad neta · USD acumulado · evidencia el impacto de gastos corporativos y no-EBITDA</div>
+            <div class="chart-wrap tall"><canvas id="waterfall"></canvas></div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ SECTION III: COUNTRY PERFORMANCE ============ -->
+<section>
+    <div class="sec-head">
+        <span class="sec-num">III · Desempeño por País</span>
+        <h2>Rentabilidad y resultado por unidad</h2>
+        <div class="deck">Ventas, margen de explotación, Adjusted EBITDA y utilidad neta por cada país de operación.</div>
+    </div>
+
+    <div class="chart-grid two">
+        <div class="chart-card">
+            <h3>Margen de explotación por país</h3>
+            <div class="chart-sub">% sobre ventas · Costa Rica lidera con 69,3%</div>
+            <div class="chart-wrap"><canvas id="marginBar"></canvas></div>
+        </div>
+        <div class="chart-card">
+            <h3>Adjusted EBITDA vs Utilidad Neta</h3>
+            <div class="chart-sub">USD por país · brecha = gastos corporativos cargados a Chile</div>
+            <div class="chart-wrap"><canvas id="ebitdaBar"></canvas></div>
+        </div>
+    </div>
+
+    <div style="margin-top: 16px;" class="tbl-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>País</th>
+                    <th>Ventas USD</th>
+                    <th>% Total</th>
+                    <th>Mg. Explot.</th>
+                    <th>Mg. %</th>
+                    <th>Adj. EBITDA</th>
+                    <th>EBITDA</th>
+                    <th>Utilidad Neta</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>🇨🇱  Chile</td>
+                    <td>1.181.458</td>
+                    <td>45,6%</td>
+                    <td>476.009</td>
+                    <td>40,3%</td>
+                    <td class="pos-cell">223.348</td>
+                    <td class="neg-cell">(232.360)</td>
+                    <td class="neg-cell">(438.780)</td>
+                </tr>
+                <tr>
+                    <td>🇨🇴  Colombia</td>
+                    <td>1.123.017</td>
+                    <td>43,3%</td>
+                    <td>558.701</td>
+                    <td>49,8%</td>
+                    <td class="pos-cell">225.616</td>
+                    <td class="pos-cell">225.616</td>
+                    <td class="pos-cell">220.021</td>
+                </tr>
+                <tr>
+                    <td>🇨🇷  Costa Rica</td>
+                    <td>208.990</td>
+                    <td>8,1%</td>
+                    <td>144.830</td>
+                    <td>69,3%</td>
+                    <td class="pos-cell">79.350</td>
+                    <td class="pos-cell">79.350</td>
+                    <td class="pos-cell">41.404</td>
+                </tr>
+                <tr>
+                    <td>🇲🇽  México</td>
+                    <td>63.182</td>
+                    <td>2,4%</td>
+                    <td>29.038</td>
+                    <td>46,0%</td>
+                    <td class="neg-cell">(42.353)</td>
+                    <td class="neg-cell">(42.353)</td>
+                    <td class="neg-cell">(45.069)</td>
+                </tr>
+                <tr>
+                    <td>💊  Farmazon</td>
+                    <td>14.583</td>
+                    <td>0,6%</td>
+                    <td>5.311</td>
+                    <td>36,4%</td>
+                    <td class="neg-cell">(20.390)</td>
+                    <td class="neg-cell">(20.390)</td>
+                    <td class="neg-cell">(20.478)</td>
+                </tr>
+                <tr>
+                    <td>🇺🇸  USA</td>
+                    <td>0</td>
+                    <td>—</td>
+                    <td>0</td>
+                    <td>—</td>
+                    <td class="neg-cell">(4.104)</td>
+                    <td class="neg-cell">(4.104)</td>
+                    <td class="neg-cell">(13.242)</td>
+                </tr>
+                <tr class="total">
+                    <td>Total Consolidado</td>
+                    <td>2.591.229</td>
+                    <td>100%</td>
+                    <td>1.213.888</td>
+                    <td>46,8%</td>
+                    <td>461.467</td>
+                    <td>5.759</td>
+                    <td>(256.145)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- ============ SECTION IV: INCOME STATEMENT ============ -->
+<section>
+    <div class="sec-head">
+        <span class="sec-num">IV · Estado de Resultados</span>
+        <h2>EERR consolidado mensual</h2>
+        <div class="deck">Desglose mensual enero–marzo 2026 desde ventas hasta utilidad neta · valores en USD.</div>
+    </div>
+
+    <div class="tbl-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Concepto (USD)</th>
+                    <th>Enero</th>
+                    <th>Febrero</th>
+                    <th>Marzo</th>
+                    <th>Total Q1</th>
+                    <th>% Ventas</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Ventas</td><td>848.154</td><td>827.666</td><td>915.409</td><td>2.591.229</td><td>100,0%</td></tr>
+                <tr><td style="padding-left: 32px; color: var(--ink-mute);">Aseguradoras y Corredores</td><td>327.195</td><td>305.876</td><td>302.937</td><td>936.008</td><td>36,1%</td></tr>
+                <tr><td style="padding-left: 32px; color: var(--ink-mute);">Isapres</td><td>392.295</td><td>395.465</td><td>414.857</td><td>1.202.617</td><td>46,4%</td></tr>
+                <tr><td style="padding-left: 32px; color: var(--ink-mute);">Empleadores + Otros</td><td>128.665</td><td>126.325</td><td>197.615</td><td>452.605</td><td>17,5%</td></tr>
+                <tr><td>Costo Directo</td><td class="neg-cell">(512.921)</td><td class="neg-cell">(410.931)</td><td class="neg-cell">(453.489)</td><td class="neg-cell">(1.377.341)</td><td>-53,2%</td></tr>
+                <tr class="subtotal"><td>Margen de Explotación</td><td>335.233</td><td>416.735</td><td>461.920</td><td>1.213.888</td><td>46,8%</td></tr>
+                <tr><td style="padding-left: 32px; color: var(--ink-mute);">Margen %</td><td>39,5%</td><td>50,4%</td><td>50,5%</td><td>46,8%</td><td>—</td></tr>
+                <tr><td>Gastos Adm. & Venta</td><td class="neg-cell">(241.908)</td><td class="neg-cell">(240.222)</td><td class="neg-cell">(270.291)</td><td class="neg-cell">(752.421)</td><td>-29,0%</td></tr>
+                <tr class="subtotal"><td>Adjusted EBITDA</td><td>93.325</td><td>176.514</td><td>191.629</td><td>461.467</td><td>17,8%</td></tr>
+                <tr><td>Gastos Corporativos</td><td class="neg-cell">(113.075)</td><td class="neg-cell">(140.944)</td><td class="neg-cell">(133.281)</td><td class="neg-cell">(387.300)</td><td>-14,9%</td></tr>
+                <tr><td>Gastos One-Off</td><td class="neg-cell">(4.820)</td><td class="neg-cell">(20.624)</td><td class="neg-cell">(42.964)</td><td class="neg-cell">(68.408)</td><td>-2,6%</td></tr>
+                <tr class="subtotal"><td>EBITDA Reportado</td><td class="neg-cell">(24.570)</td><td>14.946</td><td>15.383</td><td>5.759</td><td>0,2%</td></tr>
+                <tr><td>Ing./Gastos no EBITDA</td><td class="neg-cell">(74.895)</td><td class="neg-cell">(98.401)</td><td class="neg-cell">(88.608)</td><td class="neg-cell">(261.904)</td><td>-10,1%</td></tr>
+                <tr class="total"><td>Utilidad (Pérdida) Neta</td><td>(99.465)</td><td>(83.455)</td><td>(73.225)</td><td>(256.145)</td><td>-9,9%</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- ============ SECTION V: SEGMENT MIX ============ -->
+<section>
+    <div class="sec-head">
+        <span class="sec-num">V · Composición por Segmento</span>
+        <h2>Ingresos por tipo de cliente</h2>
+        <div class="deck">Concentración de ingresos por segmento · Isapres representan 46,4% del consolidado, exclusivo Chile.</div>
+    </div>
+
+    <div class="chart-grid two">
+        <div class="chart-card">
+            <h3>Mix de ingresos por segmento</h3>
+            <div class="chart-sub">Q1 2026 · USD · Isapres concentran 46,4%</div>
+            <div class="chart-wrap"><canvas id="segmentBar"></canvas></div>
+        </div>
+        <div class="chart-card">
+            <h3>Concentración geográfica</h3>
+            <div class="chart-sub">Chile + Colombia = 88,9% de ventas consolidadas</div>
+            <div class="chart-wrap"><canvas id="geoConcentration"></canvas></div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ SECTION VI: CRITICAL NODES ============ -->
+<section>
+    <div class="sec-head">
+        <span class="sec-num">VI · Nodos Críticos</span>
+        <h2>Decisiones clave para el directorio</h2>
+        <div class="deck">Tres nodos críticos ordenados por impacto. Cada uno requiere una decisión explícita.</div>
+    </div>
+
+    <div class="findings">
+        <div class="finding critical">
+            <div class="sev">
+                <div class="level">Crítico</div>
+                <div class="num">01</div>
+            </div>
+            <div class="body">
+                <h4>Distribución de gastos corporativos cargados íntegramente a Chile</h4>
+                <p>Los gastos corporativos centralizados (USD 387K en Q1) se asignan en su totalidad a Chile, convirtiendo una operación con Adjusted EBITDA positivo de USD 223K en una entidad con EBITDA de USD (232K). Esto distorsiona la rentabilidad real por país y dificulta la evaluación de desempeño de la gerencia local.</p>
+                <div class="recommend"><strong>Decisión solicitada → </strong>instruir a la gerencia presentar una propuesta de metodología de distribución de costos corporativos entre países antes de la próxima sesión ordinaria. Alternativas: por ventas, por headcount o mantener en Chile.</div>
+            </div>
+            <div class="stat">
+                <div class="big">USD 387K</div>
+                <div class="lbl">cargados a Chile en Q1 · 84% del Adjusted EBITDA consolidado</div>
+            </div>
+        </div>
+
+        <div class="finding high">
+            <div class="sev">
+                <div class="level">Alto</div>
+                <div class="num">02</div>
+            </div>
+            <div class="body">
+                <h4>México y Farmazon — EBITDA negativo sin señal de reversión</h4>
+                <p>México registra Adjusted EBITDA de USD (42K) con ventas de solo USD 63K (2,4% del consolidado). Farmazon acumula USD (20K) con margen de explotación de 36,4%, insuficiente para cubrir gastos operacionales. Ambas unidades llevan tres meses consecutivos en EBITDA negativo.</p>
+                <div class="recommend"><strong>Decisión solicitada → </strong>instruir a la gerencia presentar antes del 30 de junio 2026 un plan de viabilidad con proyección de break-even, capital requerido y criterio de decisión de cierre.</div>
+            </div>
+            <div class="stat">
+                <div class="big">USD (62K)</div>
+                <div class="lbl">EBITDA negativo combinado · 3 meses consecutivos en pérdida</div>
+            </div>
+        </div>
+
+        <div class="finding high">
+            <div class="sev">
+                <div class="level">Alto</div>
+                <div class="num">03</div>
+            </div>
+            <div class="body">
+                <h4>Concentración de ingresos en Isapres — 46,4% del consolidado</h4>
+                <p>Las Isapres generan el 46,4% de los ingresos consolidados, concentradas exclusivamente en Chile. Este segmento está sujeto a renegociación periódica, regulación gubernamental y riesgo de impago. La Ley Corta de Isapres de 2023 y los procesos de solvencia en curso representan un riesgo material.</p>
+                <div class="recommend"><strong>Decisión solicitada → </strong>instruir a la gerencia presentar un análisis de riesgo regulatorio de Isapres y un plan de diversificación de ingresos con metas por segmento para H2 2026.</div>
+            </div>
+            <div class="stat">
+                <div class="big">46,4%</div>
+                <div class="lbl">ingresos en Isapres · Chile · sujeto a regulación</div>
+            </div>
+        </div>
+
+        <div class="finding medium">
+            <div class="sev">
+                <div class="level">Medio</div>
+                <div class="num">04</div>
+            </div>
+            <div class="body">
+                <h4>Gastos one-off crecientes — incremento de +790% Ene→Mar</h4>
+                <p>Los gastos one-off aumentaron de USD 4.820 en enero a USD 42.964 en marzo, un crecimiento del 790% en tres meses. Esta tendencia requiere desglose detallado para confirmar su carácter no recurrente y evaluar si parte debe reclasificarse como gasto operacional permanente.</p>
+                <div class="recommend"><strong>Decisión solicitada → </strong>requerir desglose detallado de gastos one-off con clasificación de recurrencia para validar tratamiento contable y proyección Q2.</div>
+            </div>
+            <div class="stat">
+                <div class="big">+790%</div>
+                <div class="lbl">crecimiento mensual one-off · USD 68K Q1 acumulado</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ SECTION VII: QUESTIONS TO BOARD ============ -->
+<section>
+    <div class="sec-head">
+        <span class="sec-num">VII · Preguntas al Directorio</span>
+        <h2>Decisiones explícitas requeridas</h2>
+        <div class="deck">Seis preguntas diseñadas para provocar decisiones concretas. Cada una requiere respuesta explícita del directorio.</div>
+    </div>
+
+    <div class="q-table">
+        <div class="q-row">
+            <div class="qn">01</div>
+            <div class="q-body">
+                <div class="topic">Modelo de costos corporativos</div>
+                <div class="text">¿Instruye el directorio redistribuir los gastos corporativos entre todos los países? ¿Cuál metodología aprueba: por ventas, por headcount, u otra? Sin una respuesta, Chile seguirá reportando pérdidas artificialmente infladas.</div>
+            </div>
+            <div class="q-decision">
+                <div class="lbl">Decisión esperada</div>
+                <div class="text">Metodología de distribución con fecha de implementación</div>
+            </div>
+        </div>
+
+        <div class="q-row">
+            <div class="qn">02</div>
+            <div class="q-body">
+                <div class="topic">Viabilidad de México y Farmazon</div>
+                <div class="text">¿Cuál es el plazo máximo que el directorio está dispuesto a sostener operaciones deficitarias en estas unidades? ¿Existe un umbral de pérdidas acumuladas que active una revisión estratégica?</div>
+            </div>
+            <div class="q-decision">
+                <div class="lbl">Decisión esperada</div>
+                <div class="text">Umbral de pérdida acumulada y plazo de revisión estratégica</div>
+            </div>
+        </div>
+
+        <div class="q-row">
+            <div class="qn">03</div>
+            <div class="q-body">
+                <div class="topic">Riesgo Isapres</div>
+                <div class="text">¿Ha evaluado el directorio el impacto de una reducción del 20–30% en ingresos de Isapres sobre la utilidad consolidada? ¿Existe un plan de contingencia ante shocks regulatorios?</div>
+            </div>
+            <div class="q-decision">
+                <div class="lbl">Decisión esperada</div>
+                <div class="text">Mandato de análisis de escenarios de estrés para H2 2026</div>
+            </div>
+        </div>
+
+        <div class="q-row">
+            <div class="qn">04</div>
+            <div class="q-body">
+                <div class="topic">Expansión USA</div>
+                <div class="text">USA reporta cero ventas y USD (13K) de pérdida neta en Q1. ¿Cuál es el estatus actual de esta operación, el capital comprometido y la fecha objetivo de activación comercial?</div>
+            </div>
+            <div class="q-decision">
+                <div class="lbl">Decisión esperada</div>
+                <div class="text">Informe de estatus USA con cronograma de activación o cierre</div>
+            </div>
+        </div>
+
+        <div class="q-row">
+            <div class="qn">05</div>
+            <div class="q-body">
+                <div class="topic">Gastos One-Off crecientes</div>
+                <div class="text">Los gastos one-off aumentaron de USD 4.820 en enero a USD 42.964 en marzo (+790%). ¿Qué los compone? ¿Son realmente no recurrentes o deben reclasificarse?</div>
+            </div>
+            <div class="q-decision">
+                <div class="lbl">Decisión esperada</div>
+                <div class="text">Desglose detallado con clasificación de recurrencia</div>
+            </div>
+        </div>
+
+        <div class="q-row">
+            <div class="qn">06</div>
+            <div class="q-body">
+                <div class="topic">Costa Rica · Joint Venture</div>
+                <div class="text">Costa Rica opera bajo un JV con participación del 25% de Docwell. ¿Están correctamente reconocidos los resultados consolidados versus la participación proporcional efectiva del grupo?</div>
+            </div>
+            <div class="q-decision">
+                <div class="lbl">Decisión esperada</div>
+                <div class="text">Confirmación contable del tratamiento del JV Costa Rica</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ SECTION VIII: FX ============ -->
+<section>
+    <div class="sec-head">
+        <span class="sec-num">VIII · Tipos de Cambio</span>
+        <h2>Tasas promedio aplicadas Q1 2026</h2>
+        <div class="deck">Tipos de cambio promedio mensuales usados para conversión a USD. Variaciones cambiarias pueden distorsionar comparaciones.</div>
+    </div>
+
+    <div class="fx-grid">
+        <div class="fx">
+            <div class="pair">USD / CLP</div>
+            <div class="v">885,29</div>
+            <div class="range">Rango: 862,02 – 909,89</div>
+        </div>
+        <div class="fx">
+            <div class="pair">USD / COP</div>
+            <div class="v">3.698,73</div>
+            <div class="range">Rango: 3.675,64 – 3.717,56</div>
+        </div>
+        <div class="fx">
+            <div class="pair">USD / MXN</div>
+            <div class="v">17,54</div>
+            <div class="range">Rango: 17,22 – 17,77</div>
+        </div>
+        <div class="fx">
+            <div class="pair">USD / CRC</div>
+            <div class="v">485,77</div>
+            <div class="range">Rango: 472,15 – 497,94</div>
+        </div>
+        <div class="fx">
+            <div class="pair">USD / PEN</div>
+            <div class="v">3,387</div>
+            <div class="range">Rango: 3,357 – 3,446</div>
+        </div>
+    </div>
+</section>
+
+</main>
+
+<footer>
+    <div class="inner">
+        <div class="brand">Medismart · Informe Ejecutivo Q1 2026</div>
+        <div>Confidencial · Preparado para el Directorio · Mayo 2026</div>
+        <div>Consolidado Multi-País · 6 unidades</div>
+    </div>
+</footer>
+
+<script>
+// ====== GLOBAL CHART CONFIG ======
+Chart.defaults.font.family = "'Inter', system-ui, sans-serif";
+Chart.defaults.font.size = 11;
+Chart.defaults.color = '#5b6773';
+Chart.defaults.borderColor = '#ebe8e0';
+
+const COLORS = {
+    navy: '#0e2240',
+    navyDeep: '#081628',
+    accent: '#b8923a',
+    accentSoft: '#e9d9a8',
+    green: '#2f6a4a',
+    greenSoft: '#7ba98e',
+    amber: '#b97a16',
+    red: '#a52a2a',
+    blue: '#2c5282',
+    blueSoft: '#7397bf',
+    inkMute: '#5b6773',
+    inkFaint: '#8c97a3',
+    line: '#e3e0d8'
+};
+
+const baseGrid = {
+    color: '#ebe8e0',
+    drawBorder: false,
+};
+const baseTick = {
+    color: '#8c97a3',
+    font: { size: 11 }
+};
+
+// ===== 1. Sales Trend by Country =====
+new Chart(document.getElementById('salesTrend'), {
+    type: 'line',
+    data: {
+        labels: ['Enero', 'Febrero', 'Marzo'],
+        datasets: [
+            { label: 'Chile', data: [394593, 389777, 397088], borderColor: COLORS.navy, backgroundColor: 'rgba(14,34,64,0.06)', tension: 0.25, borderWidth: 2.5, pointRadius: 4, pointBackgroundColor: COLORS.navy, fill: false },
+            { label: 'Colombia', data: [363284, 341148, 418585], borderColor: COLORS.accent, backgroundColor: 'rgba(184,146,58,0.08)', tension: 0.25, borderWidth: 2.5, pointRadius: 4, pointBackgroundColor: COLORS.accent, fill: false },
+            { label: 'Costa Rica', data: [64611, 71141, 73237], borderColor: COLORS.green, tension: 0.25, borderWidth: 2.5, pointRadius: 4, pointBackgroundColor: COLORS.green, fill: false },
+            { label: 'México', data: [20850, 21488, 20844], borderColor: COLORS.red, tension: 0.25, borderWidth: 2, pointRadius: 3, pointBackgroundColor: COLORS.red, fill: false },
+            { label: 'Farmazon', data: [4816, 4112, 5654], borderColor: COLORS.blue, tension: 0.25, borderWidth: 2, pointRadius: 3, pointBackgroundColor: COLORS.blue, fill: false }
+        ]
+    },
+    options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+            legend: { position: 'bottom', labels: { boxWidth: 10, boxHeight: 10, padding: 14, usePointStyle: true, pointStyle: 'rectRounded' } },
+            tooltip: {
+                backgroundColor: '#0e2240', titleColor: '#f0ece3', bodyColor: '#d6dde5',
+                padding: 10, cornerRadius: 2, displayColors: true,
+                callbacks: { label: (c) => c.dataset.label + ': USD ' + c.parsed.y.toLocaleString('es-CL') }
+            }
+        },
+        scales: {
+            y: {
+                grid: baseGrid,
+                ticks: { ...baseTick, callback: v => 'USD ' + (v/1000) + 'K' }
+            },
+            x: { grid: { display: false }, ticks: baseTick }
+        }
+    }
+});
+
+// ===== 2. Country Donut =====
+new Chart(document.getElementById('countryDonut'), {
+    type: 'doughnut',
+    data: {
+        labels: ['Chile', 'Colombia', 'Costa Rica', 'México', 'Farmazon'],
+        datasets: [{
+            data: [1181458, 1123017, 208990, 63182, 14583],
+            backgroundColor: [COLORS.navy, COLORS.accent, COLORS.green, COLORS.red, COLORS.blue],
+            borderColor: '#ffffff',
+            borderWidth: 2,
+            spacing: 1
+        }]
+    },
+    options: {
+        responsive: true, maintainAspectRatio: false,
+        cutout: '64%',
+        plugins: {
+            legend: { position: 'bottom', labels: { boxWidth: 10, boxHeight: 10, padding: 12, usePointStyle: true, pointStyle: 'rectRounded' } },
+            tooltip: {
+                backgroundColor: '#0e2240', titleColor: '#f0ece3', bodyColor: '#d6dde5',
+                padding: 10, cornerRadius: 2,
+                callbacks: {
+                    label: (c) => {
+                        const tot = c.dataset.data.reduce((a,b)=>a+b,0);
+                        const pct = (c.parsed/tot*100).toFixed(1);
+                        return c.label + ': USD ' + c.parsed.toLocaleString('es-CL') + ' (' + pct + '%)';
+                    }
+                }
+            }
+        }
+    }
+});
+
+// ===== 3. Waterfall =====
+const wfLabels = ['Ventas', '(-) Costo Directo', '= Mg. Explotación', '(-) Gastos AyV', '= Adj. EBITDA', '(-) Corporativos', '(-) One-Off', '= EBITDA Rep.', '(-) No-EBITDA', '= Utilidad Neta'];
+const wfValues = [2591229, -1377341, 1213888, -752421, 461467, -387300, -68408, 5759, -261904, -256145];
+const wfIsTotal = [true, false, true, false, true, false, false, true, false, true];
+
+// Build floating bars
+const wfData = [];
+let running = 0;
+wfValues.forEach((v, i) => {
+    if (wfIsTotal[i]) {
+        wfData.push([0, v]);
+        running = v;
+    } else {
+        const newRun = running + v;
+        wfData.push([Math.min(running, newRun), Math.max(running, newRun)]);
+        running = newRun;
+    }
+});
+
+const wfColors = wfValues.map((v,i) => {
+    if (wfIsTotal[i]) return v < 0 ? COLORS.red : COLORS.navy;
+    return v < 0 ? '#c97a7a' : COLORS.greenSoft;
+});
+
+new Chart(document.getElementById('waterfall'), {
+    type: 'bar',
+    data: {
+        labels: wfLabels,
+        datasets: [{
+            data: wfData,
+            backgroundColor: wfColors,
+            borderColor: wfColors.map(c => c),
+            borderWidth: 0,
+            barPercentage: 0.7
+        }]
+    },
+    options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+            legend: { display: false },
+            tooltip: {
+                backgroundColor: '#0e2240', titleColor: '#f0ece3', bodyColor: '#d6dde5',
+                padding: 10, cornerRadius: 2, displayColors: false,
+                callbacks: {
+                    label: (c) => {
+                        const v = wfValues[c.dataIndex];
+                        const sign = v < 0 ? '-' : '+';
+                        return 'USD ' + sign + Math.abs(v).toLocaleString('es-CL');
+                    }
+                }
+            }
+        },
+        scales: {
+            y: {
+                grid: baseGrid,
+                ticks: { ...baseTick, callback: v => 'USD ' + (v/1000000).toFixed(1) + 'M' }
+            },
+            x: { grid: { display: false }, ticks: { ...baseTick, maxRotation: 35, minRotation: 35, font: { size: 10 } } }
+        }
+    }
+});
+
+// ===== 4. Margin Bar by country =====
+new Chart(document.getElementById('marginBar'), {
+    type: 'bar',
+    data: {
+        labels: ['Costa Rica', 'Colombia', 'México', 'Chile', 'Farmazon'],
+        datasets: [{
+            label: 'Margen Explotación %',
+            data: [69.3, 49.8, 46.0, 40.3, 36.4],
+            backgroundColor: [COLORS.green, COLORS.accent, COLORS.navy, COLORS.blue, COLORS.amber],
+            borderWidth: 0,
+            barPercentage: 0.65
+        }]
+    },
+    options: {
+        indexAxis: 'y',
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+            legend: { display: false },
+            tooltip: {
+                backgroundColor: '#0e2240', titleColor: '#f0ece3', bodyColor: '#d6dde5',
+                padding: 10, cornerRadius: 2, displayColors: false,
+                callbacks: { label: c => 'Margen: ' + c.parsed.x + '%' }
+            }
+        },
+        scales: {
+            x: { grid: baseGrid, ticks: { ...baseTick, callback: v => v + '%' }, max: 80 },
+            y: { grid: { display: false }, ticks: baseTick }
+        }
+    }
+});
+
+// ===== 5. EBITDA vs Utilidad Neta =====
+new Chart(document.getElementById('ebitdaBar'), {
+    type: 'bar',
+    data: {
+        labels: ['Chile', 'Colombia', 'Costa Rica', 'México', 'Farmazon', 'USA'],
+        datasets: [
+            { label: 'Adj. EBITDA', data: [223348, 225616, 79350, -42353, -20390, -4104], backgroundColor: COLORS.accent, borderWidth: 0, barPercentage: 0.7, categoryPercentage: 0.75 },
+            { label: 'Utilidad Neta', data: [-438780, 220021, 41404, -45069, -20478, -13242], backgroundColor: COLORS.navy, borderWidth: 0, barPercentage: 0.7, categoryPercentage: 0.75 }
+        ]
+    },
+    options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+            legend: { position: 'bottom', labels: { boxWidth: 10, boxHeight: 10, padding: 14, usePointStyle: true, pointStyle: 'rectRounded' } },
+            tooltip: {
+                backgroundColor: '#0e2240', titleColor: '#f0ece3', bodyColor: '#d6dde5',
+                padding: 10, cornerRadius: 2,
+                callbacks: { label: c => c.dataset.label + ': USD ' + c.parsed.y.toLocaleString('es-CL') }
+            }
+        },
+        scales: {
+            y: {
+                grid: baseGrid,
+                ticks: { ...baseTick, callback: v => 'USD ' + (v/1000) + 'K' }
+            },
+            x: { grid: { display: false }, ticks: { ...baseTick, font: { size: 10 } } }
+        }
+    }
+});
+
+// ===== 6. Segment Bar =====
+new Chart(document.getElementById('segmentBar'), {
+    type: 'bar',
+    data: {
+        labels: ['Isapres', 'Aseguradoras', 'Empleadores', 'Lab. Farma.', 'B2C', 'Agregadores', 'Incumbentes'],
+        datasets: [{
+            data: [1202617, 936008, 189215, 107557, 68475, 57806, 29551],
+            backgroundColor: [COLORS.navy, COLORS.accent, COLORS.green, COLORS.blue, COLORS.amber, COLORS.red, COLORS.inkFaint],
+            borderWidth: 0,
+            barPercentage: 0.7
+        }]
+    },
+    options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+            legend: { display: false },
+            tooltip: {
+                backgroundColor: '#0e2240', titleColor: '#f0ece3', bodyColor: '#d6dde5',
+                padding: 10, cornerRadius: 2, displayColors: false,
+                callbacks: {
+                    label: c => {
+                        const tot = c.dataset.data.reduce((a,b)=>a+b,0);
+                        const pct = (c.parsed.y/tot*100).toFixed(1);
+                        return 'USD ' + c.parsed.y.toLocaleString('es-CL') + ' · ' + pct + '%';
+                    }
+                }
+            }
+        },
+        scales: {
+            y: { grid: baseGrid, ticks: { ...baseTick, callback: v => 'USD ' + (v/1000) + 'K' } },
+            x: { grid: { display: false }, ticks: { ...baseTick, font: { size: 10 }, maxRotation: 30, minRotation: 30 } }
+        }
+    }
+});
+
+// ===== 7. Geographic concentration (stacked horizontal) =====
+new Chart(document.getElementById('geoConcentration'), {
+    type: 'bar',
+    data: {
+        labels: ['Q1 2026'],
+        datasets: [
+            { label: 'Chile', data: [45.6], backgroundColor: COLORS.navy, barPercentage: 0.45 },
+            { label: 'Colombia', data: [43.3], backgroundColor: COLORS.accent, barPercentage: 0.45 },
+            { label: 'Costa Rica', data: [8.1], backgroundColor: COLORS.green, barPercentage: 0.45 },
+            { label: 'México', data: [2.4], backgroundColor: COLORS.red, barPercentage: 0.45 },
+            { label: 'Farmazon', data: [0.6], backgroundColor: COLORS.blue, barPercentage: 0.45 }
+        ]
+    },
+    options: {
+        indexAxis: 'y',
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+            legend: { position: 'bottom', labels: { boxWidth: 10, boxHeight: 10, padding: 12, usePointStyle: true, pointStyle: 'rectRounded' } },
+            tooltip: {
+                backgroundColor: '#0e2240', titleColor: '#f0ece3', bodyColor: '#d6dde5',
+                padding: 10, cornerRadius: 2,
+                callbacks: { label: c => c.dataset.label + ': ' + c.parsed.x + '%' }
+            }
+        },
+        scales: {
+            x: {
+                stacked: true, grid: baseGrid, max: 100,
+                ticks: { ...baseTick, callback: v => v + '%' }
+            },
+            y: { stacked: true, grid: { display: false }, ticks: baseTick }
+        }
+    }
+});
+</script>
+
+</body>
+</html>
