@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<!-- saved from url=(0048)file:///Users/Konnan/Downloads/Frame_2_v3_1.html -->
+<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Medismart — Informe Ejecutivo Q1 2026 · Dashboard Directorio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+<link href="./Medismart — Informe Ejecutivo Q1 2026 · Dashboard Directorio_files/css2" rel="stylesheet">
+<style>
+:root{
+  --ink:#0E1116;
+  --paper:#F6F2E9;
+  --paper-2:#EDE7D9;
+  --rule:#1B1F26;
+  --muted:#5B5F66;
+  --accent:#A6321F;        /* rojo bermellón editorial */
+  --accent-2:#0B5D3B;      /* verde profundo */
+  --gold:#8B6F2A;
+  --amber:#C28A0E;
+  --crit:#A6321F;
+  --warn:#B9760B;
+  --pos:#0B5D3B;
+  --neut:#3A3E47;
+  --shadow: 0 1px 0 rgba(11,17,22,.06), 0 12px 30px -18px rgba(11,17,22,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--paper);color:var(--ink);font-family:"Inter Tight",-apple-system,system-ui,sans-serif;font-weight:400;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{background:
+  radial-gradient(900px 600px at 8% -10%, rgba(166,50,31,.06), transparent 60%),
+  radial-gradient(700px 500px at 102% 0%, rgba(11,93,59,.05), transparent 60%),
+  linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%);
+  min-height:100vh}
+
+.wrap{max-width:1200px;margin:0 auto;padding:48px 56px}
+@media(max-width:780px){.wrap{padding:28px 22px}}
+
+/* HEADER */
+.kicker{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+.kicker .dot{display:inline-block;width:6px;height:6px;background:var(--accent);border-radius:50%;margin:0 8px 1px;vertical-align:middle}
+.brandbar{display:flex;justify-content:space-between;align-items:flex-end;border-top:2px solid var(--ink);border-bottom:1px solid var(--ink);padding:14px 0 12px;margin:18px 0 36px}
+.brandbar .brand{font-family:"Fraunces",serif;font-weight:700;font-size:20px;letter-spacing:-.01em}
+.brandbar .meta{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+
+h1.title{font-family:"Fraunces",serif;font-weight:300;font-size:clamp(48px,7vw,96px);line-height:.95;letter-spacing:-.025em;margin:0 0 18px;color:var(--ink)}
+h1.title em{font-style:italic;font-weight:500;color:var(--accent)}
+.lead{font-family:"Fraunces",serif;font-weight:400;font-size:clamp(18px,2vw,22px);line-height:1.45;color:#2A2E36;max-width:780px;margin:0 0 28px}
+
+.cover-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);margin:18px 0 24px}
+.cover-grid > div{padding:14px 16px;border-right:1px solid #c9c2b1}
+.cover-grid > div:last-child{border-right:0}
+.cover-grid .lbl{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.cover-grid .val{font-family:"Fraunces",serif;font-weight:500;font-size:18px;letter-spacing:-.01em}
+@media(max-width:780px){.cover-grid{grid-template-columns:repeat(2,1fr)}.cover-grid > div{border-bottom:1px solid #c9c2b1}.cover-grid > div:nth-child(2){border-right:0}}
+
+.decision-banner{background:var(--ink);color:#F1EDE2;padding:18px 22px;margin:8px 0 56px;border-left:6px solid var(--accent);font-size:15px;line-height:1.55}
+.decision-banner b{color:#F6D9B3;font-weight:600}
+
+/* SECCIÓN */
+.section{margin:72px 0}
+.sec-num{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.22em;color:var(--accent);text-transform:uppercase;margin-bottom:8px;font-weight:600}
+.sec-title{font-family:"Fraunces",serif;font-weight:500;font-size:clamp(28px,3.4vw,40px);line-height:1.08;letter-spacing:-.015em;margin:0 0 8px;color:var(--ink)}
+.sec-sub{font-size:15px;color:var(--muted);max-width:760px;margin:0 0 28px;line-height:1.5}
+
+/* I — KPIs */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+.kpi{padding:22px 20px;border-right:1px solid #c9c2b1;border-bottom:1px solid #c9c2b1;position:relative;background:rgba(255,255,255,.35)}
+.kpi:nth-child(4n){border-right:0}
+.kpi:nth-last-child(-n+4){border-bottom:0}
+.kpi .tag{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;font-weight:600;padding:2px 6px;border-radius:2px;display:inline-block;margin-bottom:10px}
+.tag.pos{background:rgba(11,93,59,.12);color:var(--pos)}
+.tag.crit{background:rgba(166,50,31,.12);color:var(--crit)}
+.tag.warn{background:rgba(185,118,11,.15);color:var(--warn)}
+.tag.neut{background:rgba(58,62,71,.10);color:var(--neut)}
+.kpi .name{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;font-weight:500}
+.kpi .v{font-family:"Fraunces",serif;font-weight:500;font-size:34px;letter-spacing:-.02em;line-height:1;margin:6px 0 8px;color:var(--ink)}
+.kpi .v.neg{color:var(--crit)}
+.kpi .v.pos{color:var(--pos)}
+.kpi .desc{font-size:12.5px;color:#3A3E47;line-height:1.45}
+@media(max-width:980px){.kpi-grid{grid-template-columns:repeat(2,1fr)}.kpi:nth-child(4n){border-right:1px solid #c9c2b1}.kpi:nth-child(2n){border-right:0}}
+@media(max-width:560px){.kpi-grid{grid-template-columns:1fr}.kpi{border-right:0!important}}
+
+/* Insight cards (semáforo) */
+.insights{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:32px}
+.insight{padding:20px 22px;border:1px solid #1B1F26;background:rgba(255,255,255,.5);position:relative}
+.insight .badge{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;display:inline-flex;align-items:center;gap:8px;margin-bottom:10px}
+.insight.pos{border-left:4px solid var(--pos)}
+.insight.crit{border-left:4px solid var(--crit)}
+.insight.warn{border-left:4px solid var(--warn)}
+.insight.neut{border-left:4px solid var(--neut)}
+.insight.pos .badge{color:var(--pos)}
+.insight.crit .badge{color:var(--crit)}
+.insight.warn .badge{color:var(--warn)}
+.insight.neut .badge{color:var(--neut)}
+.insight h4{font-family:"Fraunces",serif;font-weight:500;font-size:18px;margin:4px 0 8px;letter-spacing:-.01em;line-height:1.25}
+.insight p{font-size:13.5px;color:#3A3E47;line-height:1.55;margin:0}
+@media(max-width:780px){.insights{grid-template-columns:1fr}}
+
+/* II — Chart-like visuals (CSS only bars) */
+.bars{margin:28px 0;padding:20px 0;border-top:1px solid #c9c2b1;border-bottom:1px solid #c9c2b1}
+.bars h5{font-family:"Fraunces",serif;font-weight:500;font-size:16px;margin:0 0 14px;letter-spacing:-.01em}
+.bars .note{font-size:12px;color:var(--muted);margin-bottom:18px}
+.bar-row{display:grid;grid-template-columns:140px 1fr 110px;align-items:center;gap:14px;padding:7px 0;border-bottom:1px dotted #c9c2b1;font-size:13px}
+.bar-row:last-child{border-bottom:0}
+.bar-row .lbl{font-weight:500;color:var(--ink)}
+.bar-row .track{height:18px;background:rgba(11,17,22,.06);position:relative;border-radius:1px;overflow:hidden}
+.bar-row .fill{height:100%;background:linear-gradient(90deg,var(--accent) 0%,#7a2515 100%);transition:width .6s ease}
+.bar-row .fill.pos{background:linear-gradient(90deg,var(--pos) 0%,#06402a 100%)}
+.bar-row .fill.warn{background:linear-gradient(90deg,var(--amber) 0%,#7a4f00 100%)}
+.bar-row .fill.neg{background:linear-gradient(90deg,#A6321F 0%,#5b1c10 100%)}
+.bar-row .val{font-family:"JetBrains Mono",monospace;font-size:12px;text-align:right;color:var(--ink);font-weight:500}
+.bar-row .val.neg{color:var(--crit)}
+.bar-row .val.pos{color:var(--pos)}
+
+/* III - Cascada / Waterfall ASCII inspired */
+.waterfall{margin:28px 0;padding:24px;background:rgba(255,255,255,.55);border:1px solid #1B1F26}
+.waterfall h5{font-family:"Fraunces",serif;font-weight:500;font-size:16px;margin:0 0 6px;letter-spacing:-.01em}
+.waterfall .note{font-size:12px;color:var(--muted);margin-bottom:18px}
+.wf-row{display:grid;grid-template-columns:200px 1fr 120px;align-items:center;gap:14px;padding:6px 0;font-size:13px}
+.wf-row .lbl{font-weight:500}
+.wf-row .lbl.sub{color:var(--muted);padding-left:14px;font-size:12px;font-weight:400}
+.wf-row .bar{height:14px;background:rgba(11,17,22,.06);position:relative;border-radius:1px;overflow:hidden}
+.wf-row .bar > div{height:100%}
+.wf-row .val{font-family:"JetBrains Mono",monospace;text-align:right;font-size:12.5px;font-weight:500}
+.wf-row.total{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:8px 0;margin:6px 0;font-weight:600}
+.wf-row.subtotal{border-top:1px dashed var(--rule);padding-top:8px;margin-top:4px;font-weight:600}
+
+/* Tables */
+.tbl-wrap{overflow-x:auto;margin:18px 0}
+table.eerr{width:100%;border-collapse:collapse;font-size:13px}
+table.eerr th,table.eerr td{padding:9px 10px;border-bottom:1px solid #c9c2b1;text-align:right;font-variant-numeric:tabular-nums}
+table.eerr th{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:500;border-bottom:1.5px solid var(--ink)}
+table.eerr td:first-child,table.eerr th:first-child{text-align:left}
+table.eerr td:first-child{font-weight:500}
+table.eerr tr.sub td:first-child{padding-left:24px;color:var(--muted);font-weight:400;font-size:12.5px}
+table.eerr tr.tot td{border-top:1px solid var(--ink);border-bottom:1.5px solid var(--ink);font-weight:600;background:rgba(11,17,22,.04)}
+table.eerr tr.mar td{background:rgba(11,93,59,.06);font-weight:500}
+table.eerr tr.ebitda td{background:rgba(166,50,31,.06);font-weight:600}
+table.eerr tr.neg td{color:var(--crit)}
+table.eerr td.neg{color:var(--crit)}
+table.eerr td.pos{color:var(--pos)}
+table.eerr .flag{font-family:"JetBrains Mono",monospace;font-size:10px;padding:1px 5px;border-radius:2px;margin-left:6px}
+table.eerr .flag.r{background:rgba(166,50,31,.15);color:var(--crit)}
+table.eerr .flag.g{background:rgba(11,93,59,.15);color:var(--pos)}
+table.eerr .flag.a{background:rgba(185,118,11,.18);color:var(--warn)}
+
+/* Nodos críticos */
+.nodes{display:grid;grid-template-columns:1fr;gap:20px;margin-top:24px}
+.node{border:1px solid var(--ink);background:rgba(255,255,255,.55);padding:24px 26px;display:grid;grid-template-columns:80px 1fr 200px;gap:24px;align-items:start}
+.node .idx{font-family:"Fraunces",serif;font-weight:300;font-size:60px;line-height:.9;color:var(--accent);letter-spacing:-.04em}
+.node .body h3{font-family:"Fraunces",serif;font-weight:500;font-size:20px;margin:0 0 8px;letter-spacing:-.01em;line-height:1.2}
+.node .body p{font-size:13.5px;line-height:1.6;margin:0 0 12px;color:#2A2E36}
+.node .body p b{color:var(--ink);font-weight:600}
+.node .body .ask{font-size:13.5px;line-height:1.55;background:rgba(166,50,31,.06);border-left:3px solid var(--accent);padding:10px 14px;color:#2A2E36;margin-top:4px}
+.node .body .ask b{color:var(--accent);text-transform:uppercase;font-size:10.5px;letter-spacing:.15em;display:block;margin-bottom:4px;font-family:"JetBrains Mono",monospace;font-weight:600}
+.node .stat{text-align:right;border-left:1px solid #c9c2b1;padding-left:20px}
+.node .stat .big{font-family:"Fraunces",serif;font-weight:500;font-size:32px;line-height:1;color:var(--ink);letter-spacing:-.02em}
+.node .stat .big.neg{color:var(--crit)}
+.node .stat .desc{font-size:11.5px;color:var(--muted);margin-top:6px;line-height:1.4}
+.node .pill{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;padding:3px 8px;font-weight:600;margin-bottom:10px}
+.node.crit .pill{background:var(--crit);color:#fff}
+.node.high .pill{background:var(--warn);color:#fff}
+.node.med .pill{background:var(--neut);color:#fff}
+.node-group-label{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);padding:6px 0;border-top:1px solid var(--ink);border-bottom:1px dotted #c9c2b1;margin:10px 0 4px;font-weight:600}
+.node-group-label span{color:var(--accent)}
+@media(max-width:780px){.node{grid-template-columns:1fr;gap:14px}.node .idx{font-size:40px}.node .stat{border-left:0;border-top:1px solid #c9c2b1;padding:14px 0 0;text-align:left}}
+
+/* Q&A */
+.qa{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.qa .q{padding:20px;border:1px solid #1B1F26;background:rgba(255,255,255,.5)}
+.qa .q .n{font-family:"Fraunces",serif;font-weight:500;font-size:30px;color:var(--accent);line-height:1;margin-bottom:6px}
+.qa .q .t{font-family:"Fraunces",serif;font-weight:500;font-size:16px;margin-bottom:8px;letter-spacing:-.01em}
+.qa .q .d{font-size:13px;line-height:1.55;color:#2A2E36;margin-bottom:12px}
+.qa .q .ex{font-size:11.5px;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;font-family:"JetBrains Mono",monospace;font-weight:600;margin-bottom:4px}
+.qa .q .er{font-size:12.5px;color:#3A3E47;line-height:1.5}
+@media(max-width:780px){.qa{grid-template-columns:1fr}}
+
+/* Glosario */
+.gloss{display:grid;grid-template-columns:repeat(2,1fr);gap:14px 28px;margin-top:18px;border-top:1px solid var(--ink);padding-top:18px}
+.gloss .term{padding:8px 0;border-bottom:1px dotted #c9c2b1}
+.gloss .term .t{font-family:"Fraunces",serif;font-weight:600;font-size:14.5px;color:var(--accent);margin-bottom:4px;letter-spacing:-.005em}
+.gloss .term .d{font-size:12.5px;color:#2A2E36;line-height:1.55}
+@media(max-width:780px){.gloss{grid-template-columns:1fr}}
+
+/* Tasas de cambio */
+.fx-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+.fx-grid > div{padding:16px;border-right:1px solid #c9c2b1;text-align:left}
+.fx-grid > div:last-child{border-right:0}
+.fx-grid .par{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin-bottom:8px}
+.fx-grid .v{font-family:"Fraunces",serif;font-weight:500;font-size:22px;letter-spacing:-.01em}
+.fx-grid .r{font-size:11px;color:var(--muted);margin-top:6px;font-family:"JetBrains Mono",monospace}
+@media(max-width:780px){.fx-grid{grid-template-columns:repeat(2,1fr)}.fx-grid > div{border-bottom:1px solid #c9c2b1}}
+
+/* Talking points (cheat sheet CEO) */
+.talk{background:var(--ink);color:#F1EDE2;padding:32px;margin:20px 0}
+.talk h4{font-family:"Fraunces",serif;font-weight:500;font-size:22px;margin:0 0 18px;color:#F6D9B3;letter-spacing:-.01em}
+.talk ul{margin:0;padding:0;list-style:none}
+.talk li{padding:10px 0;border-bottom:1px solid rgba(241,237,226,.12);font-size:13.5px;line-height:1.55}
+.talk li:last-child{border-bottom:0}
+.talk li b{color:#F6D9B3;font-weight:600;display:block;font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px;font-family:"JetBrains Mono",monospace}
+.talk li em{color:#E8B86F;font-style:normal;font-weight:500;font-family:"JetBrains Mono",monospace;font-size:12.5px}
+
+/* Country card */
+.country-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:24px}
+.cc{padding:18px;border:1px solid var(--ink);background:rgba(255,255,255,.5);position:relative}
+.cc .flag{font-size:22px;margin-bottom:6px}
+.cc .nm{font-family:"Fraunces",serif;font-weight:600;font-size:18px;margin-bottom:2px;letter-spacing:-.01em}
+.cc .status{font-family:"JetBrains Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.14em;font-weight:600;margin-bottom:14px;padding:2px 6px;display:inline-block}
+.cc.pos{border-left:4px solid var(--pos)}
+.cc.crit{border-left:4px solid var(--crit)}
+.cc.warn{border-left:4px solid var(--warn)}
+.cc.pos .status{background:rgba(11,93,59,.12);color:var(--pos)}
+.cc.crit .status{background:rgba(166,50,31,.12);color:var(--crit)}
+.cc.warn .status{background:rgba(185,118,11,.15);color:var(--warn)}
+.cc .row{display:flex;justify-content:space-between;font-size:12.5px;padding:5px 0;border-bottom:1px dotted #c9c2b1}
+.cc .row:last-of-type{border-bottom:0}
+.cc .row .k{color:var(--muted)}
+.cc .row .v{font-family:"JetBrains Mono",monospace;font-weight:500}
+.cc .row .v.neg{color:var(--crit)}
+.cc .row .v.pos{color:var(--pos)}
+.cc .takeaway{margin-top:12px;font-size:12px;color:#2A2E36;line-height:1.5;padding-top:12px;border-top:1px solid #c9c2b1;font-style:italic}
+@media(max-width:980px){.country-cards{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.country-cards{grid-template-columns:1fr}}
+
+/* Footer */
+footer{margin-top:80px;padding:30px 0 20px;border-top:2px solid var(--ink);display:flex;justify-content:space-between;align-items:center;font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+@media(max-width:780px){footer{flex-direction:column;gap:10px;text-align:center}}
+
+.divider{border:0;border-top:1px solid var(--ink);margin:60px 0}
+
+/* Footnote callouts inline */
+.callout{margin:14px 0;padding:14px 18px;background:rgba(185,118,11,.08);border-left:3px solid var(--warn);font-size:13px;color:#2A2E36;line-height:1.55}
+.callout b{color:var(--warn);text-transform:uppercase;font-size:11px;letter-spacing:.12em;font-family:"JetBrains Mono",monospace}
+
+.callout.crit{background:rgba(166,50,31,.07);border-left-color:var(--crit)}
+.callout.crit b{color:var(--crit)}
+.callout.pos{background:rgba(11,93,59,.07);border-left-color:var(--pos)}
+.callout.pos b{color:var(--pos)}
+
+/* Composición Costo Directo - dual column */
+.dual{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:780px){.dual{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HEADER -->
+<div class="kicker">Confidencial<span class="dot"></span>Directorio<span class="dot"></span>Q1 2026</div>
+<div class="brandbar">
+  <div class="brand">Medismart · Consolidado Multi-País · Mayo 2026</div>
+  <div class="meta">Informe Financiero Ejecutivo · Resultados Q1 2026</div>
+</div>
+
+<h1 class="title">Medismart Consolidado <em>Q1 2026</em></h1>
+<p class="lead">Resultados acumulados enero–marzo 2026. Margen operacional sólido de 46,8%, Adjusted EBITDA positivo de USD 461K y pérdida neta consolidada de USD (256K) por absorción íntegra de gastos corporativos y one-off en Chile.</p>
+
+<div class="cover-grid">
+  <div><div class="lbl">Período</div><div class="val">Ene–Mar 2026</div></div>
+  <div><div class="lbl">Cobertura</div><div class="val">6 Países · Consolidado</div></div>
+  <div><div class="lbl">Moneda Reporte</div><div class="val">USD (TC mensual)</div></div>
+  <div><div class="lbl">Preparado</div><div class="val">Para el Directorio</div></div>
+</div>
+
+<div class="decision-banner">
+⚡ <b>Decisiones solicitadas al directorio:</b> (i) explicar el salto de margen Colombia Ene→Feb y validar sostenibilidad; (ii) abrir el rubro "Otros costos directos" Colombia enero (USD 130K en una línea); (iii) aclarar naturaleza de Contraloría médica Chile (USD 176K, 100% local); (iv) definir metodología de distribución de gastos corporativos (USD 387K cargados íntegramente a Chile); (v) fijar umbral de viabilidad y plazo para México y Farmazon; (vi) validar tratamiento contable del JV Costa Rica (25% Docwell).
+</div>
+
+<!-- =============================================== -->
+<!-- I — INDICADORES EJECUTIVOS -->
+<!-- =============================================== -->
+<section class="section">
+  <div class="sec-num">I · Indicadores Ejecutivos</div>
+  <h2 class="sec-title">Resumen consolidado Q1 2026</h2>
+  <p class="sec-sub">Ocho indicadores clave de desempeño con estado semáforo y referencia contra meta. Cifras acumuladas enero–marzo, valores en USD.</p>
+
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="tag pos">Real</div>
+      <div class="name">Ingresos Q1</div>
+      <div class="v">USD 2,59M</div>
+      <div class="desc">Acumulado enero–marzo · crecimiento intermensual +7,9% Ene→Mar</div>
+    </div>
+    <div class="kpi">
+      <div class="tag pos">Sobre meta</div>
+      <div class="name">Margen Explotación</div>
+      <div class="v pos">46,8%</div>
+      <div class="desc">Meta &gt;40% · Costa Rica 69,3% · Colombia 49,8%</div>
+    </div>
+    <div class="kpi">
+      <div class="tag pos">Positivo</div>
+      <div class="name">Adjusted EBITDA</div>
+      <div class="v pos">USD 461K</div>
+      <div class="desc">17,8% s/ventas · excluye gastos corporativos y one-off</div>
+    </div>
+    <div class="kpi">
+      <div class="tag warn">Marginal</div>
+      <div class="name">EBITDA Reportado</div>
+      <div class="v">USD 5,8K</div>
+      <div class="desc">0,2% s/ventas · absorbido por corporativos y one-off</div>
+    </div>
+    <div class="kpi">
+      <div class="tag crit">Pérdida</div>
+      <div class="name">Utilidad Neta</div>
+      <div class="v neg">USD (256K)</div>
+      <div class="desc">-9,9% s/ventas · gasto financiero USD 131K y no-EBITDA USD 262K</div>
+    </div>
+    <div class="kpi">
+      <div class="tag crit">Presión</div>
+      <div class="name">Gastos Corporativos</div>
+      <div class="v neg">USD 387K</div>
+      <div class="desc">84% del Adjusted EBITDA · 100% asignado a Chile</div>
+    </div>
+    <div class="kpi">
+      <div class="tag warn">Riesgo</div>
+      <div class="name">Concentración Isapres</div>
+      <div class="v">46,4%</div>
+      <div class="desc">USD 1,2M en Isapres Chile · regulación + riesgo solvencia</div>
+    </div>
+    <div class="kpi">
+      <div class="tag neut">Mixto</div>
+      <div class="name">Países Rentables</div>
+      <div class="v">2 / 6</div>
+      <div class="desc">Colombia y Costa Rica con EBITDA positivo</div>
+    </div>
+  </div>
+
+  <div class="insights">
+    <div class="insight pos">
+      <div class="badge">● Positivo · Margen operacional sólido</div>
+      <h4>El modelo tiene rentabilidad estructural</h4>
+      <p>Margen de explotación de 46,8% es robusto. Colombia lidera (49,8%) y Costa Rica alcanza 69,3%. Adjusted EBITDA positivo confirma viabilidad del modelo operacional ex-corporativos.</p>
+    </div>
+    <div class="insight crit">
+      <div class="badge">● Crítico · Pérdida neta USD (256K)</div>
+      <h4>Distribución de costos corporativos pendiente</h4>
+      <p>Gastos corporativos centralizados (USD 387K) cargados íntegramente a Chile generan pérdida local de USD (439K). El directorio debe definir metodología de distribución entre países.</p>
+    </div>
+    <div class="insight warn">
+      <div class="badge">▲ Atención · México y Farmazon en rojo</div>
+      <h4>Unidades sin cubrir sus propios costos</h4>
+      <p>México: Adj.EBITDA USD (42K) con ventas de solo USD 63K. Farmazon: USD (20K). Tres meses consecutivos quemando caja. Requieren umbral de viabilidad y plan de break-even.</p>
+    </div>
+    <div class="insight neut">
+      <div class="badge">■ Dato · Solo 3 meses de información</div>
+      <h4>Interpretar como tendencia trimestral</h4>
+      <p>EERR cubre enero–marzo. Abril–diciembre reportan cero. Las cifras deben leerse como tendencia trimestral, no proyección anual cerrada.</p>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================== -->
+<!-- II — CASCADA DE RENTABILIDAD COMPLETA -->
+<!-- =============================================== -->
+<section class="section">
+  <div class="sec-num">II · Cascada Consolidada</div>
+  <h2 class="sec-title">De la venta a la utilidad neta</h2>
+  <p class="sec-sub">Recorrido completo del estado de resultados consolidado Q1 2026. Cada línea muestra magnitud absoluta y porcentaje sobre ventas. Identifica las tres brechas principales que separan rentabilidad operacional de utilidad neta.</p>
+
+  <div class="waterfall">
+    <h5>Cascada Q1 2026 · USD acumulado · % sobre ventas</h5>
+    <div class="note">Color: verde = aporte positivo · rojo = consumo · gris = subtotal</div>
+
+    <div class="wf-row total"><div class="lbl">Ventas</div><div class="bar"><div style="width:100%;background:var(--pos)"></div></div><div class="val pos">2.591.229</div></div>
+    <div class="wf-row"><div class="lbl sub">(–) Costo Directo</div><div class="bar"><div style="width:53%;background:var(--crit)"></div></div><div class="val neg">(1.377.341)</div></div>
+    <div class="wf-row subtotal"><div class="lbl">= Margen de Explotación (46,8%)</div><div class="bar"><div style="width:47%;background:var(--pos)"></div></div><div class="val pos">1.213.888</div></div>
+    <div class="wf-row"><div class="lbl sub">(–) Gastos Adm. &amp; Venta</div><div class="bar"><div style="width:29%;background:var(--crit)"></div></div><div class="val neg">(752.421)</div></div>
+    <div class="wf-row subtotal"><div class="lbl">= Adjusted EBITDA (17,8%)</div><div class="bar"><div style="width:17.8%;background:var(--pos)"></div></div><div class="val pos">461.467</div></div>
+    <div class="wf-row"><div class="lbl sub">(–) Gastos Corporativos</div><div class="bar"><div style="width:15%;background:var(--crit)"></div></div><div class="val neg">(387.300)</div></div>
+    <div class="wf-row"><div class="lbl sub">(–) Gastos One-Off</div><div class="bar"><div style="width:2.6%;background:var(--crit)"></div></div><div class="val neg">(68.408)</div></div>
+    <div class="wf-row subtotal"><div class="lbl">= EBITDA Reportado (0,2%)</div><div class="bar"><div style="width:.5%;background:var(--amber)"></div></div><div class="val">5.759</div></div>
+    <div class="wf-row"><div class="lbl sub">(–) Gasto Financiero</div><div class="bar"><div style="width:5.1%;background:var(--crit)"></div></div><div class="val neg">(131.434)</div></div>
+    <div class="wf-row"><div class="lbl sub">(–) Ingr. no Operacionales (neto)</div><div class="bar"><div style="width:3.5%;background:var(--crit)"></div></div><div class="val neg">(89.592)</div></div>
+    <div class="wf-row"><div class="lbl sub">(–) Impuestos</div><div class="bar"><div style="width:1.6%;background:var(--crit)"></div></div><div class="val neg">(40.878)</div></div>
+    <div class="wf-row total"><div class="lbl">= Utilidad (Pérdida) Neta</div><div class="bar"><div style="width:9.9%;background:var(--crit)"></div></div><div class="val neg">(256.145)</div></div>
+  </div>
+
+  <div class="callout">
+    <b>Nota técnica</b><br>
+    La línea <i>"Ingresos no Operacionales"</i> aparece con signo negativo en el EERR. Esto se debe a que el rubro agrupa diferenciales de cambio, ajustes y otros conceptos no recurrentes con saldo neto deudor en Q1. Recomendación: renombrar a <i>"Otros resultados no operacionales (neto)"</i> para evitar ambigüedad ante el directorio.
+  </div>
+</section>
+
+<!-- =============================================== -->
+<!-- III — DESEMPEÑO POR PAÍS -->
+<!-- =============================================== -->
+<section class="section">
+  <div class="sec-num">III · Desempeño por País</div>
+  <h2 class="sec-title">Rentabilidad y resultado por unidad</h2>
+  <p class="sec-sub">Ventas, margen de explotación, Adjusted EBITDA y utilidad neta por cada país de operación. La brecha entre Adjusted EBITDA y EBITDA Reportado refleja la asignación de gastos corporativos (concentrada en Chile).</p>
+
+  <div class="bars">
+    <h5>Margen de Explotación por país</h5>
+    <div class="note">% sobre ventas · Costa Rica lidera con 69,3% · Farmazon en cola con 36,4%</div>
+    <div class="bar-row"><div class="lbl">🇨🇷 Costa Rica</div><div class="track"><div class="fill pos" style="width:99%"></div></div><div class="val pos">69,3%</div></div>
+    <div class="bar-row"><div class="lbl">🇨🇴 Colombia</div><div class="track"><div class="fill pos" style="width:71%"></div></div><div class="val pos">49,8%</div></div>
+    <div class="bar-row"><div class="lbl">📊 Consolidado</div><div class="track"><div class="fill" style="width:67%"></div></div><div class="val">46,8%</div></div>
+    <div class="bar-row"><div class="lbl">🇲🇽 México</div><div class="track"><div class="fill warn" style="width:65%"></div></div><div class="val">46,0%</div></div>
+    <div class="bar-row"><div class="lbl">🇨🇱 Chile</div><div class="track"><div class="fill warn" style="width:57%"></div></div><div class="val">40,3%</div></div>
+    <div class="bar-row"><div class="lbl">💊 Farmazon</div><div class="track"><div class="fill warn" style="width:52%"></div></div><div class="val">36,4%</div></div>
+  </div>
+
+  <div class="bars">
+    <h5>Adjusted EBITDA por país · USD</h5>
+    <div class="note">Sin asignación de corporativos · Costa Rica y Colombia generan caja · México y Farmazon la consumen</div>
+    <div class="bar-row"><div class="lbl">🇨🇴 Colombia</div><div class="track"><div class="fill pos" style="width:90%"></div></div><div class="val pos">225.616</div></div>
+    <div class="bar-row"><div class="lbl">🇨🇱 Chile</div><div class="track"><div class="fill pos" style="width:89%"></div></div><div class="val pos">223.348</div></div>
+    <div class="bar-row"><div class="lbl">🇨🇷 Costa Rica</div><div class="track"><div class="fill pos" style="width:31%"></div></div><div class="val pos">79.350</div></div>
+    <div class="bar-row"><div class="lbl">🇺🇸 USA</div><div class="track"><div class="fill neg" style="width:2%"></div></div><div class="val neg">(4.104)</div></div>
+    <div class="bar-row"><div class="lbl">💊 Farmazon</div><div class="track"><div class="fill neg" style="width:8%"></div></div><div class="val neg">(20.390)</div></div>
+    <div class="bar-row"><div class="lbl">🇲🇽 México</div><div class="track"><div class="fill neg" style="width:17%"></div></div><div class="val neg">(42.353)</div></div>
+  </div>
+
+  <div class="tbl-wrap">
+    <table class="eerr">
+      <thead><tr><th>País</th><th>Ventas USD</th><th>% Total</th><th>Mg. Explot. USD</th><th>Mg. %</th><th>Adj. EBITDA</th><th>EBITDA</th><th>Utilidad Neta</th></tr></thead>
+      <tbody>
+        <tr><td>🇨🇱 Chile</td><td>1.181.458</td><td>45,6%</td><td>476.053</td><td>40,3%</td><td class="pos">223.348</td><td class="neg">(232.360)</td><td class="neg">(438.780)</td></tr>
+        <tr><td>🇨🇴 Colombia</td><td>1.123.017</td><td>43,3%</td><td>558.650</td><td class="pos">49,8%</td><td class="pos">225.616</td><td class="pos">225.616</td><td class="pos">220.021</td></tr>
+        <tr><td>🇨🇷 Costa Rica</td><td>208.990</td><td>8,1%</td><td>144.836</td><td class="pos">69,3%</td><td class="pos">79.350</td><td class="pos">79.350</td><td class="pos">41.404</td></tr>
+        <tr><td>🇲🇽 México</td><td>63.182</td><td>2,4%</td><td>29.038</td><td>46,0%</td><td class="neg">(42.353)</td><td class="neg">(42.353)</td><td class="neg">(45.069)</td></tr>
+        <tr><td>💊 Farmazon</td><td>14.583</td><td>0,6%</td><td>5.310</td><td>36,4%</td><td class="neg">(20.390)</td><td class="neg">(20.390)</td><td class="neg">(20.478)</td></tr>
+        <tr><td>🇺🇸 USA</td><td>0</td><td>—</td><td>0</td><td>—</td><td class="neg">(4.104)</td><td class="neg">(4.104)</td><td class="neg">(13.242)</td></tr>
+        <tr class="tot"><td>Total Consolidado</td><td>2.591.229</td><td>100%</td><td>1.213.888</td><td>46,8%</td><td>461.467</td><td>5.759</td><td class="neg">(256.145)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="country-cards">
+    <div class="cc crit">
+      <div class="flag">🇨🇱</div>
+      <div class="nm">Chile</div>
+      <div class="status">Crítico · Absorbe corp.</div>
+      <div class="row"><span class="k">Ventas</span><span class="v">1.181.458</span></div>
+      <div class="row"><span class="k">Mg. Explotación</span><span class="v">40,3%</span></div>
+      <div class="row"><span class="k">Adj. EBITDA</span><span class="v pos">223.348</span></div>
+      <div class="row"><span class="k">Corporativos</span><span class="v neg">(387.300)</span></div>
+      <div class="row"><span class="k">One-off</span><span class="v neg">(68.408)</span></div>
+      <div class="row"><span class="k">Gasto financiero</span><span class="v neg">(104.280)</span></div>
+      <div class="row"><span class="k">Utilidad Neta</span><span class="v neg">(438.780)</span></div>
+      <div class="takeaway">Operación sana en margen, pero absorbe el 100% de los gastos corporativos del grupo y el grueso del gasto financiero.</div>
+    </div>
+    <div class="cc pos">
+      <div class="flag">🇨🇴</div>
+      <div class="nm">Colombia</div>
+      <div class="status">Estrella · Mayor margen $</div>
+      <div class="row"><span class="k">Ventas</span><span class="v">1.123.017</span></div>
+      <div class="row"><span class="k">Mg. Explotación</span><span class="v pos">49,8%</span></div>
+      <div class="row"><span class="k">Adj. EBITDA</span><span class="v pos">225.616</span></div>
+      <div class="row"><span class="k">Comisiones venta</span><span class="v neg">(255.253)</span></div>
+      <div class="row"><span class="k">Utilidad Neta</span><span class="v pos">220.021</span></div>
+      <div class="takeaway">El motor de utilidad del grupo. Comisiones representan 22,7% de ventas — modelo de canal, no directo. Revisar sostenibilidad.</div>
+    </div>
+    <div class="cc pos">
+      <div class="flag">🇨🇷</div>
+      <div class="nm">Costa Rica</div>
+      <div class="status">Joint Venture · 25% Docwell</div>
+      <div class="row"><span class="k">Ventas</span><span class="v">208.990</span></div>
+      <div class="row"><span class="k">Mg. Explotación</span><span class="v pos">69,3%</span></div>
+      <div class="row"><span class="k">Adj. EBITDA</span><span class="v pos">79.350</span></div>
+      <div class="row"><span class="k">Impuestos</span><span class="v neg">(22.102)</span></div>
+      <div class="row"><span class="k">Utilidad Neta</span><span class="v pos">41.404</span></div>
+      <div class="takeaway">Mejor margen del grupo. 51% de ventas son Laboratorios Farmacéuticos. Validar consolidación al 100% vs. participación efectiva (25% Docwell).</div>
+    </div>
+    <div class="cc warn">
+      <div class="flag">🇲🇽</div>
+      <div class="nm">México</div>
+      <div class="status">Deficitario · Sub-escala</div>
+      <div class="row"><span class="k">Ventas</span><span class="v">63.182</span></div>
+      <div class="row"><span class="k">Mg. Explotación</span><span class="v">46,0%</span></div>
+      <div class="row"><span class="k">GxAyV</span><span class="v neg">(71.391)</span></div>
+      <div class="row"><span class="k">Adj. EBITDA</span><span class="v neg">(42.353)</span></div>
+      <div class="row"><span class="k">Utilidad Neta</span><span class="v neg">(45.069)</span></div>
+      <div class="takeaway">Margen sano pero gastos fijos (~USD 24K/mes) superan ingresos. Necesita ~USD 155K en ventas mensuales para break-even al margen actual.</div>
+    </div>
+    <div class="cc warn">
+      <div class="flag">💊</div>
+      <div class="nm">Farmazon</div>
+      <div class="status">Deficitario · 100% B2C</div>
+      <div class="row"><span class="k">Ventas</span><span class="v">14.583</span></div>
+      <div class="row"><span class="k">Mg. Explotación</span><span class="v">36,4%</span></div>
+      <div class="row"><span class="k">Remuneraciones</span><span class="v neg">(14.402)</span></div>
+      <div class="row"><span class="k">Adj. EBITDA</span><span class="v neg">(20.390)</span></div>
+      <div class="row"><span class="k">Utilidad Neta</span><span class="v neg">(20.478)</span></div>
+      <div class="takeaway">E-commerce 100% B2C. Reporta cero gasto en TI y Comercial — probable subsidio implícito desde Chile no asignado.</div>
+    </div>
+    <div class="cc warn">
+      <div class="flag">🇺🇸</div>
+      <div class="nm">USA</div>
+      <div class="status">Sin actividad comercial</div>
+      <div class="row"><span class="k">Ventas</span><span class="v">0</span></div>
+      <div class="row"><span class="k">GxAyV</span><span class="v neg">(4.104)</span></div>
+      <div class="row"><span class="k">Gasto financiero</span><span class="v neg">(5.858)</span></div>
+      <div class="row"><span class="k">Impuestos</span><span class="v neg">(3.280)</span></div>
+      <div class="row"><span class="k">Utilidad Neta</span><span class="v neg">(13.242)</span></div>
+      <div class="takeaway">Vehículo aún sin activación comercial. Genera costos estructurales mínimos. Requiere cronograma de activación o cierre.</div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================== -->
+<!-- IV — EERR MENSUAL CONSOLIDADO COMPLETO -->
+<!-- =============================================== -->
+<section class="section">
+  <div class="sec-num">IV · Estado de Resultados</div>
+  <h2 class="sec-title">EERR consolidado mensual</h2>
+  <p class="sec-sub">Desglose completo enero–marzo 2026 desde ventas hasta utilidad neta, incluyendo apertura por segmento de cliente y por naturaleza de costo. Valores en USD.</p>
+
+  <div class="tbl-wrap">
+    <table class="eerr">
+      <thead><tr><th>Concepto (USD)</th><th>Enero</th><th>Febrero</th><th>Marzo</th><th>Total Q1</th><th>% Ventas</th></tr></thead>
+      <tbody>
+        <tr class="tot"><td>Ventas</td><td>848.154</td><td>827.666</td><td>915.409</td><td>2.591.229</td><td>100,0%</td></tr>
+        <tr class="sub"><td>Aseguradoras y Corredores</td><td>327.195</td><td>305.876</td><td>302.937</td><td>936.008</td><td>36,1%</td></tr>
+        <tr class="sub"><td>Isapres</td><td>392.295</td><td>395.465</td><td>414.857</td><td>1.202.617</td><td>46,4%</td></tr>
+        <tr class="sub"><td>Agregadores</td><td>19.015</td><td>21.348</td><td>17.443</td><td>57.806</td><td>2,2%</td></tr>
+        <tr class="sub"><td>Empleadores</td><td>42.656</td><td>36.430</td><td>110.129</td><td>189.215</td><td>7,3%</td></tr>
+        <tr class="sub"><td>B2C</td><td>22.551</td><td>22.113</td><td>23.811</td><td>68.475</td><td>2,6%</td></tr>
+        <tr class="sub"><td>Incumbentes salud</td><td>10.547</td><td>9.931</td><td>9.073</td><td>29.551</td><td>1,1%</td></tr>
+        <tr class="sub"><td>Laboratorios farmacéuticos</td><td>33.896</td><td>36.503</td><td>37.158</td><td>107.557</td><td>4,2%</td></tr>
+
+        <tr class="neg"><td>Costo Directo</td><td>(512.921)</td><td>(410.931)</td><td>(453.489)</td><td>(1.377.341)</td><td>-53,2%</td></tr>
+        <tr class="sub"><td>Equipo Médico</td><td>(211.104)</td><td>(213.631)</td><td>(232.962)</td><td>(657.697)</td><td>-25,4%</td></tr>
+        <tr class="sub"><td>Contraloría médica</td><td>(61.626)</td><td>(53.002)</td><td>(61.403)</td><td>(176.031)</td><td>-6,8%</td></tr>
+        <tr class="sub"><td>Laboratorios y Farmacias</td><td>(14.383)</td><td>(12.882)</td><td>(12.668)</td><td>(39.933)</td><td>-1,5%</td></tr>
+        <tr class="sub"><td>Comisiones de ventas</td><td>(71.229)</td><td>(95.774)</td><td>(92.022)</td><td>(259.024)</td><td>-10,0%</td></tr>
+        <tr class="sub"><td>Otros costos directos</td><td>(154.580)</td><td>(35.642)</td><td>(54.434)</td><td>(244.657)</td><td>-9,4%</td></tr>
+
+        <tr class="mar"><td>= Margen de Explotación</td><td>335.233</td><td>416.735</td><td>461.920</td><td>1.213.888</td><td>46,8%</td></tr>
+        <tr class="mar"><td>Margen %</td><td>39,5%</td><td>50,4%</td><td>50,5%</td><td>46,8%</td><td>—</td></tr>
+
+        <tr><td>Gastos Adm. &amp; Venta</td><td>(241.908)</td><td>(240.222)</td><td>(270.291)</td><td>(752.421)</td><td>-29,0%</td></tr>
+        <tr class="sub"><td>Remuneraciones backoffice</td><td>(172.103)</td><td>(175.259)</td><td>(191.837)</td><td>(539.199)</td><td>-20,8%</td></tr>
+        <tr class="sub"><td>Otros Gastos Administración</td><td>(69.805)</td><td>(64.963)</td><td>(78.455)</td><td>(213.223)</td><td>-8,2%</td></tr>
+
+        <tr class="ebitda"><td>= Adjusted EBITDA</td><td>93.325</td><td>176.514</td><td>191.629</td><td>461.467</td><td>17,8%</td></tr>
+        <tr><td>Gastos Corporativos <span class="flag r">100% Chile</span></td><td>(113.075)</td><td>(140.944)</td><td>(133.281)</td><td>(387.300)</td><td>-14,9%</td></tr>
+        <tr><td>Gastos One-Off <span class="flag r">+790%</span></td><td>(4.820)</td><td>(20.624)</td><td>(42.964)</td><td>(68.408)</td><td>-2,6%</td></tr>
+        <tr class="ebitda"><td>= EBITDA Reportado</td><td class="neg">(24.570)</td><td>14.946</td><td>15.383</td><td>5.759</td><td>0,2%</td></tr>
+        <tr><td>Otros res. no operacionales (neto)</td><td>(23.090)</td><td>(30.430)</td><td>(36.072)</td><td>(89.592)</td><td>-3,5%</td></tr>
+        <tr><td>Gasto Financiero <span class="flag r">79% Chile</span></td><td>(45.539)</td><td>(48.245)</td><td>(37.651)</td><td>(131.434)</td><td>-5,1%</td></tr>
+        <tr><td>Impuestos</td><td>(6.267)</td><td>(19.726)</td><td>(14.885)</td><td>(40.878)</td><td>-1,6%</td></tr>
+        <tr class="tot neg"><td>Utilidad (Pérdida) Neta</td><td>(99.465)</td><td>(83.455)</td><td>(73.225)</td><td>(256.145)</td><td>-9,9%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout crit">
+    <b>Lectura financiera · cuidado con la narrativa</b><br>
+    A nivel consolidado, el margen pasa de 39,5% (Ene) a 50,5% (Mar) — aparente mejora estructural. <b>Sin embargo, al desagregar por país solo Colombia mejora</b> (33,3% → 59,3%). Chile baja (40,3% → 38,3%), México baja (45,7% → 44,1%) y Costa Rica baja levemente (68,9% → 67,9%). El salto de Colombia se explica por el cargo extraordinario de "Otros costos directos" enero (USD 130K en una sola línea). Sin ese gasto puntual, los tres meses de Colombia habrían tenido márgenes similares y el consolidado no mostraría tendencia ascendente. <b>Conclusión:</b> el "margen mejorando" no es una mejora operacional del grupo, es la normalización de Colombia tras un cierre contable de enero. Ver Nodo Crítico 01 y 02.
+  </div>
+</section>
+
+<!-- =============================================== -->
+<!-- V — COMPOSICIÓN COSTO DIRECTO Y GxAyV -->
+<!-- =============================================== -->
+<section class="section">
+  <div class="sec-num">V · Estructura de Costos</div>
+  <h2 class="sec-title">Composición del costo directo y de los gastos operacionales</h2>
+  <p class="sec-sub">Desagregación del Costo Directo (USD 1,38M, 53,2% s/ventas) y de los Gastos de Administración y Venta (USD 752K, 29,0% s/ventas). Identifica concentraciones y oportunidades de eficiencia.</p>
+
+  <div class="dual">
+    <div class="bars" style="margin-top:0">
+      <h5>Costo Directo · Q1 2026</h5>
+      <div class="note">USD 1,38M · 53,2% s/ventas</div>
+      <div class="bar-row"><div class="lbl">Equipo Médico</div><div class="track"><div class="fill" style="width:100%"></div></div><div class="val">657.697</div></div>
+      <div class="bar-row"><div class="lbl">Comisiones ventas</div><div class="track"><div class="fill" style="width:39%"></div></div><div class="val">259.024</div></div>
+      <div class="bar-row"><div class="lbl">Otros costos directos</div><div class="track"><div class="fill" style="width:37%"></div></div><div class="val">244.657</div></div>
+      <div class="bar-row"><div class="lbl">Contraloría médica</div><div class="track"><div class="fill" style="width:27%"></div></div><div class="val">176.031</div></div>
+      <div class="bar-row"><div class="lbl">Lab. y Farmacias</div><div class="track"><div class="fill" style="width:6%"></div></div><div class="val">39.933</div></div>
+    </div>
+
+    <div class="bars" style="margin-top:0">
+      <h5>Gastos Adm. &amp; Venta · Q1 2026</h5>
+      <div class="note">USD 752K · 29,0% s/ventas</div>
+      <div class="bar-row"><div class="lbl">Remuneraciones backoffice</div><div class="track"><div class="fill" style="width:100%"></div></div><div class="val">539.199</div></div>
+      <div class="bar-row"><div class="lbl">Comercial &amp; Marketing</div><div class="track"><div class="fill" style="width:56%"></div></div><div class="val">299.525</div></div>
+      <div class="bar-row"><div class="lbl">Adm., Finanzas y RRHH</div><div class="track"><div class="fill" style="width:34%"></div></div><div class="val">180.858</div></div>
+      <div class="bar-row"><div class="lbl">Operaciones &amp; Eq. Médico</div><div class="track"><div class="fill" style="width:32%"></div></div><div class="val">172.622</div></div>
+      <div class="bar-row"><div class="lbl">TI</div><div class="track"><div class="fill" style="width:18%"></div></div><div class="val">99.416</div></div>
+    </div>
+  </div>
+
+  <div class="callout crit">
+    <b>Hallazgo · Concentración en Comisiones Colombia</b><br>
+    Las Comisiones de venta consolidadas (USD 259K) provienen casi en su totalidad de Colombia (USD 255K, 99% del rubro), que representan el 22,7% de las ventas Colombia. Chile aporta solo USD 3,6K (0,3% de sus ventas). Esto indica modelos comerciales fundamentalmente distintos: <b>Colombia opera por canal con comisionistas externos; Chile opera con fuerza directa interna</b>. La diferencia exige clarificar la sustentabilidad del modelo colombiano y su impacto en margen unitario.
+  </div>
+
+  <div class="callout">
+    <b>Hallazgo · Comercial &amp; Marketing como % de ventas</b><br>
+    El gasto consolidado en Comercial &amp; Marketing (USD 300K) representa 11,6% de las ventas. En México alcanza 75,7% (USD 48K sobre USD 63K en ventas) — confirmando que la unidad está en fase de inversión comercial para escalar, no de cosecha. Chile: 7,7%. Colombia: 12,4%.
+  </div>
+</section>
+
+<!-- =============================================== -->
+<!-- VI — MIX POR SEGMENTO Y CONCENTRACIÓN -->
+<!-- =============================================== -->
+<section class="section">
+  <div class="sec-num">VI · Composición por Segmento</div>
+  <h2 class="sec-title">Ingresos por tipo de cliente</h2>
+  <p class="sec-sub">Concentración de ingresos por segmento. Isapres representa el 46,4% del consolidado y es exclusivo de Chile. Aseguradoras y Corredores es el segundo motor con 36,1%.</p>
+
+  <div class="bars">
+    <h5>Mix de ingresos por segmento · Q1 2026</h5>
+    <div class="note">USD 2,59M total · top-2 segmentos concentran 82,5%</div>
+    <div class="bar-row"><div class="lbl">Isapres</div><div class="track"><div class="fill" style="width:100%"></div></div><div class="val">1.202.617 · 46,4%</div></div>
+    <div class="bar-row"><div class="lbl">Aseguradoras y Corredores</div><div class="track"><div class="fill" style="width:78%"></div></div><div class="val">936.008 · 36,1%</div></div>
+    <div class="bar-row"><div class="lbl">Empleadores</div><div class="track"><div class="fill" style="width:16%"></div></div><div class="val">189.215 · 7,3%</div></div>
+    <div class="bar-row"><div class="lbl">Laboratorios farmacéuticos</div><div class="track"><div class="fill" style="width:9%"></div></div><div class="val">107.557 · 4,2%</div></div>
+    <div class="bar-row"><div class="lbl">B2C</div><div class="track"><div class="fill" style="width:6%"></div></div><div class="val">68.475 · 2,6%</div></div>
+    <div class="bar-row"><div class="lbl">Agregadores</div><div class="track"><div class="fill" style="width:5%"></div></div><div class="val">57.806 · 2,2%</div></div>
+    <div class="bar-row"><div class="lbl">Incumbentes salud</div><div class="track"><div class="fill" style="width:3%"></div></div><div class="val">29.551 · 1,1%</div></div>
+  </div>
+
+  <div class="bars">
+    <h5>Concentración geográfica · Q1 2026</h5>
+    <div class="note">Chile + Colombia = 88,9% de las ventas consolidadas</div>
+    <div class="bar-row"><div class="lbl">🇨🇱 Chile</div><div class="track"><div class="fill" style="width:100%"></div></div><div class="val">45,6%</div></div>
+    <div class="bar-row"><div class="lbl">🇨🇴 Colombia</div><div class="track"><div class="fill" style="width:95%"></div></div><div class="val">43,3%</div></div>
+    <div class="bar-row"><div class="lbl">🇨🇷 Costa Rica</div><div class="track"><div class="fill" style="width:18%"></div></div><div class="val">8,1%</div></div>
+    <div class="bar-row"><div class="lbl">🇲🇽 México</div><div class="track"><div class="fill" style="width:5%"></div></div><div class="val">2,4%</div></div>
+    <div class="bar-row"><div class="lbl">💊 Farmazon</div><div class="track"><div class="fill" style="width:1%"></div></div><div class="val">0,6%</div></div>
+    <div class="bar-row"><div class="lbl">🇺🇸 USA</div><div class="track"><div class="fill" style="width:0%"></div></div><div class="val">0,0%</div></div>
+  </div>
+
+  <div class="callout crit">
+    <b>Riesgo de concentración doble</b><br>
+    Dos concentraciones se superponen: <b>geográfica</b> (Chile 45,6%) y <b>por segmento</b> (Isapres 46,4%, todas en Chile). Una contracción del segmento Isapres del 20% reduciría los ingresos consolidados en ~9,3% (USD 240K en Q1), llevando el Adjusted EBITDA cerca del punto de equilibrio y la utilidad neta a una pérdida superior a USD 400K trimestrales.
+  </div>
+</section>
+
+<!-- =============================================== -->
+<!-- VII — NODOS CRÍTICOS -->
+<!-- =============================================== -->
+<section class="section">
+  <div class="sec-num">VII · Nodos Críticos</div>
+  <h2 class="sec-title">Hallazgos no visibles a primera lectura</h2>
+  <p class="sec-sub">Cada nodo es un patrón que solo aparece cruzando hojas y desagregando rubros. Son las preguntas que un financiero entrenado haría — y que probablemente el CEO ya tiene en la cabeza. Se ordenan por impacto material y urgencia de decisión.</p>
+
+  <div class="nodes">
+
+    <div class="node-group-label">→ <span>Bloque A · Hallazgos NO visibles a primera lectura</span> · requieren cruzar hojas y desagregar rubros</div>
+
+    <!-- ========== HALLAZGOS NO VISIBLES (los nuevos) ========== -->
+
+    <div class="node crit">
+      <div class="idx">01</div>
+      <div class="body">
+        <div class="pill">Oculto · Crítico</div>
+        <h3>La mejora del margen consolidado Ene→Mar es ilusoria — todo el efecto viene de Colombia</h3>
+        <p>El consolidado muestra margen de explotación subiendo de 39,5% (Ene) a 50,5% (Mar), aparentando una mejora estructural. Cruzando por país, el cuadro real es distinto: Colombia salta de 33,3% a 59,3% (+26 pp), Chile baja de 40,3% a 38,3% (-2 pp), México baja de 45,7% a 44,1%, Costa Rica baja de 68,9% a 67,9%. <b>Solo Colombia mejora; el resto se deteriora.</b> La narrativa de "margen mejorando" no se sostiene a nivel de cada operación.</p>
+        <p><b>¿Por qué importa?</b> Si el CEO presenta al directorio "mejoramos el margen 11 puntos en el trimestre", la afirmación es contablemente correcta pero gerencialmente engañosa. La verdadera pregunta es qué pasó en Colombia en febrero y si es sostenible.</p>
+        <div class="ask"><b>Decisión solicitada</b>Solicitar explicación de gerencia Colombia sobre el salto de margen Ene→Feb (+22 pp) y validar si el nivel de 59% es sostenible o un efecto transitorio.</div>
+      </div>
+      <div class="stat">
+        <div class="big">+26 pp</div>
+        <div class="desc">salto margen Colombia Ene→Mar · resto del grupo se deteriora</div>
+      </div>
+    </div>
+
+    <div class="node crit">
+      <div class="idx">02</div>
+      <div class="body">
+        <div class="pill">Oculto · Crítico</div>
+        <h3>Colombia enero tuvo USD 130K de "Otros costos directos" — 6,4x el promedio del trimestre</h3>
+        <p>El rubro "Otros costos directos" de Colombia muestra: Enero USD 130.028 · Febrero USD 10.210 · Marzo USD 29.757. Enero concentra el 76% del trimestre en una línea sin desglose visible. <b>Sin ese gasto extraordinario, el Adjusted EBITDA de Colombia en enero habría sido cerca de +USD 150K en lugar de +USD 20K</b>, y el margen del 33,3% se habría parecido al 55-59% de febrero-marzo. Esto explica directamente el "salto de margen" del hallazgo 01.</p>
+        <p><b>¿Por qué importa?</b> Es un rubro de "otros" sin trazabilidad. Puede ser una provisión inicial, un cierre contable de 2025 traspasado, o un cargo mal clasificado. En cualquier caso, distorsiona la lectura del Q1 completo.</p>
+        <div class="ask"><b>Decisión solicitada</b>Apertura detallada del rubro "Otros costos directos" de Colombia enero. Reclasificación a período correcto si corresponde.</div>
+      </div>
+      <div class="stat">
+        <div class="big neg">USD 130K</div>
+        <div class="desc">en una sola línea sin desglose · 6,4x el promedio Feb-Mar</div>
+      </div>
+    </div>
+
+    <div class="node crit">
+      <div class="idx">03</div>
+      <div class="body">
+        <div class="pill">Oculto · Crítico</div>
+        <h3>Contraloría médica USD 176K es 100% Chile — ningún otro país carga este servicio</h3>
+        <p>La línea "Contraloría médica" del costo directo (USD 176K en Q1) aparece exclusivamente en Chile, donde representa el 14,9% del costo directo local. Ningún otro país de operación reporta esta función. Hay dos hipótesis: (a) la función se presta solo en Chile y no es un servicio compartido, o (b) es un servicio compartido del grupo que se factura solo a Chile sin redistribución. <b>Si fuese servicio compartido y se prorrateara por ventas, Colombia debería absorber ~USD 84K más, mejorando artificialmente el resultado de Chile.</b></p>
+        <p><b>¿Por qué importa?</b> Es exactamente el mismo problema que los gastos corporativos, pero a nivel de costo directo — más invisible y más difícil de discutir. Si está mal asignado, Chile aparece peor de lo que es y Colombia mejor.</p>
+        <div class="ask"><b>Decisión solicitada</b>Aclarar naturaleza de Contraloría médica: ¿función local o servicio compartido? Si compartido, política de cargo a las operaciones que lo usan.</div>
+      </div>
+      <div class="stat">
+        <div class="big">100%</div>
+        <div class="desc">en Chile · USD 176K · 14,9% del costo directo local</div>
+      </div>
+    </div>
+
+    <div class="node crit">
+      <div class="idx">04</div>
+      <div class="body">
+        <div class="pill">Oculto · Crítico</div>
+        <h3>El salto de Empleadores en marzo (+202%) viene de una sola operación en Colombia</h3>
+        <p>Ventas de "Empleadores" consolidadas: Enero USD 42.656 · Febrero USD 36.430 · <b>Marzo USD 110.129 (×3,0)</b>. El salto está concentrado en Colombia, que pasó de USD 12.147 (Feb) a USD 86.673 (Mar), un crecimiento de 7,1x. Chile y Costa Rica no muestran movimiento similar. El patrón es típico de: (a) un contrato corporativo grande activado en marzo, (b) facturación retroactiva de un cliente, o (c) reclasificación de otro segmento al cierre del trimestre.</p>
+        <p><b>¿Por qué importa?</b> Si el directorio interpreta esto como "tracción del segmento Empleadores", está leyendo mal. Es muy probable que sea un evento puntual — y la pregunta correcta es si abril ya muestra el patrón normalizado o continúa el nuevo nivel.</p>
+        <div class="ask"><b>Decisión solicitada</b>Identificar el cliente o causa del salto en Colombia Empleadores marzo. Confirmar si es contrato recurrente o evento aislado.</div>
+      </div>
+      <div class="stat">
+        <div class="big">×7,1</div>
+        <div class="desc">crecimiento Empleadores Colombia Feb→Mar · concentrado en marzo</div>
+      </div>
+    </div>
+
+    <div class="node high">
+      <div class="idx">05</div>
+      <div class="body">
+        <div class="pill">Oculto · Alto</div>
+        <h3>"Ingresos no operacionales" Chile suman USD (87K) negativos — el rubro mal nombrado esconde un problema</h3>
+        <p>El rubro etiquetado como "Ingresos no operacionales" en Chile muestra: Enero USD (35.476) · Febrero USD (30.394) · Marzo USD (21.500). <b>Son ingresos con saldo neto deudor de USD 87K en 3 meses</b> — es decir, en realidad son gastos. Posibles componentes: diferencias de cambio negativas (peso chileno se depreció), provisiones de incobrables, multas o ajustes contables. Costa Rica reporta cero en este rubro, México lo tiene mixto, Colombia tiene apenas USD -5K.</p>
+        <p><b>¿Por qué importa?</b> Si la mayor parte es diferencia de cambio por deuda en USD, el problema es financiero estructural (deuda en moneda fuerte con ingresos en peso). Si son provisiones, es deterioro de cartera. La etiqueta esconde el diagnóstico — y hay que abrirla.</p>
+        <div class="ask"><b>Decisión solicitada</b>Desglose por naturaleza del rubro: diferencia de cambio, provisiones, ajustes contables, otros.</div>
+      </div>
+      <div class="stat">
+        <div class="big neg">USD (87K)</div>
+        <div class="desc">negativos en Chile · etiqueta "ingresos" no refleja contenido</div>
+      </div>
+    </div>
+
+    <div class="node high">
+      <div class="idx">06</div>
+      <div class="body">
+        <div class="pill">Oculto · Alto</div>
+        <h3>Costa Rica concentra 51,5% de sus ventas en Laboratorios Farmacéuticos — un segmento exclusivo</h3>
+        <p>De las ventas de Costa Rica (USD 209K), USD 107.557 (51,5%) provienen del segmento "Laboratorios farmacéuticos". <b>Costa Rica es el único país del grupo con ventas materiales en este segmento</b> (Farmazon, México, Chile y Colombia reportan cero). Esto significa que la rentabilidad excepcional de Costa Rica (margen 69,3%, el mejor del grupo) depende estructuralmente de uno o pocos contratos con laboratorios — concentración de cliente sobre concentración de segmento sobre concentración geográfica.</p>
+        <p><b>¿Por qué importa?</b> Costa Rica se presenta como la operación más rentable del grupo, pero la calidad de esa rentabilidad depende de no perder un contrato. La pérdida del cliente principal podría reducir las ventas locales en más del 50%.</p>
+        <div class="ask"><b>Decisión solicitada</b>Identificar cuántos clientes componen el segmento Labs en Costa Rica. Si son menos de 3, evaluar riesgo de cliente único.</div>
+      </div>
+      <div class="stat">
+        <div class="big">51,5%</div>
+        <div class="desc">ventas Costa Rica en Labs · único país con este segmento</div>
+      </div>
+    </div>
+
+    <!-- ========== HALLAZGOS YA EVIDENTES (los originales reordenados) ========== -->
+
+    <div class="node-group-label">→ <span>Bloque B · Hallazgos evidentes en la primera lectura</span> · ya conocidos por el directorio, requieren decisión</div>
+
+    <div class="node high">
+      <div class="idx">07</div>
+      <div class="body">
+        <div class="pill">Evidente · Alto</div>
+        <h3>Gastos corporativos cargados 100% a Chile · USD 387K en Q1</h3>
+        <p>Los gastos corporativos centralizados (USD 387K) se asignan en su totalidad a Chile. Esto convierte una operación con Adjusted EBITDA positivo de USD 223K en una entidad con EBITDA de USD (232K). El criterio actual distorsiona la rentabilidad real por país y compromete la utilidad consolidada en USD (256K).</p>
+        <div class="ask"><b>Decisión solicitada</b>Metodología de distribución (por ventas, por headcount, por cost-pool) con simulación retroactiva Q1 2026.</div>
+      </div>
+      <div class="stat">
+        <div class="big neg">USD 387K</div>
+        <div class="desc">en Chile · 84% del Adj. EBITDA consolidado</div>
+      </div>
+    </div>
+
+    <div class="node high">
+      <div class="idx">08</div>
+      <div class="body">
+        <div class="pill">Evidente · Alto</div>
+        <h3>México y Farmazon · EBITDA negativo tres meses seguidos</h3>
+        <p>México: Adj. EBITDA USD (42K) sobre ventas de USD 63K. Para break-even a margen 46% requeriría triplicar ventas a ~USD 155K/mes. Farmazon: USD (20K) con margen insuficiente (36,4%) y cero gasto reportado en TI ni Marketing — probable subsidio implícito desde Chile.</p>
+        <div class="ask"><b>Decisión solicitada</b>Plan de viabilidad antes del 30 de junio con break-even, capital requerido, KPI gatillo y criterio de cierre.</div>
+      </div>
+      <div class="stat">
+        <div class="big neg">USD (62K)</div>
+        <div class="desc">Adj. EBITDA combinado · 3 meses consecutivos</div>
+      </div>
+    </div>
+
+    <div class="node high">
+      <div class="idx">09</div>
+      <div class="body">
+        <div class="pill">Evidente · Alto</div>
+        <h3>Concentración doble: 46,4% en Isapres y todas en Chile</h3>
+        <p>Las Isapres generan 46,4% de los ingresos consolidados, exclusivamente en Chile. La Ley Corta de Isapres (2023) impuso devolución de cobros en exceso y los procesos de solvencia siguen abiertos. Un shock de -20% en este segmento implicaría USD 240K menos en ventas trimestrales y arrastraría la utilidad neta bajo USD (400K).</p>
+        <div class="ask"><b>Decisión solicitada</b>Análisis de sensibilidad (-10%/-20%/-30%) y plan de diversificación con metas de mix por segmento para H2 2026.</div>
+      </div>
+      <div class="stat">
+        <div class="big">46,4%</div>
+        <div class="desc">Isapres · exclusivo Chile · regulado</div>
+      </div>
+    </div>
+
+    <div class="node high">
+      <div class="idx">10</div>
+      <div class="body">
+        <div class="pill">Evidente · Alto</div>
+        <h3>Modelos comerciales asimétricos · Colombia 22,7% vs Chile 0,3% en comisiones</h3>
+        <p>Comisiones de Venta en Colombia: USD 255K (22,7% de sus ventas). En Chile: apenas USD 3,6K (0,3%). La "estrella" del grupo (Colombia, Mg. 49,8%) depende estructuralmente de un canal de comisionistas externos. La pregunta abierta es la concentración de canal y la sostenibilidad de la tarifa.</p>
+        <div class="ask"><b>Decisión solicitada</b>Informe comercial Colombia: top-5 brokers, tarifa promedio, contrato vigente y plan de retención/diversificación.</div>
+      </div>
+      <div class="stat">
+        <div class="big">22,7%</div>
+        <div class="desc">comisiones s/ventas Colombia · vs 0,3% Chile</div>
+      </div>
+    </div>
+
+    <div class="node med">
+      <div class="idx">11</div>
+      <div class="body">
+        <div class="pill">Evidente · Medio</div>
+        <h3>One-off crecientes · +790% Ene→Mar</h3>
+        <p>Los gastos one-off aumentaron de USD 4.820 (Ene) a USD 42.964 (Mar). Si la tendencia se mantiene, el rubro llegaría a USD 270-340K en el año, cuestionando su carácter "no recurrente" y obligando a reclasificarlo a gastos operacionales — afectando el Adjusted EBITDA reportado.</p>
+        <div class="ask"><b>Decisión solicitada</b>Desglose por concepto y fecha, con clasificación de recurrencia y proyección Q2.</div>
+      </div>
+      <div class="stat">
+        <div class="big neg">+790%</div>
+        <div class="desc">Ene→Mar · USD 68K Q1</div>
+      </div>
+    </div>
+
+    <div class="node med">
+      <div class="idx">12</div>
+      <div class="body">
+        <div class="pill">Evidente · Medio</div>
+        <h3>Costa Rica · Tratamiento contable del JV (25% Docwell)</h3>
+        <p>Costa Rica reporta utilidad neta de USD 41K consolidada al 100%, pero el grupo posee 75% (Docwell 25%). Adicionalmente, la tasa de impuesto efectiva sobre EBITDA (28%) sugiere base imponible local distinta a la contable. Requiere validación de tratamiento contable y registro de interés minoritario.</p>
+        <div class="ask"><b>Decisión solicitada</b>Confirmación del criterio de consolidación e interés minoritario (~USD 10K en Q1 si proporcional).</div>
+      </div>
+      <div class="stat">
+        <div class="big">25%</div>
+        <div class="desc">Docwell · USD ~10K minoritarios</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- =============================================== -->
+<!-- VIII — PREGUNTAS AL DIRECTORIO -->
+<!-- =============================================== -->
+<section class="section">
+  <div class="sec-num">VIII · Preguntas al Directorio</div>
+  <h2 class="sec-title">Decisiones explícitas requeridas</h2>
+  <p class="sec-sub">Siete preguntas diseñadas para provocar decisiones concretas. Cada una requiere respuesta explícita.</p>
+
+  <div class="qa">
+    <div class="q">
+      <div class="n">01</div>
+      <div class="t">Modelo de costos corporativos</div>
+      <div class="d">¿Instruye el directorio redistribuir los gastos corporativos entre todos los países? ¿Qué metodología aprueba: por ventas, por headcount, por cost-pool, u otra? Sin una respuesta, Chile seguirá reportando pérdidas artificialmente infladas.</div>
+      <div class="ex">Decisión esperada</div>
+      <div class="er">Metodología y fecha de implementación retroactiva o prospectiva.</div>
+    </div>
+    <div class="q">
+      <div class="n">02</div>
+      <div class="t">Umbral de viabilidad México y Farmazon</div>
+      <div class="d">¿Cuál es el plazo y la pérdida acumulada máxima que el directorio está dispuesto a sostener en estas unidades? ¿Cuál es el KPI gatillo que activa una revisión estratégica de cierre?</div>
+      <div class="ex">Decisión esperada</div>
+      <div class="er">Umbral monetario y temporal con criterio explícito de salida.</div>
+    </div>
+    <div class="q">
+      <div class="n">03</div>
+      <div class="t">Stress test Isapres</div>
+      <div class="d">¿Ha evaluado el directorio el impacto de una reducción del 20–30% en ingresos de Isapres sobre la utilidad consolidada? ¿Existe un plan de contingencia ante shocks regulatorios o de solvencia de aseguradoras?</div>
+      <div class="ex">Decisión esperada</div>
+      <div class="er">Mandato de análisis de sensibilidad y plan de mitigación para H2 2026.</div>
+    </div>
+    <div class="q">
+      <div class="n">04</div>
+      <div class="t">Modelo comercial Colombia</div>
+      <div class="d">Colombia depende de comisiones a canal por 22,7% de sus ventas (vs. 0,3% en Chile). ¿Está concentrado el canal en pocos brokers? ¿Qué exposición existe a renegociación o salida de un broker mayor?</div>
+      <div class="ex">Decisión esperada</div>
+      <div class="er">Mandato de informe de concentración de canal y plan de retención.</div>
+    </div>
+    <div class="q">
+      <div class="n">05</div>
+      <div class="t">Estatus USA</div>
+      <div class="d">USA reporta cero ventas y pérdida neta de USD (13K) en Q1 (USD 4K admin + USD 6K financiero + USD 3K impuestos). ¿Cuál es el estatus actual de esta operación, el capital comprometido y la fecha objetivo de activación comercial?</div>
+      <div class="ex">Decisión esperada</div>
+      <div class="er">Informe de estatus con cronograma de activación o de cierre formal.</div>
+    </div>
+    <div class="q">
+      <div class="n">06</div>
+      <div class="t">Gastos One-Off crecientes</div>
+      <div class="d">Aumentaron de USD 4.820 (Ene) a USD 42.964 (Mar), +790%. ¿Qué los compone? ¿Son realmente no recurrentes o deben reclasificarse como operacionales? Su tratamiento afecta directamente el Adjusted EBITDA reportado.</div>
+      <div class="ex">Decisión esperada</div>
+      <div class="er">Desglose detallado con clasificación auditable de recurrencia.</div>
+    </div>
+    <div class="q">
+      <div class="n">07</div>
+      <div class="t">Joint Venture Costa Rica</div>
+      <div class="d">Costa Rica opera bajo JV con 25% Docwell. ¿Están correctamente reconocidos los resultados consolidados versus la participación proporcional efectiva del grupo? ¿Hay interés minoritario registrado por ~USD 10K en Q1?</div>
+      <div class="ex">Decisión esperada</div>
+      <div class="er">Confirmación contable y monto de interés minoritario.</div>
+    </div>
+    <div class="q">
+      <div class="n">08</div>
+      <div class="t">Gasto financiero estructural</div>
+      <div class="d">El gasto financiero consolidado alcanza USD 131K en Q1 (5,1% s/ventas), del cual USD 104K (79%) corresponde a Chile. Esto es 23x el EBITDA reportado. ¿Cuál es la composición de la deuda local Chile, qué porción es estructural y qué porción es capital de trabajo?</div>
+      <div class="ex">Decisión esperada</div>
+      <div class="er">Detalle de deuda por instrumento, vencimientos y plan de refinanciamiento.</div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================== -->
+<!-- IX — CHEAT SHEET / TALKING POINTS -->
+<!-- =============================================== -->
+<section class="section">
+  <div class="sec-num">IX · Talking Points</div>
+  <h2 class="sec-title">Cifras de memoria para la reunión</h2>
+  <p class="sec-sub">Resumen ejecutivo de los números que el CEO probablemente preguntará. Memorizar magnitudes y porcentajes clave.</p>
+
+  <div class="talk">
+    <h4>Las cifras que debes tener en la punta de la lengua</h4>
+    <ul>
+      <li><b>Margen "mejora" Ene→Mar es ilusoria</b>Subió 39,5% → 50,5% solo porque Colombia saltó <em>33% → 59%</em>. Chile bajó 40% → 38%. <b>Solo Colombia mejora.</b></li>
+      <li><b>El gatillo del salto Colombia</b>"Otros costos directos" enero: USD <em>130K</em> en una línea (vs. USD 10-30K Feb-Mar). Sin ese cargo, enero habría sido un mes normal.</li>
+      <li><b>Contraloría médica</b>USD <em>176K</em> · 100% en Chile · ningún otro país. Si fuera servicio compartido prorrateado, Colombia debería absorber ~USD 84K más.</li>
+      <li><b>Empleadores marzo</b>Salto a USD <em>110K</em> consolidado (×3 vs Feb). Todo viene de Colombia: <em>×7,1</em> en un mes. Probable contrato puntual, no tracción.</li>
+      <li><b>"Ingresos no operacionales" Chile</b>USD <em>(87K)</em> negativos en 3 meses. Mal nombrado. Probable diferencia de cambio o provisiones.</li>
+      <li><b>Costa Rica labs farmacéuticos</b><em>51,5%</em> de sus ventas · único país con este segmento · riesgo de cliente único.</li>
+      <li><b>Ventas Q1</b>Consolidado <em>USD 2,59M</em> · Chile 45,6% · Colombia 43,3% · Costa Rica 8,1% · México 2,4% · Farmazon 0,6%</li>
+      <li><b>Crecimiento intermensual</b>Ene <em>848K</em> → Feb <em>828K (-2,4%)</em> → Mar <em>915K (+10,6%)</em>.</li>
+      <li><b>Adjusted EBITDA</b>+<em>USD 461K</em> (17,8% s/ventas). La línea que defiende el modelo.</li>
+      <li><b>EBITDA Reportado</b>+<em>USD 5,8K</em> (0,2%). Casi cero después de corporativos y one-off.</li>
+      <li><b>Utilidad Neta</b><em>USD (256K)</em>. Pérdida 9,9% s/ventas. Brecha vs EBITDA = USD 262K en no-EBITDA.</li>
+      <li><b>Gastos corporativos</b><em>USD 387K</em>, 100% a Chile, 14,9% s/ventas, 84% del Adj. EBITDA.</li>
+      <li><b>Gasto financiero</b><em>USD 131K</em> (5,1% s/ventas) · 79% Chile · 23× el EBITDA reportado.</li>
+      <li><b>Isapres</b><em>46,4%</em> de ventas (USD 1,2M), exclusivo Chile. Riesgo regulatorio.</li>
+      <li><b>Comisiones Colombia</b>USD 255K · <em>22,7%</em> s/ventas Colombia · vs <em>0,3%</em> Chile. Modelo de canal.</li>
+      <li><b>México break-even</b>Necesita ~<em>USD 155K/mes</em> (vs. ~21K actuales) para cubrir gastos fijos.</li>
+      <li><b>Costa Rica</b>Margen <em>69,3%</em>, el mejor · JV 25% Docwell → ~USD 10K minoritarios.</li>
+      <li><b>One-off</b><em>USD 68K</em> Q1 · creciendo <em>+790%</em> Ene→Mar.</li>
+      <li><b>USA</b>Cero ventas · pérdida <em>USD 13K</em> · solo costos estructurales.</li>
+      <li><b>Top 2 segmentos</b>Isapres (46,4%) + Aseguradoras y Corredores (36,1%) = <em>82,5%</em>.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- =============================================== -->
+<!-- X — GLOSARIO -->
+<!-- =============================================== -->
+<section class="section">
+  <div class="sec-num">X · Glosario</div>
+  <h2 class="sec-title">Conceptos clave del informe</h2>
+  <p class="sec-sub">Definiciones operativas de los términos financieros y de negocio usados en el informe. Útil para alinear vocabulario en la conversación con el directorio.</p>
+
+  <div class="gloss">
+    <div class="term"><div class="t">Margen de Explotación</div><div class="d">Ventas menos Costo Directo. Mide la rentabilidad bruta del servicio antes de gastos administrativos. En el documento: 46,8% s/ventas en Q1.</div></div>
+    <div class="term"><div class="t">Adjusted EBITDA</div><div class="d">EBITDA antes de Gastos Corporativos y Gastos One-Off. Refleja el resultado operacional "limpio" del negocio sin asignaciones centralizadas ni eventos extraordinarios. Es la medida usada para evaluar la rentabilidad real por país.</div></div>
+    <div class="term"><div class="t">EBITDA Reportado</div><div class="d">Adjusted EBITDA menos Gastos Corporativos menos Gastos One-Off. Es el indicador contable de generación operacional antes de financiamiento, impuestos y partidas no operacionales.</div></div>
+    <div class="term"><div class="t">Gastos Corporativos</div><div class="d">Costos centralizados del grupo (holding, gobierno corporativo, consolidación, planificación) cargados actualmente al 100% a Chile. En Q1: USD 387K.</div></div>
+    <div class="term"><div class="t">Gastos One-Off</div><div class="d">Gastos clasificados como "no recurrentes" por la administración (indemnizaciones, consultorías puntuales, ajustes). En Q1: USD 68K, con tendencia creciente que motiva revisión.</div></div>
+    <div class="term"><div class="t">Otros res. no operacionales (neto)</div><div class="d">Rubro que agrupa diferenciales de cambio, ajustes y otras partidas no relacionadas con la operación. Aparece negativo en Q1 (USD -90K) porque el saldo neto es deudor.</div></div>
+    <div class="term"><div class="t">Isapres</div><div class="d">Instituciones de Salud Previsional chilenas. Aseguradoras privadas reguladas por el Estado. Sujetas a la Ley Corta de Isapres (2023) que ordenó devolución de cobros en exceso, generando estrés financiero al sector.</div></div>
+    <div class="term"><div class="t">Aseguradoras y Corredores</div><div class="d">Compañías de seguros generales (no Isapres) y brokers/intermediarios que comercializan los servicios de Medismart a sus carteras de clientes.</div></div>
+    <div class="term"><div class="t">Agregadores</div><div class="d">Plataformas que agrupan demanda de servicios médicos y la canalizan al proveedor. Operan en modelo marketplace.</div></div>
+    <div class="term"><div class="t">Empleadores</div><div class="d">Empresas que contratan beneficios de salud directamente para sus colaboradores, sin intermediario asegurador.</div></div>
+    <div class="term"><div class="t">B2C</div><div class="d">Ventas directas a personas (Business-to-Consumer), sin intermediario. Farmazon opera 100% bajo este modelo.</div></div>
+    <div class="term"><div class="t">Incumbentes salud</div><div class="d">Operadores tradicionales del sistema de salud (clínicas, hospitales, prestadores establecidos) que actúan como clientes de Medismart.</div></div>
+    <div class="term"><div class="t">Contraloría médica</div><div class="d">Función de auditoría y control técnico-clínico sobre prestaciones médicas (validar pertinencia, codificación, ajustes). Exclusiva a Chile en el reporte (USD 176K en Q1).</div></div>
+    <div class="term"><div class="t">Equipo Médico</div><div class="d">Costo directo de los profesionales que prestan el servicio (médicos, enfermeros, técnicos). Principal componente del costo directo (USD 658K, 25,4% s/ventas).</div></div>
+    <div class="term"><div class="t">Joint Venture (JV) Costa Rica</div><div class="d">Sociedad conjunta entre Medismart y Docwell con participación 75/25. Genera obligación de reconocer interés minoritario (25% Docwell) en la utilidad consolidada.</div></div>
+    <div class="term"><div class="t">Break-even</div><div class="d">Nivel de ventas en el cual los ingresos igualan los costos totales, generando resultado cero. Punto de equilibrio operacional.</div></div>
+    <div class="term"><div class="t">Headcount</div><div class="d">Número de personas empleadas. Métrica usada típicamente para distribuir costos centralizados de forma proporcional al tamaño operativo de cada país.</div></div>
+    <div class="term"><div class="t">Cost-pool</div><div class="d">Metodología de asignación de costos que agrupa gastos por naturaleza (TI, RRHH, finanzas) y los distribuye según un driver específico (usuarios, transacciones, ventas).</div></div>
+    <div class="term"><div class="t">Tipo de cambio promedio mensual</div><div class="d">Promedio aritmético del tipo de cambio diario del mes. Se usa para convertir resultados de moneda local a USD en estados de resultados (a diferencia del tipo de cambio de cierre, que se usa para balance).</div></div>
+    <div class="term"><div class="t">Diferencia de cambio</div><div class="d">Resultado contable generado por la conversión de partidas en moneda extranjera. Puede ser positivo o negativo según evolución del tipo de cambio durante el período.</div></div>
+  </div>
+</section>
+
+<!-- =============================================== -->
+<!-- XI — TIPOS DE CAMBIO -->
+<!-- =============================================== -->
+<section class="section">
+  <div class="sec-num">XI · Tipos de Cambio</div>
+  <h2 class="sec-title">Tasas promedio aplicadas Q1 2026</h2>
+  <p class="sec-sub">Tipos de cambio promedio mensuales usados para conversión a USD. Variaciones cambiarias pueden distorsionar comparaciones intermensuales en magnitudes locales.</p>
+
+  <div class="fx-grid">
+    <div><div class="par">USD / CLP</div><div class="v">885,29</div><div class="r">Rango: 862,02 – 909,89</div></div>
+    <div><div class="par">USD / COP</div><div class="v">3.698,73</div><div class="r">Rango: 3.675,64 – 3.717,56</div></div>
+    <div><div class="par">USD / MXN</div><div class="v">17,54</div><div class="r">Rango: 17,22 – 17,77</div></div>
+    <div><div class="par">USD / CRC</div><div class="v">485,77</div><div class="r">Rango: 472,15 – 497,94</div></div>
+    <div><div class="par">USD / PEN</div><div class="v">3,387</div><div class="r">Rango: 3,357 – 3,446</div></div>
+  </div>
+</section>
+
+<footer>
+  <div>Medismart · Informe Ejecutivo Q1 2026</div>
+  <div>Confidencial · Directorio · Mayo 2026</div>
+  <div>Consolidado Multi-País · 6 unidades</div>
+</footer>
+
+</div>
+
+
+</body></html>
