@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#13293D">
+<title>MediSmart · Demanda y Dimensionamiento de Oferta Médica · May–Dic 2026</title>
+<style>
+  :root{
+    --navy:#13293D; --navy2:#1F3D54; --ink:#1A2733;
+    --bg:#F4F6F8; --surface:#FFFFFF; --line:#E3E8ED; --line2:#EDF1F4;
+    --muted:#64727E; --muted2:#9AA7B2;
+    --accent:#2E6E8E; --accent-l:#5C97B4;
+    --red:#C0485B; --green:#3C8C6A; --amber:#C98A2B; --tint:#EAF1F5;
+    --shadow:0 1px 2px rgba(19,41,61,.05),0 6px 22px -14px rgba(19,41,61,.25);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0; background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased; line-height:1.5; font-feature-settings:"tnum" 1;}
+  .num{font-variant-numeric:tabular-nums;}
+  a{color:inherit;}
+
+  /* ===== Top bar ===== */
+  header.top{position:sticky; top:0; z-index:50; background:var(--navy); color:#fff;
+    border-bottom:1px solid rgba(255,255,255,.08);}
+  .top-in{max-width:1280px; margin:0 auto; padding:13px 28px; display:flex; align-items:center; gap:20px;}
+  .logo{display:flex; align-items:center; gap:11px; flex:none;}
+  .logo .mark{width:30px; height:30px; border-radius:8px; background:linear-gradient(135deg,#2E6E8E,#1F3D54);
+    display:flex; align-items:center; justify-content:center; font-weight:800; font-size:15px; color:#fff;}
+  .logo .name{font-weight:800; font-size:16px; letter-spacing:.2px;}
+  .logo .name span{font-weight:400; color:#9fb4c4;}
+  nav.secnav{display:flex; gap:4px; margin-left:auto; flex-wrap:wrap;}
+  nav.secnav a{font-size:13px; color:#c7d3dc; text-decoration:none; padding:6px 12px; border-radius:8px; white-space:nowrap;}
+  nav.secnav a:hover{background:rgba(255,255,255,.08); color:#fff;}
+  .top-period{font-size:12px; color:#8ba2b3; flex:none; letter-spacing:.3px;}
+
+  /* ===== Layout ===== */
+  main{max-width:1280px; margin:0 auto; padding:28px 28px 60px;}
+  .pagehead{margin:6px 0 22px;}
+  .pagehead .eyebrow{font-size:12px; letter-spacing:1.6px; text-transform:uppercase; color:var(--accent); font-weight:700;}
+  .pagehead h1{font-size:30px; line-height:1.15; letter-spacing:-.6px; margin:6px 0 8px; font-weight:800; color:var(--navy);}
+  .pagehead p{margin:0; color:var(--muted); font-size:15px; max-width:860px;}
+
+  section{margin:38px 0 0; scroll-margin-top:74px;}
+  .sec-h{display:flex; align-items:baseline; gap:12px; margin:0 0 16px; padding-bottom:10px; border-bottom:2px solid var(--line);}
+  .sec-h .idx{font-size:13px; font-weight:800; color:var(--accent); font-variant-numeric:tabular-nums;}
+  .sec-h h2{font-size:21px; margin:0; font-weight:800; letter-spacing:-.3px; color:var(--navy);}
+  .sec-h .note{margin-left:auto; font-size:12.5px; color:var(--muted2);}
+
+  .card{background:var(--surface); border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow);}
+  .card .c-h{padding:16px 20px 0;}
+  .card .c-h h3{margin:0; font-size:15px; font-weight:700;}
+  .card .c-h p{margin:4px 0 0; font-size:12.5px; color:var(--muted);}
+  .card .c-b{padding:14px 20px 20px;}
+
+  /* KPI */
+  .kpis{display:grid; grid-template-columns:repeat(5,1fr); gap:14px;}
+  .kpi{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:16px 18px; box-shadow:var(--shadow);}
+  .kpi .k{font-size:11.5px; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); font-weight:600;}
+  .kpi .v{font-size:27px; font-weight:800; letter-spacing:-.6px; margin-top:6px; color:var(--navy);}
+  .kpi .v small{font-size:15px; font-weight:700; color:var(--muted);}
+  .kpi .s{font-size:12px; color:var(--muted2); margin-top:3px;}
+  .kpi .v .dn{color:var(--red);} .kpi .v .up{color:var(--green);}
+
+  .row2{display:grid; grid-template-columns:1.45fr 1fr; gap:18px; align-items:start;}
+  .row2.even{grid-template-columns:1fr 1fr;}
+
+  /* charts */
+  .chart{width:100%; height:auto; display:block; overflow:visible;}
+  .legend{display:flex; flex-wrap:wrap; gap:14px 18px; margin-top:10px; font-size:12.5px; color:var(--muted);}
+  .legend .li{display:flex; align-items:center; gap:7px;}
+  .legend .sw{width:18px; height:3px; border-radius:2px; display:inline-block;}
+  .legend .sw.dash{height:0; border-top:2.5px dashed var(--accent);}
+  .legend .sw.area{height:11px; width:14px; border-radius:3px;}
+  .legend .sw.box{height:11px; width:11px; border-radius:3px;}
+
+  /* tables */
+  .tbl-wrap{overflow-x:auto;}
+  table{width:100%; border-collapse:collapse; font-size:13.5px; min-width:480px;}
+  thead th{background:var(--navy); color:#fff; font-weight:600; font-size:11.5px; text-transform:uppercase;
+    letter-spacing:.4px; padding:10px 12px; text-align:right; white-space:nowrap;}
+  thead th:first-child{text-align:left;}
+  tbody td{padding:9px 12px; text-align:right; border-bottom:1px solid var(--line2); font-variant-numeric:tabular-nums; white-space:nowrap;}
+  tbody td:first-child{text-align:left; font-weight:600;}
+  tbody tr:hover{background:#FAFCFD;}
+  tbody tr.hl{background:var(--tint);} tbody tr.hl:hover{background:#E2ECF2;}
+  tfoot td{padding:9px 12px; text-align:right; font-weight:800; border-top:2px solid var(--line); font-variant-numeric:tabular-nums;}
+  tfoot td:first-child{text-align:left;}
+  .up{color:var(--green); font-weight:700;} .dn{color:var(--red); font-weight:700;}
+
+  .prose{font-size:14px; color:#33424E;}
+  .prose p{margin:0 0 11px;} .prose p:last-child{margin-bottom:0;}
+  .prose b{color:var(--ink);}
+  .callout{background:var(--tint); border-left:3px solid var(--accent); border-radius:0 10px 10px 0; padding:13px 16px; font-size:13.5px; color:var(--navy2);}
+  .callout.warn{background:#FBF0EE; border-left-color:var(--red); color:#7a2e3a;}
+  .callout b{font-weight:700;}
+
+  .params{display:grid; grid-template-columns:1fr auto; gap:0; font-size:13.5px;}
+  .params .pr{display:contents;}
+  .params .pr > div{padding:9px 2px; border-bottom:1px solid var(--line2);}
+  .params .pr > div:nth-child(2){text-align:right; font-weight:700; font-variant-numeric:tabular-nums;}
+  .params .pr:last-child > div{border-bottom:0;}
+
+  .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:18px;}
+
+  /* tooltip */
+  #tip{position:fixed; z-index:100; pointer-events:none; background:var(--navy); color:#fff;
+    font-size:12px; padding:7px 10px; border-radius:8px; box-shadow:0 8px 24px -8px rgba(0,0,0,.4);
+    opacity:0; transition:opacity .12s; white-space:nowrap; font-variant-numeric:tabular-nums; max-width:240px;}
+  #tip b{font-weight:700;} #tip .t-lab{color:#9fb4c4; font-size:11px;}
+  .dot-hit{cursor:pointer;}
+
+  footer{max-width:1280px; margin:0 auto; padding:24px 28px 50px; color:var(--muted2); font-size:12px; border-top:1px solid var(--line); margin-top:40px;}
+  footer b{color:var(--muted);}
+
+  /* ===== responsive ===== */
+  @media (max-width:1024px){
+    .kpis{grid-template-columns:repeat(3,1fr);}
+    .row2,.row2.even{grid-template-columns:1fr;}
+    .grid3{grid-template-columns:1fr;}
+  }
+  @media (max-width:680px){
+    .top-in{padding:11px 16px; flex-wrap:wrap; gap:10px 14px;}
+    nav.secnav{order:3; width:100%; margin-left:0; overflow-x:auto; flex-wrap:nowrap; -webkit-overflow-scrolling:touch;}
+    .top-period{margin-left:auto;}
+    main{padding:20px 16px 50px;}
+    .pagehead h1{font-size:23px;}
+    .kpis{grid-template-columns:repeat(2,1fr); gap:10px;}
+    .kpi .v{font-size:23px;}
+    footer{padding:20px 16px 40px;}
+  }
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto;} #tip{transition:none;}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <div class="logo"><div class="mark">M</div><div class="name">MediSmart <span>· Chile</span></div></div>
+    <nav class="secnav">
+      <a href="#resumen">Resumen</a>
+      <a href="#demanda">Demanda</a>
+      <a href="#oferta">Oferta médica</a>
+      <a href="#diagnostico">Diagnóstico</a>
+      <a href="#riesgo">Riesgo</a>
+      <a href="#metodo">Método</a>
+    </nav>
+    <div class="top-period">May–Dic 2026</div>
+  </div>
+</header>
+
+<main>
+  <div class="pagehead" id="resumen">
+    <div class="eyebrow">Informe para el Directorio</div>
+    <h1>Proyección de demanda y dimensionamiento de la oferta médica</h1>
+    <p>Cuántos médicos conviene ofertar cada mes entre mayo y diciembre de 2026, sobre el histórico real de atenciones 2024–2026, con un modelo de estacionalidad, tendencia y simulación de incertidumbre validado contra los meses ya observados (error 3,2%).</p>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpis">
+    <div class="kpi"><div class="k">Demanda 2025 (año)</div><div class="v num">233.392</div><div class="s">atenciones reales · Chile</div></div>
+    <div class="kpi"><div class="k">Demanda 2026 ene–may</div><div class="v num">78.564</div><div class="s">real · −20,6% agregado vs 2025</div></div>
+    <div class="kpi"><div class="k">Caída de la base real</div><div class="v"><span class="dn">−4,3%</span></div><div class="s">clientes que se mantienen</div></div>
+    <div class="kpi"><div class="k">Oferta en el peak (oct)</div><div class="v num">212</div><div class="s">médicos · dotación hoy 173</div></div>
+    <div class="kpi"><div class="k">Precisión del modelo</div><div class="v num">3,2%</div><div class="s">error fuera de muestra</div></div>
+  </div>
+
+  <div class="callout" style="margin-top:18px;"><b>Lectura ejecutiva.</b> La caída del 20% frente a 2025 es engañosa: cerca del <b>80% se explica por la salida de un solo cliente</b> (La Araucana). La cartera que se mantiene apenas cae 4,3%. El dimensionamiento de la oferta se ajusta al alza en el segundo semestre respecto del plan anterior, y el principal riesgo no es estacional sino comercial: la alta concentración de clientes.</div>
+
+  <!-- ===== DEMANDA ===== -->
+  <section id="demanda">
+    <div class="sec-h"><span class="idx">01</span><h2>Demanda real y proyectada</h2><span class="note">Atenciones mensuales · Chile</span></div>
+    <div class="row2">
+      <div class="card">
+        <div class="c-h"><h3>Atenciones por mes (2024–2026)</h3><p>Histórico real y proyección refinada con banda de incertidumbre (rango probable 80%).</p></div>
+        <div class="c-b">
+          <div id="chart-demanda"></div>
+          <div class="legend">
+            <span class="li"><span class="sw" style="background:#C3CDD6"></span>2024 (real)</span>
+            <span class="li"><span class="sw" style="background:#5C97B4"></span>2025 (real)</span>
+            <span class="li"><span class="sw" style="background:#13293D"></span>2026 real</span>
+            <span class="li"><span class="sw dash"></span>2026 proyección</span>
+            <span class="li"><span class="sw area" style="background:rgba(46,110,142,.18)"></span>rango probable</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="c-h"><h3>Detalle mensual</h3><p>Valor central; el rango aparece al pasar el cursor sobre el gráfico.</p></div>
+        <div class="c-b tbl-wrap">
+          <table>
+            <thead><tr><th>Mes</th><th>2025</th><th>2026</th><th>Var.</th></tr></thead>
+            <tbody id="tbody-demanda"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== OFERTA ===== -->
+  <section id="oferta">
+    <div class="sec-h"><span class="idx">02</span><h2>Oferta médica a ofertar por mes</h2><span class="note">Médicos contratados · base dotación actual 173</span></div>
+    <div class="row2">
+      <div class="card">
+        <div class="c-h"><h3>Médicos por mes: plan refinado vs. dotación actual</h3><p>La línea marca los 173 médicos contratados hoy. El segundo semestre sostiene más capacidad que el plan original.</p></div>
+        <div class="c-b">
+          <div id="chart-oferta"></div>
+          <div class="legend">
+            <span class="li"><span class="sw box" style="background:#2E6E8E"></span>Plan refinado</span>
+            <span class="li"><span class="sw box" style="background:#C3CDD6"></span>Informe original</span>
+            <span class="li"><span class="sw dash" style="border-top-color:#C0485B"></span>Dotación actual (173)</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="c-h"><h3>Cómo se traduce la demanda en médicos</h3><p>Parámetros operacionales reales de la operación.</p></div>
+        <div class="c-b">
+          <div class="params">
+            <div class="pr"><div>Médicos contratados (jornada parcial)</div><div>173</div></div>
+            <div class="pr"><div>Equivalente a tiempo completo</div><div>52</div></div>
+            <div class="pr"><div>Consultas por médico TC / mes</div><div>≈ 340</div></div>
+            <div class="pr"><div>Utilización objetivo (espera &lt; 15 min)</div><div>85%</div></div>
+            <div class="pr"><div>Capacidad efectiva por TC</div><div>289</div></div>
+          </div>
+          <div class="callout" style="margin-top:14px;">Médicos = (demanda ÷ 289 consultas) escalado a la relación 173 contratados ↔ 52 a tiempo completo. Cada mes se dimensiona para sostener la espera bajo 15 minutos.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:18px;">
+      <div class="c-h"><h3>Plan mensual de oferta</h3><p>Demanda central, médicos recomendados y diferencia frente al plan del informe y a la dotación actual.</p></div>
+      <div class="c-b tbl-wrap">
+        <table>
+          <thead><tr><th>Mes</th><th>Demanda</th><th>Equiv. TC</th><th>Médicos (plan)</th><th>vs. informe</th><th>vs. 173 hoy</th></tr></thead>
+          <tbody id="tbody-oferta"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIAGNÓSTICO ===== -->
+  <section id="diagnostico">
+    <div class="sec-h"><span class="idx">03</span><h2>¿Por qué cayó la demanda?</h2><span class="note">Descomposición · ventana comparable ene–may</span></div>
+    <div class="row2">
+      <div class="card">
+        <div class="c-h"><h3>De dónde viene la caída de 20.400 atenciones</h3><p>Comparando enero–mayo de 2025 contra 2026.</p></div>
+        <div class="c-b">
+          <div id="chart-waterfall"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="c-h"><h3>La Araucana: una salida, no una tendencia</h3><p>Atenciones mensuales del cliente durante 2025.</p></div>
+        <div class="c-b">
+          <div id="chart-araucana"></div>
+          <div class="prose" style="margin-top:12px;">
+            <p>Creció durante 2024 y la primera mitad de 2025, peakeó en julio (~4.800/mes) y <b>cayó a cero desde octubre de 2025</b>. En 2026 no registra actividad.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:18px;"><b>El hallazgo central.</b> El 82,5% del descenso son clientes que dejaron de operar —de los cuales La Araucana es el 80% del total—, y solo el 17,5% es un descenso real de la base que se mantiene (−4,3%). En otras palabras: <b>el negocio base está sano; la caída es comercial y concentrada, no una contracción del mercado.</b> Tratarla como tendencia recurrente subestima la demanda del segundo semestre, porque 2025 ya no tenía a este cliente desde octubre.</div>
+
+    <div class="card" style="margin-top:18px;">
+      <div class="c-h"><h3>Dónde se concentró la caída por especialidad</h3><p>Mayor descenso absoluto, enero–mayo 2025 → 2026. Medicina General es el 60,7% de la demanda total.</p></div>
+      <div class="c-b">
+        <div id="chart-especialidad"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== RIESGO ===== -->
+  <section id="riesgo">
+    <div class="sec-h"><span class="idx">04</span><h2>Riesgo de concentración de clientes</h2><span class="note">2026 · ene–may</span></div>
+    <div class="row2">
+      <div class="card">
+        <div class="c-h"><h3>Participación por cliente</h3><p>Los cinco mayores concentran el 80,5% de la demanda.</p></div>
+        <div class="c-b"><div id="chart-conc"></div></div>
+      </div>
+      <div class="card">
+        <div class="c-h"><h3>Qué significa para la planificación</h3></div>
+        <div class="c-b prose">
+          <p>El índice de concentración (HHI 0,156) equivale a operar con apenas <b>~6,4 clientes efectivos</b>. La pérdida de cualquiera de los grandes repetiría el efecto Araucana, y ese es el factor de incertidumbre que más pesa sobre el dimensionamiento —más que el ruido estacional.</p>
+          <p>El efecto corre en ambas direcciones: en la misma ventana, <b>Sura creció +42% y Colmena +15%</b>, de modo que la base sana también puede compensar salidas.</p>
+          <div class="callout warn" style="margin-top:4px;"><b>Acción.</b> Monitorear al top-5 como riesgo #1: cualquier señal de baja de uso en esas cuentas debe gatillar una revisión inmediata del plan de oferta.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MÉTODO ===== -->
+  <section id="metodo">
+    <div class="sec-h"><span class="idx">05</span><h2>Método y supuestos</h2></div>
+    <div class="grid3">
+      <div class="card"><div class="c-b prose">
+        <h3 style="margin:0 0 8px; font-size:15px;">Proyección</h3>
+        <p>Se proyecta junio–diciembre sobre la demanda 2025 de la base retenida (sin clientes que se fueron), ajustada por la tendencia subyacente observada mes a mes (multiplicadores 0,91–1,01; media 0,955). Una simulación de 20.000 escenarios entrega el rango probable P10–P90.</p>
+      </div></div>
+      <div class="card"><div class="c-b prose">
+        <h3 style="margin:0 0 8px; font-size:15px;">Validación</h3>
+        <p>Aplicado a los meses de 2026 ya transcurridos, el modelo reproduce la demanda real con un error promedio (MAPE) de 3,2%. La descomposición de la caída no depende de supuestos de simulación; el overlay de riesgo de churn usa parámetros de escenario, no una probabilidad estimada con precisión estadística.</p>
+      </div></div>
+      <div class="card"><div class="c-b prose">
+        <h3 style="margin:0 0 8px; font-size:15px;">Fuentes</h3>
+        <p>Registro transaccional de atenciones 2024–2026 (filtrado a Chile, estado Completado); dotación médica de mayo 2026; dotación histórica de invierno; distribución horaria de médicos generales; registro de bloqueos. Todas las cifras provienen de datos internos de la empresa.</p>
+      </div></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <b>MediSmart Chile</b> · Dimensionamiento de oferta médica May–Dic 2026 · Elaborado con datos operacionales internos. Junio 2026 del registro está incompleto y no se utiliza como dato observado.
+</footer>
+
+<div id="tip"></div>
+
+<script>
+const NS="http://www.w3.org/2000/svg";
+const fmt=n=>Math.round(n).toLocaleString("es-CL");
+const tip=document.getElementById("tip");
+function showTip(html,e){tip.innerHTML=html;tip.style.opacity="1";moveTip(e);}
+function moveTip(e){const x=e.clientX,y=e.clientY;tip.style.left=Math.min(x+14,window.innerWidth-tip.offsetWidth-8)+"px";tip.style.top=(y-tip.offsetHeight-12)+"px";}
+function hideTip(){tip.style.opacity="0";}
+function S(tag,a={},kids=[]){const el=document.createElementNS(NS,tag);for(const k in a)el.setAttribute(k,a[k]);kids.forEach(c=>el.appendChild(c));return el;}
+function T(x,y,str,a={}){const t=S("text",Object.assign({x,y},a));t.textContent=str;return t;}
+function svgRoot(w,h){return S("svg",{viewBox:`0 0 ${w} ${h}`,class:"chart",preserveAspectRatio:"xMidYMid meet",role:"img"});}
+
+const C={navy:"#13293D",accent:"#2E6E8E",accentL:"#5C97B4",grey:"#C3CDD6",grey2:"#9AA7B2",
+  red:"#C0485B",green:"#3C8C6A",amber:"#C98A2B",line:"#E3E8ED",muted:"#64727E"};
+const MESES=["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+
+/* ===== DATA ===== */
+const d2024=[null,null,null,null,24601,19324,21668,23169,21772,25494,22825,19056];
+const d2025=[17151,15660,20843,22788,22522,20996,22098,21813,18548,19379,17218,14376];
+const d2026real=[13594,12736,17163,17233,17838,null,null,null,null,null,null,null];
+const d2026proj=[null,null,null,null,17838,15859,16400,16583,16486,18397,16352,13639];
+const p10=[null,null,null,null,17838,14634,15136,15305,15236,17023,15118,12582];
+const p90=[null,null,null,null,17838,16954,17544,17749,17640,19694,17499,14593];
+
+/* ===== 1) DEMANDA LINE CHART ===== */
+(function(){
+  const W=920,H=400,m={l:54,r:14,t:14,b:34};
+  const yMax=27000,yMin=0, plotW=W-m.l-m.r, plotH=H-m.t-m.b;
+  const X=i=>m.l+plotW*i/(MESES.length-1);
+  const Y=v=>m.t+plotH*(1-(v-yMin)/(yMax-yMin));
+  const svg=svgRoot(W,H);
+  // gridlines + y labels
+  for(let v=0;v<=yMax;v+=5000){
+    svg.appendChild(S("line",{x1:m.l,y1:Y(v),x2:W-m.r,y2:Y(v),stroke:C.line,"stroke-width":1}));
+    svg.appendChild(T(m.l-8,Y(v)+4,(v/1000)+"k",{"font-size":11,fill:C.muted,"text-anchor":"end"}));
+  }
+  // x labels
+  MESES.forEach((mo,i)=>svg.appendChild(T(X(i),H-12,mo,{"font-size":11,fill:C.muted,"text-anchor":"middle"})));
+  // helper to build path skipping nulls
+  function path(arr){let dstr="",pen=false;arr.forEach((v,i)=>{if(v==null){pen=false;return;}dstr+=(pen?" L ":" M ")+X(i)+" "+Y(v);pen=true;});return dstr;}
+  // band P10-P90 (from May index4 onward)
+  let up="",dn="";
+  for(let i=4;i<12;i++){up+=(up?" L ":"M ")+X(i)+" "+Y(p90[i]);}
+  for(let i=11;i>=4;i--){dn+=" L "+X(i)+" "+Y(p10[i]);}
+  svg.appendChild(S("path",{d:up+dn+" Z",fill:"rgba(46,110,142,.16)",stroke:"none"}));
+  // lines
+  svg.appendChild(S("path",{d:path(d2024),fill:"none",stroke:C.grey,"stroke-width":2,"stroke-linejoin":"round"}));
+  svg.appendChild(S("path",{d:path(d2025),fill:"none",stroke:C.accentL,"stroke-width":2.4,"stroke-linejoin":"round"}));
+  svg.appendChild(S("path",{d:path(d2026proj),fill:"none",stroke:C.accent,"stroke-width":2.6,"stroke-dasharray":"6 4","stroke-linejoin":"round"}));
+  svg.appendChild(S("path",{d:path(d2026real),fill:"none",stroke:C.navy,"stroke-width":3.2,"stroke-linejoin":"round"}));
+  // hover dots
+  function dots(arr,color,label,band){arr.forEach((v,i)=>{if(v==null)return;
+    const c=S("circle",{cx:X(i),cy:Y(v),r:4.5,fill:"#fff",stroke:color,"stroke-width":2,class:"dot-hit"});
+    let extra=band?`<div class="t-lab">rango ${fmt(p10[i])} – ${fmt(p90[i])}</div>`:"";
+    c.addEventListener("mouseenter",e=>showTip(`<div class="t-lab">${label} · ${MESES[i]}</div><b>${fmt(v)}</b> atenciones${extra}`,e));
+    c.addEventListener("mousemove",moveTip);c.addEventListener("mouseleave",hideTip);
+    svg.appendChild(c);});}
+  dots(d2025,C.accentL,"2025",false);
+  dots(d2026real,C.navy,"2026 real",false);
+  dots(d2026proj.map((v,i)=>i>4?v:null),C.accent,"2026 proy.",true);
+  document.getElementById("chart-demanda").appendChild(svg);
+})();
+
+/* demanda table */
+(function(){
+  const tb=document.getElementById("tbody-demanda");
+  for(let i=0;i<12;i++){
+    const v25=d2025[i], v26=(d2026real[i]!=null?d2026real[i]:d2026proj[i]);
+    const proj=(d2026real[i]==null && d2026proj[i]!=null);
+    const varr=v25&&v26?((v26/v25-1)*100):null;
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td>${MESES[i]}</td><td class="num">${fmt(v25)}</td>
+      <td class="num">${v26!=null?fmt(v26):"—"}${proj?' <span style="color:#9AA7B2;font-weight:400">(p)</span>':""}</td>
+      <td class="num ${varr<0?'dn':'up'}">${varr!=null?(varr>0?'+':'')+varr.toFixed(1)+'%':'—'}</td>`;
+    tb.appendChild(tr);
+  }
+})();
+
+/* ===== 2) OFERTA BAR CHART ===== */
+const ofMeses=["May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+const ofRef=[205,183,189,191,190,212,188,157];
+const ofInf=[205,192,202,199,170,177,158,132];
+const ofDem=[17838,15859,16400,16583,16486,18397,16352,13639];
+const ofTC=[61.7,54.9,56.7,57.4,57.0,63.7,56.6,47.2];
+(function(){
+  const W=920,H=380,m={l:42,r:14,t:14,b:34};
+  const yMax=230,plotW=W-m.l-m.r,plotH=H-m.t-m.b;
+  const Y=v=>m.t+plotH*(1-v/yMax);
+  const n=ofMeses.length, group=plotW/n, bw=group*0.30, gap=group*0.06;
+  const svg=svgRoot(W,H);
+  for(let v=0;v<=yMax;v+=50){svg.appendChild(S("line",{x1:m.l,y1:Y(v),x2:W-m.r,y2:Y(v),stroke:C.line,"stroke-width":1}));
+    svg.appendChild(T(m.l-8,Y(v)+4,v,{"font-size":11,fill:C.muted,"text-anchor":"end"}));}
+  ofMeses.forEach((mo,i)=>{
+    const cx=m.l+group*i+group/2;
+    const x1=cx-bw-gap/2, x2=cx+gap/2;
+    // informe bar
+    const b2=S("rect",{x:x1,y:Y(ofInf[i]),width:bw,height:Y(0)-Y(ofInf[i]),rx:3,fill:C.grey,class:"dot-hit"});
+    b2.addEventListener("mouseenter",e=>showTip(`<div class="t-lab">Informe · ${mo}</div><b>${ofInf[i]}</b> médicos`,e));
+    b2.addEventListener("mousemove",moveTip);b2.addEventListener("mouseleave",hideTip);
+    // refinado bar
+    const b1=S("rect",{x:x2,y:Y(ofRef[i]),width:bw,height:Y(0)-Y(ofRef[i]),rx:3,fill:C.accent,class:"dot-hit"});
+    b1.addEventListener("mouseenter",e=>showTip(`<div class="t-lab">Plan refinado · ${mo}</div><b>${ofRef[i]}</b> médicos<div class="t-lab">demanda ${fmt(ofDem[i])}</div>`,e));
+    b1.addEventListener("mousemove",moveTip);b1.addEventListener("mouseleave",hideTip);
+    svg.appendChild(b2);svg.appendChild(b1);
+    svg.appendChild(T(x2+bw/2,Y(ofRef[i])-6,ofRef[i],{"font-size":11,"font-weight":700,fill:C.navy,"text-anchor":"middle"}));
+    svg.appendChild(T(cx,H-12,mo,{"font-size":11,fill:C.muted,"text-anchor":"middle"}));
+  });
+  // ref line 173
+  svg.appendChild(S("line",{x1:m.l,y1:Y(173),x2:W-m.r,y2:Y(173),stroke:C.red,"stroke-width":1.6,"stroke-dasharray":"6 4"}));
+  svg.appendChild(T(W-m.r,Y(173)-6,"Dotación actual · 173",{"font-size":11,"font-weight":600,fill:C.red,"text-anchor":"end"}));
+  document.getElementById("chart-oferta").appendChild(svg);
+})();
+
+/* oferta table */
+(function(){
+  const tb=document.getElementById("tbody-oferta");
+  ofMeses.forEach((mo,i)=>{
+    const dInf=ofRef[i]-ofInf[i], dDot=ofRef[i]-173;
+    const hl=dInf>0?"hl":"";
+    const tr=document.createElement("tr");if(hl)tr.className=hl;
+    tr.innerHTML=`<td>${mo}${i==0?' <span style="color:#9AA7B2;font-weight:400">(real)</span>':""}</td>
+      <td class="num">${fmt(ofDem[i])}</td><td class="num">${ofTC[i].toFixed(0)}</td>
+      <td class="num"><b>${ofRef[i]}</b></td>
+      <td class="num ${dInf>=0?'up':'dn'}">${dInf>0?'+':''}${dInf}</td>
+      <td class="num ${dDot>=0?'up':'dn'}">${dDot>0?'+':''}${dDot}</td>`;
+    tb.appendChild(tr);
+  });
+})();
+
+/* ===== 3) WATERFALL ===== */
+(function(){
+  const W=560,H=300,m={l:8,r:8,t:24,b:42};
+  const start=98964,churn=-16833,base=-3567,end=78564;
+  const yMax=108000,plotH=H-m.t-m.b,plotW=W-m.l-m.r;
+  const Y=v=>m.t+plotH*(1-v/yMax);
+  const svg=svgRoot(W,H);
+  const xs=[0,1,2,3],bw=plotW/4*0.62;
+  const cx=i=>m.l+plotW/4*i+plotW/4/2;
+  function bar(i,top,bottom,color,lab,val){
+    const x=cx(i)-bw/2;
+    svg.appendChild(S("rect",{x,y:Y(top),width:bw,height:Math.abs(Y(top)-Y(bottom)),rx:3,fill:color}));
+    svg.appendChild(T(cx(i),H-24,lab,{"font-size":11,fill:C.muted,"text-anchor":"middle"}));
+  }
+  bar(0,start,0,C.navy,"2025");
+  bar(1,start,start+churn,C.red,"Se fueron");
+  bar(2,start+churn,start+churn+base,C.amber,"Base −4,3%");
+  bar(3,end,0,C.navy,"2026");
+  // connectors
+  const conn=(i,v)=>svg.appendChild(S("line",{x1:cx(i)+bw/2,y1:Y(v),x2:cx(i+1)-bw/2,y2:Y(v),stroke:C.grey2,"stroke-width":1,"stroke-dasharray":"3 3"}));
+  conn(0,start);conn(1,start+churn);conn(2,start+churn+base);
+  // value labels
+  svg.appendChild(T(cx(0),Y(start)-8,fmt(start),{"font-size":12,"font-weight":800,fill:C.navy,"text-anchor":"middle"}));
+  svg.appendChild(T(cx(3),Y(end)-8,fmt(end),{"font-size":12,"font-weight":800,fill:C.navy,"text-anchor":"middle"}));
+  svg.appendChild(T(cx(1),(Y(start)+Y(start+churn))/2+4,"−16.833",{"font-size":11,"font-weight":700,fill:"#fff","text-anchor":"middle"}));
+  svg.appendChild(T(cx(2),(Y(start+churn)+Y(start+churn+base))/2+4,"−3.567",{"font-size":10,"font-weight":700,fill:"#fff","text-anchor":"middle"}));
+  svg.appendChild(T(cx(1),H-10,"La Araucana = 80%",{"font-size":10,fill:C.red,"text-anchor":"middle","font-style":"italic"}));
+  document.getElementById("chart-waterfall").appendChild(svg);
+})();
+
+/* ===== 3b) ARAUCANA SPARK ===== */
+(function(){
+  const vals=[2060,2055,3773,4300,4209,4280,4828,4351,1179,0,0,0];
+  const W=520,H=170,m={l:36,r:12,t:14,b:30};
+  const yMax=5200,plotW=W-m.l-m.r,plotH=H-m.t-m.b;
+  const X=i=>m.l+plotW*i/(vals.length-1), Y=v=>m.t+plotH*(1-v/yMax);
+  const svg=svgRoot(W,H);
+  for(let v=0;v<=5000;v+=2500){svg.appendChild(S("line",{x1:m.l,y1:Y(v),x2:W-m.r,y2:Y(v),stroke:C.line,"stroke-width":1}));
+    svg.appendChild(T(m.l-7,Y(v)+4,(v/1000)+"k",{"font-size":10,fill:C.muted,"text-anchor":"end"}));}
+  [0,3,6,9,11].forEach(i=>svg.appendChild(T(X(i),H-10,MESES[i],{"font-size":10,fill:C.muted,"text-anchor":"middle"})));
+  let dstr="";vals.forEach((v,i)=>dstr+=(i?" L ":"M ")+X(i)+" "+Y(v));
+  svg.appendChild(S("path",{d:dstr,fill:"none",stroke:C.red,"stroke-width":2.6,"stroke-linejoin":"round","stroke-linecap":"round"}));
+  vals.forEach((v,i)=>{const c=S("circle",{cx:X(i),cy:Y(v),r:3.4,fill:i>=9?"#fff":C.red,stroke:C.red,"stroke-width":1.6,class:"dot-hit"});
+    c.addEventListener("mouseenter",e=>showTip(`<div class="t-lab">${MESES[i]} 2025</div><b>${fmt(v)}</b> atenciones`,e));
+    c.addEventListener("mousemove",moveTip);c.addEventListener("mouseleave",hideTip);svg.appendChild(c);});
+  document.getElementById("chart-araucana").appendChild(svg);
+})();
+
+/* ===== 3c) ESPECIALIDAD HBARS ===== */
+(function(){
+  const items=[
+    {l:"Medicina General",v:8382,p:"−15,1%"},
+    {l:"Terapia Psicológica",v:3552,p:"−64,9%"},
+    {l:"Nutrición y Dietética",v:2389,p:"−44,1%"},
+    {l:"Psicología Adulto",v:1405,p:"−17,0%"},
+    {l:"Dermatología",v:1343,p:"−69,8%"},
+    {l:"Pediatría",v:758,p:"−20,6%"},
+    {l:"Psiquiatría Adulto",v:690,p:"−26,7%"},
+  ];
+  const W=920,rowH=34,m={l:170,r:120,t:6,b:6};
+  const H=m.t+m.b+items.length*rowH;
+  const max=8382,plotW=W-m.l-m.r;
+  const svg=svgRoot(W,H);
+  items.forEach((it,i)=>{
+    const y=m.t+i*rowH+rowH/2;
+    svg.appendChild(T(m.l-12,y+4,it.l,{"font-size":12.5,fill:C.navy,"text-anchor":"end"}));
+    svg.appendChild(S("rect",{x:m.l,y:y-9,width:plotW,height:18,rx:5,fill:"#F0F3F6"}));
+    const bw=plotW*it.v/max;
+    const r=S("rect",{x:m.l,y:y-9,width:bw,height:18,rx:5,fill:C.red,class:"dot-hit"});
+    r.addEventListener("mouseenter",e=>showTip(`<div class="t-lab">${it.l}</div><b>−${fmt(it.v)}</b> atenciones · ${it.p}`,e));
+    r.addEventListener("mousemove",moveTip);r.addEventListener("mouseleave",hideTip);
+    svg.appendChild(r);
+    svg.appendChild(T(m.l+bw+10,y+4,"−"+fmt(it.v)+"  ("+it.p+")",{"font-size":12,"font-weight":700,fill:C.navy}));
+  });
+  document.getElementById("chart-especialidad").appendChild(svg);
+})();
+
+/* ===== 4) CONCENTRACIÓN ===== */
+(function(){
+  const items=[
+    {l:"Consalud",v:24.1},{l:"Zurich",v:21.8},{l:"Colmena",v:14.4},
+    {l:"Bice Vida",v:10.9},{l:"Vida Cámara",v:9.3},{l:"Sura",v:8.6},{l:"Resto",v:10.9,rest:true}];
+  const W=560,rowH=36,m={l:96,r:54,t:6,b:6};
+  const H=m.t+m.b+items.length*rowH;
+  const max=25,plotW=W-m.l-m.r;
+  const svg=svgRoot(W,H);
+  items.forEach((it,i)=>{
+    const y=m.t+i*rowH+rowH/2;
+    svg.appendChild(T(m.l-10,y+4,it.l,{"font-size":12.5,fill:C.navy,"text-anchor":"end"}));
+    svg.appendChild(S("rect",{x:m.l,y:y-9,width:plotW,height:18,rx:5,fill:"#F0F3F6"}));
+    const bw=plotW*it.v/max;
+    const r=S("rect",{x:m.l,y:y-9,width:bw,height:18,rx:5,fill:it.rest?C.grey2:C.navy,class:"dot-hit"});
+    r.addEventListener("mouseenter",e=>showTip(`<div class="t-lab">${it.l}</div><b>${it.v}%</b> de la demanda`,e));
+    r.addEventListener("mousemove",moveTip);r.addEventListener("mouseleave",hideTip);
+    svg.appendChild(r);
+    svg.appendChild(T(m.l+bw+9,y+4,it.v+"%",{"font-size":12,"font-weight":700,fill:C.navy}));
+  });
+  document.getElementById("chart-conc").appendChild(svg);
+})();
+</script>
+</body>
+</html>
