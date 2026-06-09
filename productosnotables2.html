@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Productos Notables · Guía de práctica · 2° Medio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F5F6F0;
+    --card:#FFFFFF;
+    --ink:#15213A;
+    --ink2:#56607A;
+    --coral:#E2603B;
+    --teal:#1F8E7D;
+    --gold:#E7B23C;
+    --violet:#5A57A0;
+    --line:#E1E2D6;
+    --grid:#DEE5EE;
+    --ok:#1F8E7D;
+    --bad:#E2603B;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:"Inter",system-ui,sans-serif;
+    color:var(--ink);
+    background-color:var(--paper);
+    background-image:
+      linear-gradient(var(--grid) 1px,transparent 1px),
+      linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:26px 26px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:0 20px 90px;}
+
+  /* ---------- HEADER ---------- */
+  header{padding:56px 0 8px;}
+  .eyebrow{
+    font-family:"Space Mono",monospace;
+    font-size:12px;letter-spacing:.32em;text-transform:uppercase;
+    color:var(--violet);font-weight:700;margin:0 0 14px;
+  }
+  h1{
+    font-family:"Space Grotesk",sans-serif;
+    font-weight:700;font-size:clamp(38px,8vw,76px);
+    line-height:.96;letter-spacing:-.02em;margin:0;
+  }
+  h1 .frac{color:var(--coral);}
+  .lede{font-size:17px;color:var(--ink2);max-width:48ch;margin:18px 0 0;}
+
+  .hero{
+    display:grid;grid-template-columns:1fr 320px;gap:34px;align-items:center;
+    margin:34px 0 10px;
+  }
+  .hero-fig{justify-self:end;}
+  .hero-fig figcaption{
+    font-family:"Space Mono",monospace;font-size:13px;color:var(--ink2);
+    text-align:center;margin-top:10px;
+  }
+  .hero-fig figcaption b{color:var(--ink);}
+  @media(max-width:720px){
+    .hero{grid-template-columns:1fr;}
+    .hero-fig{justify-self:center;}
+  }
+
+  /* ---------- META BAR ---------- */
+  .meta{
+    display:flex;flex-wrap:wrap;gap:0;border:1.5px solid var(--ink);
+    background:var(--card);margin:30px 0 0;
+  }
+  .meta div{
+    flex:1 1 130px;padding:14px 18px;border-right:1.5px solid var(--line);
+  }
+  .meta div:last-child{border-right:none;}
+  .meta .k{font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--ink2);}
+  .meta .v{font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:19px;margin-top:2px;}
+
+  /* ---------- TIMER ---------- */
+  .timer-wrap{
+    position:sticky;top:0;z-index:30;margin:26px -20px 0;padding:12px 20px;
+    background:rgba(245,246,240,.86);backdrop-filter:blur(6px);
+    border-bottom:1.5px solid var(--line);
+    display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  }
+  .clock{
+    font-family:"Space Mono",monospace;font-weight:700;font-size:30px;
+    letter-spacing:.04em;color:var(--ink);min-width:140px;
+  }
+  .clock.low{color:var(--coral);}
+  .tbtn{
+    font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:14px;
+    border:1.5px solid var(--ink);background:var(--card);color:var(--ink);
+    padding:7px 16px;cursor:pointer;transition:transform .08s ease,background .12s;
+  }
+  .tbtn:hover{background:var(--ink);color:var(--paper);}
+  .tbtn:active{transform:translateY(1px);}
+  .tnote{font-size:13px;color:var(--ink2);margin-left:auto;}
+
+  /* ---------- SECTION TITLES ---------- */
+  .sec-title{
+    display:flex;align-items:baseline;gap:14px;margin:54px 0 22px;
+    border-bottom:2px solid var(--ink);padding-bottom:10px;
+  }
+  .sec-title .num{
+    font-family:"Space Mono",monospace;font-weight:700;color:var(--violet);font-size:15px;
+  }
+  .sec-title h2{
+    font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:26px;margin:0;letter-spacing:-.01em;
+  }
+
+  /* ---------- FORMULARIO ---------- */
+  .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  @media(max-width:620px){.cards{grid-template-columns:1fr;}}
+  .fcard{
+    background:var(--card);border:1.5px solid var(--line);padding:18px 20px;
+    position:relative;overflow:hidden;
+  }
+  .fcard::before{
+    content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--accent,var(--violet));
+  }
+  .fcard .tag{font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--ink2);}
+  .fcard .formula{
+    font-family:"Space Mono",monospace;font-weight:700;font-size:clamp(15px,2.6vw,18px);
+    margin-top:8px;color:var(--ink);line-height:1.5;
+  }
+  .fcard.c-coral{--accent:var(--coral);}
+  .fcard.c-teal{--accent:var(--teal);}
+  .fcard.c-gold{--accent:var(--gold);}
+  .fcard.c-violet{--accent:var(--violet);}
+  sup{font-size:.72em;}
+  .op{color:var(--coral);font-weight:700;}
+
+  /* ---------- QUESTIONS ---------- */
+  .qmeta{font-size:14px;color:var(--ink2);margin:0 0 26px;}
+  .qmeta b{color:var(--ink);}
+  .group-label{
+    font-family:"Space Mono",monospace;font-size:12px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--violet);margin:34px 0 14px;font-weight:700;
+  }
+  .q{
+    background:var(--card);border:1.5px solid var(--line);padding:20px 22px;margin:0 0 14px;
+  }
+  .q-head{display:flex;gap:12px;align-items:flex-start;}
+  .q-num{
+    font-family:"Space Mono",monospace;font-weight:700;font-size:15px;color:var(--violet);
+    background:var(--paper);border:1.5px solid var(--line);min-width:34px;height:30px;
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .q-text{font-size:16px;margin:1px 0 0;}
+  .q-text .math{font-family:"Space Mono",monospace;font-weight:700;color:var(--ink);}
+  .alts{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:16px 0 0;}
+  @media(max-width:560px){.alts{grid-template-columns:1fr;}}
+  .alt{
+    display:flex;gap:10px;align-items:center;text-align:left;width:100%;
+    font-family:inherit;font-size:15px;color:var(--ink);
+    background:var(--paper);border:1.5px solid var(--line);padding:10px 12px;cursor:pointer;
+    transition:border-color .12s,background .12s;
+  }
+  .alt:hover{border-color:var(--ink2);}
+  .alt .letter{
+    font-family:"Space Mono",monospace;font-weight:700;font-size:13px;
+    width:24px;height:24px;flex-shrink:0;border:1.5px solid var(--ink2);color:var(--ink2);
+    display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all .12s;
+  }
+  .alt .val{font-family:"Space Mono",monospace;}
+  .alt.sel{border-color:var(--ink);background:#fff;}
+  .alt.sel .letter{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+  /* graded states */
+  .alt.correct{border-color:var(--ok);background:rgba(31,142,125,.10);}
+  .alt.correct .letter{background:var(--ok);border-color:var(--ok);color:#fff;}
+  .alt.wrong{border-color:var(--bad);background:rgba(226,96,59,.10);}
+  .alt.wrong .letter{background:var(--bad);border-color:var(--bad);color:#fff;}
+  .q.graded .alt{cursor:default;}
+
+  /* corrección: buena / mala + desarrollo */
+  .q.buena{border-color:var(--ok);}
+  .q.mala{border-color:var(--bad);}
+  .q.graded .q-num::after{
+    font-family:"Space Mono",monospace;font-size:11px;font-weight:700;
+    display:block;
+  }
+  .q.buena .q-num{background:rgba(31,142,125,.12);border-color:var(--ok);color:var(--ok);}
+  .q.mala .q-num{background:rgba(226,96,59,.12);border-color:var(--bad);color:var(--bad);}
+  .q.graded .q-head::after{
+    margin-left:auto;font-family:"Space Mono",monospace;font-size:12px;font-weight:700;
+    letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;padding-top:4px;
+  }
+  .q.buena .q-head::after{content:"✓ Buena";color:var(--ok);}
+  .q.mala .q-head::after{content:"✗ Mala";color:var(--bad);}
+  .solucion{display:none;margin:14px 0 0;padding:14px 16px;background:var(--paper);
+    border-left:4px solid var(--bad);font-size:15px;line-height:1.6;}
+  .q.mala .solucion{display:block;}
+  .sol-tag{font-family:"Space Mono",monospace;font-size:11px;font-weight:700;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--bad);display:block;margin-bottom:5px;}
+  .sol-txt{font-family:"Space Mono",monospace;color:var(--ink);}
+
+  /* ---------- ACTIONS / SCORE ---------- */
+  .actions{display:flex;gap:12px;flex-wrap:wrap;margin:30px 0 0;}
+  .btn{
+    font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:16px;
+    border:1.5px solid var(--ink);padding:13px 26px;cursor:pointer;transition:transform .08s,background .12s;
+  }
+  .btn-primary{background:var(--ink);color:var(--paper);}
+  .btn-primary:hover{background:var(--violet);border-color:var(--violet);}
+  .btn-ghost{background:transparent;color:var(--ink);}
+  .btn-ghost:hover{background:var(--ink);color:var(--paper);}
+  .btn:active{transform:translateY(1px);}
+
+  .score{
+    margin:26px 0 0;border:2px solid var(--ink);background:var(--card);padding:24px 26px;
+    display:none;
+  }
+  .score.show{display:block;animation:pop .3s ease;}
+  @keyframes pop{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+  .score .big{font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:46px;line-height:1;}
+  .score .big small{font-size:22px;color:var(--ink2);}
+  .score .msg{font-size:16px;color:var(--ink2);margin-top:8px;}
+  .bar{height:12px;background:var(--paper);border:1.5px solid var(--line);margin-top:16px;overflow:hidden;}
+  .bar span{display:block;height:100%;width:0;background:var(--teal);transition:width .8s ease;}
+
+  footer{margin-top:60px;border-top:1.5px solid var(--line);padding-top:20px;
+    font-family:"Space Mono",monospace;font-size:12px;color:var(--ink2);letter-spacing:.04em;}
+
+  .skip{position:absolute;left:-9999px;}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">Matemática · 2° Medio · Álgebra</p>
+    <h1>Productos<br><span class="frac">Notables</span></h1>
+    <div class="hero">
+      <div>
+        <p class="lede">Guía de práctica con alternativas. Antes de calcular, mira el formulario: cada producto notable es, en el fondo, una manera rápida de medir áreas y volúmenes sin tener que multiplicar término a término.</p>
+      </div>
+      <figure class="hero-fig">
+        <svg width="300" height="300" viewBox="0 0 300 300" role="img" aria-label="Cuadrado de lado a más b dividido en a al cuadrado, dos rectángulos a por b, y b al cuadrado">
+          <rect x="0" y="0" width="190" height="190" fill="#E2603B"/>
+          <rect x="190" y="0" width="110" height="190" fill="#E7B23C"/>
+          <rect x="0" y="190" width="190" height="110" fill="#E7B23C"/>
+          <rect x="190" y="190" width="110" height="110" fill="#1F8E7D"/>
+          <g font-family="Space Mono, monospace" font-weight="700" fill="#15213A" text-anchor="middle">
+            <text x="95" y="103" font-size="34" fill="#fff">a²</text>
+            <text x="245" y="103" font-size="22" fill="#15213A">a·b</text>
+            <text x="95" y="252" font-size="22" fill="#15213A">a·b</text>
+            <text x="245" y="252" font-size="26" fill="#fff">b²</text>
+          </g>
+          <g font-family="Space Mono, monospace" font-size="15" fill="#15213A" text-anchor="middle">
+            <text x="95" y="-6" dy="0">a</text>
+            <text x="245" y="-6">b</text>
+          </g>
+          <line x1="0" y1="-2" x2="0" y2="-12" stroke="#15213A"/>
+        </svg>
+        <figcaption>El cuadrado de lado <b>(a+b)</b><br>= <b>a² + 2ab + b²</b></figcaption>
+      </figure>
+    </div>
+
+    <div class="meta">
+      <div><div class="k">Duración</div><div class="v">≈ 60 min</div></div>
+      <div><div class="k">Ítems</div><div class="v">30 preguntas</div></div>
+      <div><div class="k">Tipo</div><div class="v">Alternativas</div></div>
+      <div><div class="k">Puntaje</div><div class="v">1 pto c/u</div></div>
+    </div>
+
+    <div class="timer-wrap">
+      <div class="clock" id="clock" aria-live="off">60:00</div>
+      <button class="tbtn" id="startBtn" type="button">Iniciar</button>
+      <button class="tbtn" id="pauseBtn" type="button">Pausar</button>
+      <button class="tbtn" id="resetBtn" type="button">Reiniciar</button>
+      <span class="tnote">Cronómetro de 1 hora — opcional.</span>
+    </div>
+  </header>
+
+  <!-- ============ FORMULARIO ============ -->
+  <div class="sec-title"><span class="num">00</span><h2>Formulario</h2></div>
+  <div class="cards">
+    <div class="fcard c-coral">
+      <div class="tag">Cuadrado de binomio (suma)</div>
+      <div class="formula">(a <span class="op">+</span> b)<sup>2</sup> = a<sup>2</sup> + 2ab + b<sup>2</sup></div>
+    </div>
+    <div class="fcard c-coral">
+      <div class="tag">Cuadrado de binomio (resta)</div>
+      <div class="formula">(a <span class="op">−</span> b)<sup>2</sup> = a<sup>2</sup> − 2ab + b<sup>2</sup></div>
+    </div>
+    <div class="fcard c-teal">
+      <div class="tag">Suma por su diferencia</div>
+      <div class="formula">(a + b)(a − b) = a<sup>2</sup> − b<sup>2</sup></div>
+    </div>
+    <div class="fcard c-violet">
+      <div class="tag">Binomios con término común</div>
+      <div class="formula">(x + a)(x + b) = x<sup>2</sup> + (a+b)x + ab</div>
+    </div>
+    <div class="fcard c-gold">
+      <div class="tag">Cubo de binomio (suma)</div>
+      <div class="formula">(a + b)<sup>3</sup> = a<sup>3</sup> + 3a<sup>2</sup>b + 3ab<sup>2</sup> + b<sup>3</sup></div>
+    </div>
+    <div class="fcard c-gold">
+      <div class="tag">Cubo de binomio (resta)</div>
+      <div class="formula">(a − b)<sup>3</sup> = a<sup>3</sup> − 3a<sup>2</sup>b + 3ab<sup>2</sup> − b<sup>3</sup></div>
+    </div>
+    <div class="fcard c-violet">
+      <div class="tag">Cuadrado de trinomio</div>
+      <div class="formula">(a + b + c)<sup>2</sup> = a<sup>2</sup> + b<sup>2</sup> + c<sup>2</sup> + 2ab + 2bc + 2ac</div>
+    </div>
+    <div class="fcard c-teal">
+      <div class="tag">Regla express</div>
+      <div class="formula">(primero)<sup>2</sup> ± 2·(primero·segundo) + (segundo)<sup>2</sup></div>
+    </div>
+  </div>
+
+  <!-- ============ INSTRUCCIONES + PREGUNTAS ============ -->
+  <div class="sec-title"><span class="num">01</span><h2>Prueba</h2></div>
+  <p class="qmeta">Marca <b>una</b> alternativa por pregunta. Puedes responder en el orden que quieras. Al terminar pulsa <b>Revisar respuestas</b> para ver tu puntaje; las correctas quedan en verde y los errores en naranjo, con la respuesta correcta marcada.</p>
+
+  <div id="quiz"><!-- preguntas inyectadas por JS --></div>
+
+  <div class="actions">
+    <button class="btn btn-primary" id="checkBtn" type="button">Revisar respuestas</button>
+    <button class="btn btn-ghost" id="clearBtn" type="button">Borrar todo</button>
+  </div>
+
+  <div class="score" id="score" aria-live="polite">
+    <div class="big"><span id="scoreNum">0</span><small>/30</small></div>
+    <div class="msg" id="scoreMsg"></div>
+    <div class="bar"><span id="scoreBar"></span></div>
+  </div>
+
+  <footer>Productos notables · Guía de práctica para 2° medio · Cuadrado y cubo de binomio · suma por diferencia · binomios con término común · trinomio.</footer>
+</div>
+
+<script>
+/* ---------------- BANCO DE PREGUNTAS ---------------- */
+/* a=0, b=1, c=2, d=3, e=4 */
+const QUESTIONS = [
+ {g:"Reconocer el desarrollo",
+  t:'¿Cuál es el desarrollo de <span class="math">(x + 5)²</span>?',
+  o:["x² + 25","x² + 10x + 25","x² + 5x + 25","x² + 25x + 10","x² + 10x + 10"], c:1,
+  d:"(x+5)² = x² + 2·x·5 + 5² = x² + 10x + 25. Nunca olvides el doble producto 2ab."},
+ {t:'El desarrollo de <span class="math">(3a − 4)²</span> es:',
+  o:["9a² − 16","9a² + 24a + 16","9a² − 24a + 16","3a² − 24a + 16","9a² − 12a + 16"], c:2,
+  d:"(3a−4)² = (3a)² − 2·(3a)·4 + 4² = 9a² − 24a + 16. El primer término se eleva al cuadrado completo: (3a)² = 9a²."},
+ {t:'Resuelve <span class="math">(2x + 7)(2x − 7)</span>.',
+  o:["4x² − 49","4x² + 49","2x² − 49","4x² − 28x − 49","4x² − 14x − 49"], c:0,
+  d:"Suma por su diferencia: (2x+7)(2x−7) = (2x)² − 7² = 4x² − 49. No queda término en x."},
+ {t:'¿Cuál de estas expresiones es un trinomio cuadrado perfecto?',
+  o:["x² + 6x + 9","x² + 5x + 9","x² + 6x + 8","x² + 4x + 9","x² + 9x + 6"], c:0,
+  d:"Es perfecto si el término central = 2·√(primero)·√(último). En x²+6x+9: √x²=x, √9=3, y 2·x·3 = 6x ✓. Corresponde a (x+3)²."},
+
+ {g:"Fracciones, decimales y potencias",
+  t:'El cuadrado de binomio <span class="math">(x − ½)²</span> es:',
+  o:["x² − ¼","x² − x + ¼","x² − ½x + ¼","x² − x + ½","x² + x + ¼"], c:1,
+  d:"(x−½)² = x² − 2·x·½ + (½)² = x² − x + ¼. El doble producto 2·x·½ se simplifica a x."},
+ {t:'Desarrolla <span class="math">(0,1 + a)²</span>.',
+  o:["a² + 0,2a + 0,01","a² + 0,1a + 0,01","a² + 0,2a + 0,1","a² + 0,01","a² + 2a + 0,01"], c:0,
+  d:"(0,1+a)² = (0,1)² + 2·0,1·a + a² = 0,01 + 0,2a + a². Ordenado: a² + 0,2a + 0,01."},
+ {t:'Al desarrollar <span class="math">(x² + 4)²</span> se obtiene:',
+  o:["x⁴ + 16","x⁴ + 8x² + 16","x⁴ + 4x² + 16","x² + 8x + 16","x⁴ + 8x⁴ + 16"], c:1,
+  d:"(x²+4)² = (x²)² + 2·x²·4 + 4² = x⁴ + 8x² + 16. Recuerda (x²)² = x⁴."},
+ {t:'El resultado de <span class="math">(√3 + √2)(√3 − √2)</span> es:',
+  o:["1","5","√6","√5","0"], c:0,
+  d:"Es suma por su diferencia: (√3+√2)(√3−√2) = (√3)² − (√2)² = 3 − 2 = 1."},
+
+ {g:"Cubo de binomio",
+  t:'<span class="math">(a + b)³</span> corresponde a:',
+  o:["a³ + b³","a³ + 3a²b + 3ab² + b³","a³ + 3ab + b³","a³ + 2a²b + 2ab² + b³","a³ + a²b + ab² + b³"], c:1,
+  d:"Cubo de binomio: (a+b)³ = a³ + 3a²b + 3ab² + b³. Los coeficientes son 1, 3, 3, 1."},
+ {t:'El desarrollo de <span class="math">(x − 2)³</span> es:',
+  o:["x³ − 8","x³ − 6x² + 12x − 8","x³ − 6x² − 12x − 8","x³ + 6x² + 12x + 8","x³ − 2x² + 4x − 8"], c:1,
+  d:"(x−2)³ = x³ − 3·x²·2 + 3·x·2² − 2³ = x³ − 6x² + 12x − 8. Con resta, los signos alternan: + − + −."},
+ {t:'Desarrolla <span class="math">(2x − 3y)³</span>.',
+  o:["8x³ − 27y³","8x³ − 36x²y + 54xy² − 27y³","8x³ + 36x²y + 54xy² + 27y³","6x³ − 36x²y + 54xy² − 27y³","8x³ − 18x²y + 54xy² − 27y³"], c:1,
+  d:"Con a=2x, b=3y: (2x)³ − 3(2x)²(3y) + 3(2x)(3y)² − (3y)³ = 8x³ − 36x²y + 54xy² − 27y³."},
+
+ {g:"Binomios con término común",
+  t:'Multiplica <span class="math">(x + 3)(x + 5)</span>.',
+  o:["x² + 15x + 8","x² + 8x + 15","x² + 8x + 8","x² + 15x + 15","x² + 35x + 8"], c:1,
+  d:"Término común: (x+3)(x+5) = x² + (3+5)x + 3·5 = x² + 8x + 15. Se suman los números para la x y se multiplican para el término libre."},
+ {t:'Multiplica <span class="math">(x + 6)(x − 2)</span>.',
+  o:["x² + 4x − 12","x² − 4x − 12","x² + 8x − 12","x² + 4x + 12","x² − 12x + 4"], c:0,
+  d:"(x+6)(x−2) = x² + (6−2)x + 6·(−2) = x² + 4x − 12. Ojo con los signos: 6·(−2) = −12."},
+ {t:'El coeficiente del término en <span class="math">x</span> del desarrollo de <span class="math">(x − 9)(x + 4)</span> es:',
+  o:["−5","5","−36","−13","13"], c:0,
+  d:"(x−9)(x+4) = x² + (−9+4)x − 36 = x² − 5x − 36. El coeficiente de x es la suma −9+4 = −5."},
+ {t:'El término independiente (sin variable) de <span class="math">(x − 4)(x + 9)</span> es:',
+  o:["−36","36","5","−5","13"], c:0,
+  d:"(x−4)(x+9) = x² + 5x − 36. El término independiente es el producto (−4)·9 = −36."},
+
+ {g:"Cálculo mental con productos notables",
+  t:'Usando productos notables, ¿cuánto vale <span class="math">101²</span>?',
+  o:["10101","10201","12001","10021","11001"], c:1,
+  d:"101² = (100+1)² = 100² + 2·100·1 + 1² = 10000 + 200 + 1 = 10201."},
+ {t:'El producto <span class="math">53 · 47</span> es igual a:',
+  o:["2491","2500","2509","2401","2451"], c:0,
+  d:"53·47 = (50+3)(50−3) = 50² − 3² = 2500 − 9 = 2491. Truco: el promedio es 50 y la diferencia 3."},
+ {t:'Al calcular <span class="math">99²</span> con productos notables se obtiene:',
+  o:["9801","9999","9081","9901","9899"], c:0,
+  d:"99² = (100−1)² = 100² − 2·100·1 + 1² = 10000 − 200 + 1 = 9801."},
+
+ {g:"Completar y reconocer al revés",
+  t:'¿Qué término falta para que <span class="math">x² + ___ + 49</span> sea un cuadrado de binomio perfecto?',
+  o:["7x","14x","49x","14","28x"], c:1,
+  d:"Como 49 = 7², el término central es el doble producto 2·x·7 = 14x. Queda x² + 14x + 49 = (x+7)²."},
+ {t:'Si <span class="math">(x + k)² = x² + 14x + 49</span>, entonces el valor de <span class="math">k</span> es:',
+  o:["7","14","49","2","49/2"], c:0,
+  d:"(x+k)² = x² + 2kx + k². Igualando: 2k = 14 → k = 7 (y k² = 49 ✓)."},
+ {t:'La expresión <span class="math">9x² − 25</span> puede escribirse como el producto:',
+  o:["(3x − 5)(3x + 5)","(3x − 5)²","(9x − 5)(x + 5)","(3x + 5)²","(9x − 25)(x + 1)"], c:0,
+  d:"Es una diferencia de cuadrados: 9x² − 25 = (3x)² − 5² = (3x − 5)(3x + 5)."},
+ {t:'¿Cuál expresión equivale a <span class="math">a² + 10a + 25</span>?',
+  o:["(a + 5)²","(a + 25)²","(a − 5)²","(a + 5)(a − 5)","(a + 10)(a + 15)"], c:0,
+  d:"√25 = 5 y 2·a·5 = 10a, que es justo el término central. Por lo tanto a² + 10a + 25 = (a+5)²."},
+
+ {g:"Trinomio y combinaciones",
+  t:'Desarrolla el cuadrado de trinomio <span class="math">(a + b + 2)²</span>.',
+  o:["a² + b² + 4 + 2ab + 4a + 4b","a² + b² + 4","a² + b² + 4 + 2ab","a² + b² + 2 + 2ab + 2a + 2b","a² + b² + 4 + ab + 4a + 4b"], c:0,
+  d:"(a+b+c)² = a²+b²+c²+2ab+2bc+2ac, con c=2: a²+b²+4+2ab+2·b·2+2·a·2 = a²+b²+4+2ab+4b+4a."},
+ {t:'Desarrolla <span class="math">(5m + 2n)²</span>.',
+  o:["25m² + 4n²","25m² + 20mn + 4n²","25m² + 10mn + 4n²","5m² + 20mn + 2n²","25m² + 20mn + 2n²"], c:1,
+  d:"(5m+2n)² = (5m)² + 2·(5m)·(2n) + (2n)² = 25m² + 20mn + 4n²."},
+ {t:'Al simplificar <span class="math">(x + 4)² − (x − 4)²</span> se obtiene:',
+  o:["16x","32","8x","2x² + 32","0"], c:0,
+  d:"(x+4)² − (x−4)² = (x²+8x+16) − (x²−8x+16) = 16x. Atajo: [(x+4)+(x−4)]·[(x+4)−(x−4)] = (2x)(8) = 16x."},
+
+ {g:"Pensar antes de calcular",
+  t:'¿Cuál de las siguientes igualdades es <b>FALSA</b>?',
+  o:["(a − b)² = a² − 2ab + b²","(a + b)(a − b) = a² − b²","(a + b)² = a² + b²","(a + b)³ = a³ + 3a²b + 3ab² + b³","(x + 2)(x + 3) = x² + 5x + 6"], c:2,
+  d:"La falsa es (a+b)² = a²+b²: le falta el doble producto. Lo correcto es (a+b)² = a² + 2ab + b²."},
+ {t:'¿Cuál expresión <b>NO</b> es del tipo "suma por su diferencia"?',
+  o:["(x + 7)(x − 7)","(2a + b)(2a − b)","(3 − m)(3 + m)","(x + 5)(x + 5)","(xy + 1)(xy − 1)"], c:3,
+  d:"La suma por diferencia necesita los mismos términos con signos opuestos. (x+5)(x+5) son iguales: es (x+5)², un cuadrado de binomio."},
+
+ {g:"Aplicaciones geométricas",
+  t:'El área de un cuadrado cuyo lado mide <span class="math">(2x + 3)</span> cm es:',
+  o:["4x² + 9","4x² + 12x + 9","2x² + 12x + 9","4x² + 6x + 9","4x² + 12x + 6"], c:1,
+  d:"Área del cuadrado = lado² = (2x+3)² = (2x)² + 2·(2x)·3 + 3² = 4x² + 12x + 9 (cm²)."},
+ {t:'Un terreno rectangular tiene lados <span class="math">(x + 8)</span> m y <span class="math">(x − 8)</span> m. Su área es:',
+  o:["x² − 64","x² + 64","x² − 16x − 64","x² − 64x","2x"], c:0,
+  d:"Área del rectángulo = (x+8)(x−8) = x² − 8² = x² − 64 (m²). Es suma por su diferencia."},
+ {t:'El volumen de un cubo de arista <span class="math">(x + 1)</span> es:',
+  o:["x³ + 1","x³ + 3x² + 3x + 1","x³ + 3x + 1","3x³ + 3x² + x + 1","x³ + x² + x + 1"], c:1,
+  d:"Volumen del cubo = arista³ = (x+1)³ = x³ + 3x²·1 + 3x·1² + 1³ = x³ + 3x² + 3x + 1."}
+];
+
+/* ---------------- RENDER ---------------- */
+const letters=["a","b","c","d","e"];
+const quiz=document.getElementById("quiz");
+const answers={};
+QUESTIONS.forEach((q,i)=>{
+  if(q.g){
+    const gl=document.createElement("div");
+    gl.className="group-label";
+    gl.textContent=q.g;
+    quiz.appendChild(gl);
+  }
+  const card=document.createElement("div");
+  card.className="q";card.dataset.i=i;card.dataset.c=q.c;
+  card.innerHTML=`<div class="q-head"><div class="q-num">${String(i+1).padStart(2,"0")}</div>
+     <p class="q-text">${q.t}</p></div><div class="alts"></div>
+     <div class="solucion"><span class="sol-tag">Desarrollo</span><span class="sol-txt">${q.d||""}</span></div>`;
+  const alts=card.querySelector(".alts");
+  q.o.forEach((opt,j)=>{
+    const b=document.createElement("button");
+    b.type="button";b.className="alt";b.dataset.j=j;
+    b.innerHTML=`<span class="letter">${letters[j]}</span><span class="val">${opt}</span>`;
+    b.addEventListener("click",()=>{
+      if(card.classList.contains("graded"))return;
+      alts.querySelectorAll(".alt").forEach(a=>a.classList.remove("sel"));
+      b.classList.add("sel");
+      answers[i]=j;
+    });
+    alts.appendChild(b);
+  });
+  quiz.appendChild(card);
+});
+
+/* ---------------- REVISAR ---------------- */
+const scoreBox=document.getElementById("score");
+document.getElementById("checkBtn").addEventListener("click",()=>{
+  let correct=0;
+  document.querySelectorAll(".q").forEach(card=>{
+    const i=+card.dataset.i, c=+card.dataset.c;
+    card.classList.add("graded");
+    const alts=card.querySelectorAll(".alt");
+    alts.forEach(a=>{a.classList.remove("sel");
+      const j=+a.dataset.j;
+      if(j===c)a.classList.add("correct");
+      else if(answers[i]===j)a.classList.add("wrong");
+    });
+    if(answers[i]===c){
+      correct++;
+      card.classList.add("buena");
+    }else{
+      card.classList.add("mala");      // muestra el desarrollo (mala o en blanco)
+    }
+  });
+  const pct=Math.round(correct/QUESTIONS.length*100);
+  document.getElementById("scoreNum").textContent=correct;
+  let msg;
+  if(pct>=90)msg="¡Excelente! Dominas los productos notables.";
+  else if(pct>=70)msg="Muy bien. Revisa los ítems en naranjo para afinar detalles.";
+  else if(pct>=50)msg="Vas encaminado. Repasa el formulario y vuelve a intentar los errores.";
+  else msg="A repasar: vuelve al formulario y fíjate en el doble producto 2ab.";
+  document.getElementById("scoreMsg").textContent=`${correct} de ${QUESTIONS.length} correctas · ${pct}%. ${msg}`;
+  scoreBox.classList.add("show");
+  document.getElementById("scoreBar").style.width=pct+"%";
+  scoreBox.scrollIntoView({behavior:"smooth",block:"center"});
+});
+
+document.getElementById("clearBtn").addEventListener("click",()=>{
+  for(const k in answers)delete answers[k];
+  document.querySelectorAll(".q").forEach(card=>{
+    card.classList.remove("graded","buena","mala");
+    card.querySelectorAll(".alt").forEach(a=>a.classList.remove("sel","correct","wrong"));
+  });
+  scoreBox.classList.remove("show");
+  window.scrollTo({top:0,behavior:"smooth"});
+});
+
+/* ---------------- CRONÓMETRO ---------------- */
+let total=60*60, left=total, tick=null;
+const clock=document.getElementById("clock");
+function paint(){
+  const m=Math.floor(left/60), s=left%60;
+  clock.textContent=`${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+  clock.classList.toggle("low",left<=300);
+}
+function start(){
+  if(tick)return;
+  tick=setInterval(()=>{
+    if(left<=0){clearInterval(tick);tick=null;clock.textContent="00:00";return;}
+    left--;paint();
+  },1000);
+}
+document.getElementById("startBtn").addEventListener("click",start);
+document.getElementById("pauseBtn").addEventListener("click",()=>{clearInterval(tick);tick=null;});
+document.getElementById("resetBtn").addEventListener("click",()=>{clearInterval(tick);tick=null;left=total;paint();});
+paint();
+</script>
+</body>
+</html>
