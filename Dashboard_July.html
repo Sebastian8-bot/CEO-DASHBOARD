@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<!-- saved from url=(0243)file:///Users/Konnan/Library/Application%20Support/Claude/local-agent-mode-sessions/6c0d9bbb-660f-4bd9-aabc-57cc00201e99/0ca8e2fc-422c-4486-8e5c-5735b6e3806b/local_4797e8e3-999e-42e8-bb19-203cdaa1fb12/outputs/Medismart_Dashboard_Ejecutivo.html -->
+<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Medismart — Dashboard Ejecutivo Integral</title>
+<style>
+  :root {
+    --navy: #1F3864; --navy2: #4472C4; --teal: #1F9D8A; --amber: #E8A33D;
+    --red: #C0392B; --green: #3C9F5C; --grey: #9AA0A6; --mauve: #8E6C88;
+    --ink: #1A1A2E; --ink-soft: #5B5F6B; --ink-mute: #8A8F99;
+    --line: #E7E9EE; --card: #FFFFFF; --bg: #F4F6F9;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin:0; font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif; background:var(--bg); color:var(--ink); -webkit-font-smoothing:antialiased; }
+  .wrap { max-width: 1320px; margin: 0 auto; padding: 0 44px 70px; }
+
+  .topbar { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,0.94); backdrop-filter: blur(6px); border-bottom: 2px solid var(--teal); }
+  .topbar-inner { max-width: 1320px; margin: 0 auto; padding: 14px 44px; display: flex; align-items: center; justify-content: space-between; }
+  .topbar .brand { font-size: 15px; font-weight: 700; color: var(--navy); letter-spacing: 0.4px; }
+  .topbar nav { display: flex; gap: 4px; flex-wrap: wrap; }
+  .topbar nav a { font-size: 12.5px; color: var(--ink-soft); text-decoration: none; padding: 6px 11px; border-radius: 7px; font-weight: 500; }
+  .topbar nav a:hover { background: rgba(31,157,138,0.1); color: var(--teal); }
+  .topbar nav a.active { background: var(--teal); color: #fff; }
+
+  header.hero { padding: 38px 0 26px; border-bottom: 3px solid var(--teal); margin-bottom: 6px; display:flex; justify-content:space-between; align-items:flex-end; }
+  header.hero .brand-big { font-size: 30px; font-weight: 700; color: var(--navy); }
+  header.hero .subtitle { font-size: 13.5px; color: var(--ink-soft); margin-top: 5px; }
+  header.hero .meta { text-align: right; font-size: 12px; color: var(--ink-mute); line-height: 1.7; }
+
+  section { scroll-margin-top: 66px; padding: 40px 0 8px; border-top: 1px solid var(--line); }
+  section:first-of-type { border-top: none; }
+  .kicker { font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--teal); margin: 0 0 6px; }
+  .sec-title { font-size: 21px; font-weight: 700; color: var(--navy); margin: 0 0 6px; }
+  .sec-desc { font-size: 13.5px; color: var(--ink-soft); margin: 0 0 22px; max-width: 920px; line-height: 1.6; }
+
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 10px; }
+  .kpi-card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 20px 22px; box-shadow: 0 1px 2px rgba(20,30,60,0.04); }
+  .kpi-card .label { font-size: 12.5px; color: var(--ink-soft); margin-bottom: 8px; }
+  .kpi-card .value { font-size: 27px; font-weight: 700; color: var(--navy); line-height: 1.1; }
+  .kpi-card .value.neg { color: var(--red); }
+  .kpi-card .delta { font-size: 12.3px; margin-top: 8px; }
+  .kpi-card .delta.pos { color: var(--green); }
+  .kpi-card .delta.neg { color: var(--red); }
+  .kpi-card .delta.muted { color: var(--ink-mute); }
+
+  .findings { list-style: none; margin: 22px 0; padding: 0; display: grid; gap: 10px; }
+  .findings li { font-size: 13.5px; color: var(--ink-soft); line-height: 1.55; padding: 12px 16px; background: var(--card); border: 1px solid var(--line); border-radius: 10px; }
+  .findings li b { color: var(--navy); font-weight: 700; }
+
+  table.kpitable { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 18px 0 8px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  table.kpitable th { text-align: right; font-size: 11px; text-transform: uppercase; letter-spacing: .5px; color: #fff; background: var(--teal); font-weight: 600; padding: 12px 16px; }
+  table.kpitable th:first-child { text-align: left; }
+  table.kpitable td { padding: 11px 16px; border-bottom: 1px solid var(--line); text-align: right; font-variant-numeric: tabular-nums; }
+  table.kpitable td:first-child { text-align: left; font-weight: 600; color: var(--navy); }
+  table.kpitable tr:last-child td { border-bottom: none; }
+  table.kpitable tr:nth-child(even) { background: #FAFBFC; }
+  table.kpitable td.pos { color: var(--green); font-weight: 700; }
+  table.kpitable td.neg { color: var(--red); font-weight: 700; }
+  table.kpitable td.flat { color: var(--ink-mute); font-weight: 600; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; margin-bottom: 20px; }
+  .panel { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 20px 22px 16px; box-shadow: 0 1px 2px rgba(20,30,60,0.04); }
+  .panel-title { font-size: 13px; font-weight: 700; color: var(--ink); margin: 0 0 4px; }
+  .panel-sub { font-size: 11.5px; color: var(--ink-mute); margin: 0 0 12px; }
+  .legend { display: flex; gap: 16px; margin: 0 0 10px; font-size: 11.5px; color: var(--ink-soft); flex-wrap: wrap; }
+  .legend span { display: flex; align-items: center; gap: 5px; }
+  .legend .sw { width: 13px; height: 3px; border-radius: 2px; display: inline-block; }
+  .legend .dotsw { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+  .chart-box { position: relative; width: 100%; }
+
+  .country-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .country-table th { text-align: left; font-size: 10.5px; text-transform: uppercase; letter-spacing: .5px; color: var(--ink-mute); font-weight: 600; padding: 0 6px 8px; border-bottom: 1px solid var(--line); }
+  .country-table td { padding: 9px 6px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+  .country-table tr:last-child td { border-bottom: none; }
+  .country-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .pos-text { color: var(--green); font-weight: 600; }
+  .neg-text { color: var(--red); font-weight: 600; }
+
+  .attn-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .attn-card { background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--amber); border-radius: 10px; padding: 16px 18px; box-shadow: 0 1px 2px rgba(20,30,60,0.04); }
+  .attn-card .who { font-size: 13.5px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+  .attn-card .desc { font-size: 12.6px; color: var(--ink-soft); line-height: 1.5; }
+
+  .strat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .strat-box { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; border-left: 5px solid var(--navy); }
+  .strat-box.green { border-left-color: var(--green); }
+  .strat-box.red { border-left-color: var(--red); }
+  .strat-box.amber { border-left-color: var(--amber); }
+  .strat-box h4 { margin: 0 0 10px; font-size: 14.5px; font-weight: 700; }
+  .strat-box.green h4 { color: var(--green); }
+  .strat-box.red h4 { color: var(--red); }
+  .strat-box.amber h4 { color: var(--amber); }
+  .strat-box ul { margin: 0; padding-left: 18px; }
+  .strat-box li { font-size: 12.6px; color: var(--ink-soft); line-height: 1.55; margin-bottom: 7px; }
+
+  .callout { background: #F7F9FC; border: 1px solid var(--line); border-radius: 10px; padding: 14px 18px; font-size: 12.8px; color: var(--ink-soft); line-height: 1.55; margin: 6px 0 20px; }
+  .callout b { color: var(--navy); }
+
+  footer { margin-top: 46px; padding: 20px 0; border-top: 1px solid var(--line); font-size: 11.5px; color: var(--ink-mute); display: flex; justify-content: space-between; }
+  @media (max-width: 980px) {
+    .kpi-grid, .grid-3 { grid-template-columns: 1fr 1fr; }
+    .grid-2, .strat-grid, .attn-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">MEDISMART · Dashboard ejecutivo</div>
+    <nav>
+      <a href="file:///Users/Konnan/Library/Application%20Support/Claude/local-agent-mode-sessions/6c0d9bbb-660f-4bd9-aabc-57cc00201e99/0ca8e2fc-422c-4486-8e5c-5735b6e3806b/local_4797e8e3-999e-42e8-bb19-203cdaa1fb12/outputs/Medismart_Dashboard_Ejecutivo.html#resumen">Resumen</a>
+      <a href="file:///Users/Konnan/Library/Application%20Support/Claude/local-agent-mode-sessions/6c0d9bbb-660f-4bd9-aabc-57cc00201e99/0ca8e2fc-422c-4486-8e5c-5735b6e3806b/local_4797e8e3-999e-42e8-bb19-203cdaa1fb12/outputs/Medismart_Dashboard_Ejecutivo.html#consolidado">Consolidado</a>
+      <a href="file:///Users/Konnan/Library/Application%20Support/Claude/local-agent-mode-sessions/6c0d9bbb-660f-4bd9-aabc-57cc00201e99/0ca8e2fc-422c-4486-8e5c-5735b6e3806b/local_4797e8e3-999e-42e8-bb19-203cdaa1fb12/outputs/Medismart_Dashboard_Ejecutivo.html#chile">Chile</a>
+      <a href="file:///Users/Konnan/Library/Application%20Support/Claude/local-agent-mode-sessions/6c0d9bbb-660f-4bd9-aabc-57cc00201e99/0ca8e2fc-422c-4486-8e5c-5735b6e3806b/local_4797e8e3-999e-42e8-bb19-203cdaa1fb12/outputs/Medismart_Dashboard_Ejecutivo.html#colombia">Colombia</a>
+      <a href="file:///Users/Konnan/Library/Application%20Support/Claude/local-agent-mode-sessions/6c0d9bbb-660f-4bd9-aabc-57cc00201e99/0ca8e2fc-422c-4486-8e5c-5735b6e3806b/local_4797e8e3-999e-42e8-bb19-203cdaa1fb12/outputs/Medismart_Dashboard_Ejecutivo.html#mexico">México</a>
+      <a href="file:///Users/Konnan/Library/Application%20Support/Claude/local-agent-mode-sessions/6c0d9bbb-660f-4bd9-aabc-57cc00201e99/0ca8e2fc-422c-4486-8e5c-5735b6e3806b/local_4797e8e3-999e-42e8-bb19-203cdaa1fb12/outputs/Medismart_Dashboard_Ejecutivo.html#comparativo">Comparativo</a>
+      <a href="file:///Users/Konnan/Library/Application%20Support/Claude/local-agent-mode-sessions/6c0d9bbb-660f-4bd9-aabc-57cc00201e99/0ca8e2fc-422c-4486-8e5c-5735b6e3806b/local_4797e8e3-999e-42e8-bb19-203cdaa1fb12/outputs/Medismart_Dashboard_Ejecutivo.html#tendencia">Tendencia</a>
+      <a href="file:///Users/Konnan/Library/Application%20Support/Claude/local-agent-mode-sessions/6c0d9bbb-660f-4bd9-aabc-57cc00201e99/0ca8e2fc-422c-4486-8e5c-5735b6e3806b/local_4797e8e3-999e-42e8-bb19-203cdaa1fb12/outputs/Medismart_Dashboard_Ejecutivo.html#atencion">Atención</a>
+      <a href="file:///Users/Konnan/Library/Application%20Support/Claude/local-agent-mode-sessions/6c0d9bbb-660f-4bd9-aabc-57cc00201e99/0ca8e2fc-422c-4486-8e5c-5735b6e3806b/local_4797e8e3-999e-42e8-bb19-203cdaa1fb12/outputs/Medismart_Dashboard_Ejecutivo.html#deuda">Deuda</a>
+      <a href="file:///Users/Konnan/Library/Application%20Support/Claude/local-agent-mode-sessions/6c0d9bbb-660f-4bd9-aabc-57cc00201e99/0ca8e2fc-422c-4486-8e5c-5735b6e3806b/local_4797e8e3-999e-42e8-bb19-203cdaa1fb12/outputs/Medismart_Dashboard_Ejecutivo.html#estrategia">Estrategia</a>
+    </nav>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div>
+      <div class="brand-big">MEDISMART</div>
+      <div class="subtitle">Informe financiero integral 2024–2026 · Dashboard ejecutivo</div>
+    </div>
+    <div class="meta">
+      Cierre mayo 2026 (YTD enero-mayo) · cifras en USD<br>
+      Fuente: Financial Frame Chile, Colombia, México y Holding (2026-05)<br>
+      Preparado para: Chief Executive Officer · Confidencial
+    </div>
+  </header>
+
+  <!-- ============ RESUMEN ============ -->
+  <section id="resumen">
+    <p class="kicker">01 — Resumen ejecutivo</p>
+    <h2 class="sec-title">El Grupo crece en ventas, pero la rentabilidad se deterioró</h2>
+    <p class="sec-desc">Ventas YTD +18,3% YoY, con margen bruto mejorando de 42,5% a 44,1% — la operación subyacente es más rentable que hace un año. Pero el EBITDA consolidado cayó de positivo a negativo, 113,6% por debajo del presupuesto. La causa no es comercial: es la estructura de costos corporativos concentrada en Chile.</p>
+
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="label">Ventas YTD</div>
+        <div class="value">$4.16M</div>
+        <div class="delta pos">▲ +18.3% YoY</div>
+        <div class="delta neg">▼ -14.6% vs. presupuesto</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">Margen bruto YTD</div>
+        <div class="value">44.1%</div>
+        <div class="delta pos">▲ vs. 42.5% en 2025</div>
+        <div class="delta muted">$1.83M en dólares</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">EBITDA YTD</div>
+        <div class="value neg">-$160k</div>
+        <div class="delta neg">▼ desde +$11k en 2025</div>
+        <div class="delta neg">-113.6% vs. presupuesto</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">Utilidad neta YTD</div>
+        <div class="value neg">-$269k</div>
+        <div class="delta pos">▲ +71.9% YoY (mejora)</div>
+        <div class="delta neg">-126.5% vs. presupuesto</div>
+      </div>
+    </div>
+
+    <ul class="findings">
+      <li><b>La caída de EBITDA es el hallazgo central del período.</b> De +$11k YTD en 2025 a -$160k en 2026 (brecha de -$171k), 113,6% bajo presupuesto — pese a que el margen bruto mejoró.</li>
+      <li><b>Colombia es hoy el motor de crecimiento y rentabilidad.</b> +68,7% YoY en ventas, margen EBITDA de 19,5% — el más alto del Grupo entre los tres países principales.</li>
+      <li><b>Chile concentra la brecha de EBITDA de todo el Grupo.</b> Su Adjusted EBITDA es sano (+$617k), pero el 100% de los gastos corporativos y one-off del holding se le asigna, arrastrando su EBITDA reportado a terreno negativo.</li>
+      <li><b>El presupuesto 2026 luce sobre-optimista.</b> Implica ventas +68% y EBITDA 5,0x vs. 2025 real — un salto que el ritmo de enero-mayo no sostiene.</li>
+      <li><b>La utilidad neta mejora YoY pese a todo lo anterior.</b> De -$959k en 2025 a -$269k en 2026 (+71,9%), impulsada por Colombia y una menor pérdida en Chile.</li>
+    </ul>
+
+    <table class="kpitable">
+      <thead><tr><th>Indicador</th><th>Real 2026</th><th>Presup. 2026</th><th>Var. % vs Presup.</th><th>Real 2025</th><th>Var. % YoY</th></tr></thead>
+      <tbody>
+        <tr><td>Ventas</td><td>$4,156k</td><td>$4,867k</td><td class="neg">-14.6%</td><td>$3,513k</td><td class="pos">+18.3%</td></tr>
+        <tr><td>Margen bruto</td><td>$1,832k</td><td>$2,904k</td><td class="neg">-36.9%</td><td>$1,493k</td><td class="pos">+22.7%</td></tr>
+        <tr><td>SG&amp;A</td><td>-$1,215k</td><td>-$1,157k</td><td class="neg">-5.0%</td><td>-$1,322k</td><td class="pos">+8.1%</td></tr>
+        <tr><td>EBITDA</td><td>-$160k</td><td>$1,173k</td><td class="neg">-113.6%</td><td>$11k</td><td class="neg">-1,488.6%</td></tr>
+        <tr><td>Utilidad neta</td><td>-$269k</td><td>$1,017k</td><td class="neg">-126.5%</td><td>-$959k</td><td class="pos">+71.9%</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:11px; color:var(--ink-mute); margin:6px 2px 0;">En SG&amp;A, verde = gasto menor al de referencia (favorable). El % YoY de EBITDA se ve extremo porque la base 2025 (US$11k) es casi cero — la lectura correcta es la cifra en dólares.</p>
+
+    <div class="panel" style="margin-top:20px;">
+      <div class="panel-title">Ventas mensuales consolidadas (USD)</div>
+      <div class="legend">
+        <span><span class="sw" style="background:var(--grey)"></span>2025 real</span>
+        <span><span class="sw" style="background:var(--navy)"></span>2026 real</span>
+        <span><span class="sw" style="background:var(--amber)"></span>2026 presupuesto</span>
+      </div>
+      <div class="chart-box" style="height:260px;"><canvas id="c01" width="3558" height="780" style="display: block; box-sizing: border-box; height: 260px; width: 1186px;"></canvas></div>
+    </div>
+  </section>
+
+  <!-- ============ CONSOLIDADO ============ -->
+  <section id="consolidado">
+    <p class="kicker">02 — Consolidado, Grupo Medismart</p>
+    <h2 class="sec-title">EBITDA mensual y descomposición Ventas → Utilidad Neta</h2>
+    <p class="sec-desc">2025 osciló entre positivo y negativo mes a mes; 2026 partió más débil y no muestra el punto de inflexión que el presupuesto asumía desde abril. La cascada aísla dónde se pierde el margen: el salto entre Adjusted EBITDA (+$617k) y EBITDA (tras gastos corporativos y one-off) es la señal más importante del período.</p>
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-title">EBITDA mensual consolidado (USD)</div>
+        <div class="legend">
+          <span><span class="sw" style="background:var(--grey)"></span>2025 real</span>
+          <span><span class="sw" style="background:var(--navy)"></span>2026 real</span>
+          <span><span class="sw" style="background:var(--amber)"></span>2026 presupuesto</span>
+        </div>
+        <div class="chart-box" style="height:280px;"><canvas id="c02" width="1680" height="840" style="display: block; box-sizing: border-box; height: 280px; width: 560px;"></canvas></div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">De Ventas a Utilidad Neta — YTD ene-may 2026 (USD)</div>
+        <div class="panel-sub">Cascada: barras azules/rojas son subtotales; verdes/rojas son variaciones</div>
+        <div class="chart-box" style="height:280px;"><canvas id="c03" width="1680" height="840" style="display: block; box-sizing: border-box; height: 280px; width: 560px;"></canvas></div>
+      </div>
+    </div>
+    <div class="callout"><b>Lectura clave:</b> no es un problema de ventas ni de costo directo — es la estructura de costos corporativos y las partidas one-off, 100% asignadas a Chile, lo que arrastra el EBITDA consolidado a terreno negativo.</div>
+  </section>
+
+  <!-- ============ CHILE ============ -->
+  <section id="chile">
+    <p class="kicker">03 — Chile</p>
+    <h2 class="sec-title">Adjusted EBITDA sano, EBITDA reportado negativo</h2>
+    <p class="sec-desc">Chile es el país más grande del Grupo (47% de ventas), pero concentra la mayor parte del deterioro de rentabilidad. Ventas YTD $1.942k (-11,5% YoY, -10,5% vs. presupuesto). El Adjusted EBITDA es +$316k (margen 16,3%); tras $777k de gastos corporativos y one-off del holding —asignados 100% a Chile— el EBITDA reportado cae a -$461k.</p>
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-title">Adjusted EBITDA vs. EBITDA reportado — ene-may 2026 (USD)</div>
+        <div class="legend">
+          <span><span class="sw" style="background:var(--teal)"></span>Adjusted EBITDA (antes de corp. + one-off)</span>
+          <span><span class="sw" style="background:var(--red)"></span>EBITDA reportado</span>
+        </div>
+        <div class="chart-box" style="height:260px;"><canvas id="c04" width="1518" height="780" style="display: block; box-sizing: border-box; height: 260px; width: 506px;"></canvas></div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Proyección de cierre de año 2026 vs. 2025 y presupuesto</div>
+        <div class="panel-sub">Único país con forecast interno mes a mes hasta diciembre</div>
+        <div class="grid-2" style="gap:14px; margin-bottom:0;">
+          <div class="chart-box" style="height:220px;"><canvas id="c05a" width="900" height="660" style="display: block; box-sizing: border-box; height: 220px; width: 300px;"></canvas></div>
+          <div class="chart-box" style="height:220px;"><canvas id="c05b" width="900" height="660" style="display: block; box-sizing: border-box; height: 220px; width: 300px;"></canvas></div>
+        </div>
+      </div>
+    </div>
+    <div class="callout"><b>Proyección FY2026:</b> ventas $4.987k (línea con 2025, -14,2% vs. presupuesto). EBITDA -$983k, un retroceso de $1.648k frente a 2025 y una brecha de $2.925k frente al presupuesto.</div>
+  </section>
+
+  <!-- ============ COLOMBIA ============ -->
+  <section id="colombia">
+    <p class="kicker">04 — Colombia</p>
+    <h2 class="sec-title">El mejor desempeño del Grupo — crecimiento sostenido, no un salto puntual</h2>
+    <p class="sec-desc">Ventas YTD $1.932k (+68,7% YoY, +13,0% vs. presupuesto) — el único de los tres países principales que supera su meta. Margen bruto 49,6%, el más alto del Grupo. No carga con gastos corporativos, por lo que EBITDA reportado = Adjusted EBITDA: $376k (margen 19,5%). Ya representa el 46% de las ventas del Grupo (37% en 2025), en empate técnico con Chile.</p>
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-title">Ventas mensuales (USD)</div>
+        <div class="legend">
+          <span><span class="sw" style="background:var(--grey)"></span>2025 real</span>
+          <span><span class="sw" style="background:var(--navy)"></span>2026 real</span>
+          <span><span class="sw" style="background:var(--amber)"></span>2026 presupuesto</span>
+        </div>
+        <div class="chart-box" style="height:260px;"><canvas id="c06" width="1680" height="780" style="display: block; box-sizing: border-box; height: 260px; width: 560px;"></canvas></div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">EBITDA mensual (USD)</div>
+        <div class="legend">
+          <span><span class="sw" style="background:var(--grey)"></span>2025 real</span>
+          <span><span class="sw" style="background:var(--navy)"></span>2026 real</span>
+          <span><span class="sw" style="background:var(--amber)"></span>2026 presupuesto</span>
+        </div>
+        <div class="chart-box" style="height:260px;"><canvas id="c07" width="1680" height="780" style="display: block; box-sizing: border-box; height: 260px; width: 560px;"></canvas></div>
+      </div>
+    </div>
+    <div class="callout"><b>Estructura de costos:</b> costo directo +79% YoY (algo por encima del +69% de ventas, leve compresión de margen), pero SG&amp;A creció solo +58% — apalancamiento operativo en la estructura fija.</div>
+  </section>
+
+  <!-- ============ MEXICO ============ -->
+  <section id="mexico">
+    <p class="kicker">05 — México</p>
+    <h2 class="sec-title">Mejora consistente, presupuesto desconectado de la escala real</h2>
+    <p class="sec-desc">Operación pequeña (2,5% de las ventas del Grupo), ventas YTD $105k (+74,4% YoY, -56,6% vs. presupuesto). El presupuesto se dispara a partir de julio a un ritmo que la operación actual no sostiene. La señal más alentadora: la pérdida EBITDA mensual de 2026 es consistentemente menor que la de 2025 los cinco meses del período.</p>
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-title">Ventas mensuales (USD)</div>
+        <div class="legend">
+          <span><span class="sw" style="background:var(--grey)"></span>2025 real</span>
+          <span><span class="sw" style="background:var(--navy)"></span>2026 real</span>
+          <span><span class="sw" style="background:var(--amber)"></span>2026 presupuesto</span>
+        </div>
+        <div class="chart-box" style="height:260px;"><canvas id="c08" width="1680" height="780" style="display: block; box-sizing: border-box; height: 260px; width: 560px;"></canvas></div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">EBITDA mensual (USD)</div>
+        <div class="legend">
+          <span><span class="sw" style="background:var(--grey)"></span>2025 real</span>
+          <span><span class="sw" style="background:var(--navy)"></span>2026 real</span>
+          <span><span class="sw" style="background:var(--amber)"></span>2026 presupuesto</span>
+        </div>
+        <div class="chart-box" style="height:260px;"><canvas id="c09" width="1680" height="780" style="display: block; box-sizing: border-box; height: 260px; width: 560px;"></canvas></div>
+      </div>
+    </div>
+    <div class="callout"><b>Costos:</b> costo directo casi estable YoY (-5,9%); SG&amp;A se redujo -29,1% pese al crecimiento de ventas — disciplina de gasto real, no solo efecto de base baja.</div>
+  </section>
+
+  <!-- ============ COMPARATIVO ============ -->
+  <section id="comparativo">
+    <p class="kicker">06 — Comparativo entre países</p>
+    <h2 class="sec-title">Chile, Colombia, México, Costa Rica y Farmazon, lado a lado</h2>
+    <p class="sec-desc">USA aún no registra actividad comercial en el período y se excluye de estas vistas.</p>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-title">Ventas YTD: real vs. presupuesto, por país (USD)</div>
+        <div class="chart-box" style="height:260px;"><canvas id="c10" width="1680" height="780" style="display: block; box-sizing: border-box; height: 260px; width: 560px;"></canvas></div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Crecimiento de ventas YoY por país</div>
+        <div class="chart-box" style="height:260px;"><canvas id="c11" width="1680" height="780" style="display: block; box-sizing: border-box; height: 260px; width: 560px;"></canvas></div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-title">Márgenes por país — % sobre ventas</div>
+        <div class="legend">
+          <span><span class="sw" style="background:#B7C6E8"></span>Margen bruto</span>
+          <span><span class="sw" style="background:var(--teal)"></span>Adjusted EBITDA</span>
+          <span><span class="sw" style="background:var(--red)"></span>EBITDA reportado</span>
+        </div>
+        <div class="chart-box" style="height:270px;"><canvas id="c12" width="1680" height="810" style="display: block; box-sizing: border-box; height: 270px; width: 560px;"></canvas></div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Ranking de rentabilidad — margen EBITDA YTD</div>
+        <div class="chart-box" style="height:270px;"><canvas id="c13" width="1680" height="810" style="display: block; box-sizing: border-box; height: 270px; width: 560px;"></canvas></div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-title">Cumplimiento de presupuesto YTD, por país</div>
+        <div class="panel-sub">Ventas (izq.) y EBITDA (der.) — escalas distintas por la magnitud de México</div>
+        <div class="grid-2" style="gap:14px; margin-bottom:0;">
+          <div class="chart-box" style="height:230px;"><canvas id="c14a" width="900" height="690" style="display: block; box-sizing: border-box; height: 230px; width: 300px;"></canvas></div>
+          <div class="chart-box" style="height:230px;"><canvas id="c14b" width="900" height="690" style="display: block; box-sizing: border-box; height: 230px; width: 300px;"></canvas></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Mix de ventas por país — 2025 vs. 2026 YTD</div>
+        <div class="legend">
+          <span><span class="dotsw" style="background:var(--navy)"></span>Chile</span>
+          <span><span class="dotsw" style="background:var(--teal)"></span>Colombia</span>
+          <span><span class="dotsw" style="background:var(--amber)"></span>México</span>
+          <span><span class="dotsw" style="background:var(--mauve)"></span>Costa Rica</span>
+          <span><span class="dotsw" style="background:var(--grey)"></span>Farmazon</span>
+        </div>
+        <div class="chart-box" style="height:230px;"><canvas id="c15" width="1518" height="690" style="display: block; box-sizing: border-box; height: 230px; width: 506px;"></canvas></div>
+      </div>
+    </div>
+    <div class="callout"><b>El rebalanceo del Grupo:</b> Chile pasó de 56% de las ventas en 2025 a 47% en 2026 YTD, mientras Colombia subió de 37% a 46%. Si la tendencia continúa, Colombia superará a Chile como el país más grande del Grupo en los próximos trimestres.</div>
+  </section>
+
+  <!-- ============ TENDENCIA ============ -->
+  <section id="tendencia">
+    <p class="kicker">07 — Tendencia histórica 2024–2026</p>
+    <h2 class="sec-title">Tres años cambian la lectura de Chile y Colombia</h2>
+    <p class="sec-desc">Chile no es una caída puntual de 2026: viene retrocediendo desde 2024. Colombia lleva dos años consecutivos de crecimiento acelerado. México muestra una meta 2026 desalineada de su trayectoria real de los últimos dos años.</p>
+    <div class="grid-3">
+      <div class="panel">
+        <div class="panel-title">Chile (USD miles)</div>
+        <div class="chart-box" style="height:230px;"><canvas id="c16a" width="1058" height="690" style="display: block; box-sizing: border-box; height: 230px; width: 352px;"></canvas></div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Colombia (USD miles)</div>
+        <div class="chart-box" style="height:230px;"><canvas id="c16b" width="1058" height="690" style="display: block; box-sizing: border-box; height: 230px; width: 352px;"></canvas></div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">México (USD miles)</div>
+        <div class="chart-box" style="height:230px;"><canvas id="c16c" width="1058" height="690" style="display: block; box-sizing: border-box; height: 230px; width: 352px;"></canvas></div>
+      </div>
+    </div>
+    <div class="legend" style="margin-top:-6px;">
+      <span><span class="sw" style="background:var(--grey)"></span>2024 real</span>
+      <span><span class="sw" style="background:var(--navy)"></span>2025 real</span>
+      <span><span class="sw" style="background:var(--amber)"></span>2026 presupuesto</span>
+      <span><span class="sw" style="background:var(--red)"></span>2026 ritmo anualizado (ene-may x12/5)</span>
+    </div>
+    <div class="callout"><b>Chile:</b> $6.611k (2024) → $4.905k (2025, -25,8%) → ritmo 2026 de $4.661k, muy por debajo de los $5.811k presupuestados. Tres años consecutivos de contracción. <b>Colombia:</b> más que duplicó ventas 2024→2025 (+127%), y el ritmo 2026 ($4.637k) se acerca a su propio presupuesto ($4.874k). <b>México:</b> prácticamente plano 2024-2025; el ritmo real 2026 ($251k) es apenas una fracción del presupuesto ($1.168k).</div>
+  </section>
+
+  <!-- ============ PUNTOS DE ATENCION ============ -->
+  <section id="atencion">
+    <p class="kicker">08 — Puntos de atención adicionales</p>
+    <h2 class="sec-title">Señales a monitorear — no son "nodos críticos" confirmados</h2>
+    <p class="sec-desc">No alcanzan a ser nodos críticos en sentido estricto (no hay aún evidencia cruzada de múltiples fuentes ni historial suficiente para confirmar causa raíz), pero merecen quedar documentadas.</p>
+    <div class="attn-grid">
+      <div class="attn-card"><div class="who">USA</div><div class="desc">Costos sin ninguna venta registrada ($0 ventas, -$16k utilidad neta, -$4k Adjusted EBITDA).</div></div>
+      <div class="attn-card"><div class="who">Farmazon</div><div class="desc">Pérdida EBITDA (-$36k) 1,6 veces mayor que su propia venta ($22k). Margen bruto sano (32%) — problema de estructura fija, no comercial.</div></div>
+      <div class="attn-card"><div class="who">Costa Rica</div><div class="desc">Ventas al 22% del presupuesto (-78%), pero EBITDA se mantiene positivo — presupuesto probablemente desconectado de la escala real, igual que México.</div></div>
+      <div class="attn-card"><div class="who">Chile</div><div class="desc">La variación % de utilidad neta vs. presupuesto (-2.021%) es un artefacto estadístico: el presupuesto era casi cero. La cifra en dólares (-$588k) es la lectura correcta.</div></div>
+      <div class="attn-card"><div class="who">Colombia</div><div class="desc">Costo directo crece más rápido (+79% YoY) que las ventas (+69%). No compromete el resultado, pero es la única línea en dirección contraria.</div></div>
+      <div class="attn-card" style="border-left-color:var(--teal);"><div class="who">Alcance de este dashboard</div><div class="desc">Cubre estado de resultados (EERR) para los 3 países principales. Deuda, flujo de caja y capital humano de Chile están en la sección 10 — Deuda, más abajo.</div></div>
+    </div>
+  </section>
+
+  <!-- ============ DEUDA, CAJA Y CAPITAL HUMANO ============ -->
+  <section id="deuda">
+    <p class="kicker">10 — Deuda, caja y capital humano (Chile)</p>
+    <h2 class="sec-title">La señal más urgente del informe — y qué se movió en el último trimestre</h2>
+    <p class="sec-desc">Exclusivo de Chile: no se recibió información equivalente de deuda, caja o personal para Colombia ni México. Combina el diagnóstico interno (corte marzo 2026) con la tabla de deuda vigente más reciente (corte 30-jun-2026) para ver qué se pagó y qué se reemplazó.</p>
+
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="label">Saldo de caja proyectado, ago-26</div>
+        <div class="value neg">-$917M CLP</div>
+        <div class="delta neg">▼ negativo desde abr-26</div>
+        <div class="delta muted">Escenario independiente: -$1.127M</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">Deuda vigente, jun-26</div>
+        <div class="value">US$1,50M</div>
+        <div class="delta muted">≈ flat vs. mar-26 (US$1,53M)</div>
+        <div class="delta neg">Servicio = 25%–45% de recaudación</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">Convenios TGR (absorbido)</div>
+        <div class="value">-86%</div>
+        <div class="delta pos">▲ ~US$380 mil pagados</div>
+        <div class="delta muted">Frente más crítico del diagnóstico</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">Banco Santander (nuevo)</div>
+        <div class="value neg">+422%</div>
+        <div class="delta neg">▼ ~US$320 mil de deuda nueva</div>
+        <div class="delta muted">Compensa casi todo lo absorbido en TGR</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-title">Saldo de caja mensual: real y proyección (M CLP)</div>
+        <div class="legend">
+          <span><span class="sw" style="background:var(--navy)"></span>Real (oct-25 a mar-26)</span>
+          <span><span class="sw" style="background:var(--amber)"></span>Proyección Compañía</span>
+          <span><span class="sw" style="background:var(--red)"></span>Proyección independiente</span>
+        </div>
+        <div class="chart-box" style="height:270px;"><canvas id="c17" width="1680" height="810" style="display: block; box-sizing: border-box; height: 270px; width: 560px;"></canvas></div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Estructura de deuda por acreedor — jun-26 (M CLP eq.)</div>
+        <div class="legend">
+          <span><span class="dotsw" style="background:var(--red)"></span>Crítico / vencido</span>
+          <span><span class="dotsw" style="background:var(--amber)"></span>Advertencia</span>
+          <span><span class="dotsw" style="background:var(--green)"></span>Al día</span>
+        </div>
+        <div class="chart-box" style="height:270px;"><canvas id="c18" width="1680" height="810" style="display: block; box-sizing: border-box; height: 270px; width: 560px;"></canvas></div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-title">Deuda por grupo de acreedor: marzo vs. junio 2026 (US$k)</div>
+        <div class="legend">
+          <span><span class="sw" style="background:var(--grey)"></span>Mar-26 (diagnóstico interno)</span>
+          <span><span class="sw" style="background:var(--navy)"></span>Jun-26 (actual)</span>
+        </div>
+        <div class="chart-box" style="height:270px;"><canvas id="c19" width="1680" height="810" style="display: block; box-sizing: border-box; height: 270px; width: 560px;"></canvas></div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Nómina mensual de personal contratado (M CLP, 16 cargos)</div>
+        <div class="panel-sub">Caída en abr-26 coincide con cambio en remuneración del CFO</div>
+        <div class="chart-box" style="height:270px;"><canvas id="c20" width="1680" height="810" style="display: block; box-sizing: border-box; height: 270px; width: 560px;"></canvas></div>
+      </div>
+    </div>
+
+    <table class="kpitable" style="margin-top:4px;">
+      <thead><tr><th>Grupo de acreedor</th><th>Mar-26 (US$)</th><th>Jun-26 (US$)</th><th>Variación %</th></tr></thead>
+      <tbody>
+        <tr><td>Convenios TGR</td><td>$441,810</td><td>$61,714</td><td class="pos">-86.0%</td></tr>
+        <tr><td>Banco Santander</td><td>$75,833</td><td>$395,963</td><td class="neg">+422.2%</td></tr>
+        <tr><td>Notas convertibles</td><td>$582,486</td><td>$654,632</td><td class="neg">+12.4%</td></tr>
+        <tr><td>Banco Estado</td><td>$245,084</td><td>$245,388</td><td class="flat">+0.1%</td></tr>
+        <tr><td>Levanta*</td><td>$137,379</td><td>$131,301</td><td class="pos">-4.4%</td></tr>
+        <tr><td>Banco Security</td><td>$15,386</td><td>$11,155</td><td class="pos">-27.5%</td></tr>
+        <tr><td>Total (6 grupos, excl. Mandiola)</td><td>$1,497,978</td><td>$1,500,152</td><td class="flat">+0.1%</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:11px; color:var(--ink-mute); margin:6px 2px 0;">*Levanta: cifra más probable con la información disponible (coincide con el diagnóstico interno y con la tabla de deuda vigente jun-26) — en verificación de detalle contra el calendario de cuotas del crédito original.</p>
+
+    <div class="callout"><b>Lo que realmente pasó:</b> el total apenas se movió (+0,1%), pero esa cifra plana esconde el movimiento real: se absorbieron ~US$380 mil de Convenios TGR (el frente más crítico), y casi la misma cantidad reapareció como deuda bancaria nueva en Banco Santander (+422%). La Compañía trasladó el riesgo de un pasivo tributario a deuda bancaria formal —mejora el perfil de riesgo— pero no redujo la carga total ni el servicio de deuda, que sigue en 25%-45% de la recaudación mensual. La deuda Mandiola (US$31k en marzo) no aparece en la tabla de junio; no se puede confirmar si fue pagada o si esta fuente simplemente no la incluye.</div>
+
+    <div class="attn-grid" style="grid-template-columns: 1fr 1fr;">
+      <div class="attn-card" style="border-left-color:var(--red);"><div class="who">Dependencia de accionistas</div><div class="desc">Oct-25 a mar-26: ~M CLP 975 inyectados (promedio M CLP 162/mes). La proyección de caja ya asume CERO nuevas inyecciones desde abril, y aun así no alcanza a cubrir el déficit.</div></div>
+      <div class="attn-card" style="border-left-color:var(--amber);"><div class="who">Cruce Alex Vicencio</div><div class="desc">Es simultáneamente el mayor acreedor individual (nota convertible, M CLP 347) y un finiquito pendiente sin monto definido — la misma persona en ambos lados de la mesa.</div></div>
+    </div>
+  </section>
+
+  <!-- ============ ESTRATEGIA ============ -->
+  <section id="estrategia">
+    <p class="kicker">09 — Síntesis estratégica</p>
+    <h2 class="sec-title">Qué mejoró, qué empeoró, qué se propone, qué falta por hacer</h2>
+    <div class="strat-grid">
+      <div class="strat-box green">
+        <h4>Qué mejoró</h4>
+        <ul>
+          <li>Ventas consolidadas +18% YoY, con margen bruto mejorando de 42,5% a 44,1% de las ventas.</li>
+          <li>Colombia consolidada como motor de crecimiento y rentabilidad: +69% en ventas, EBITDA positivo y por encima de presupuesto.</li>
+          <li>Utilidad neta consolidada mejoró YoY (-$959k a -$269k) pese al deterioro del EBITDA.</li>
+          <li>México y Costa Rica muestran mejoras YoY de doble y triple dígito, aunque desde bases pequeñas.</li>
+        </ul>
+      </div>
+      <div class="strat-box red">
+        <h4>Qué empeoró</h4>
+        <ul>
+          <li>EBITDA consolidado YTD pasó de +$11k (2025) a -$160k (2026), 114% bajo presupuesto — la señal más urgente.</li>
+          <li>Chile es la causa principal: EBITDA reportado (-$461k) vs. Adjusted EBITDA sano ($316k), por la asignación 100% de gastos corporativos.</li>
+          <li>Chile es el único país con ventas por debajo de 2025, en contracción desde 2024.</li>
+          <li>Farmazon retrocede en ventas (-50% YoY) con el margen EBITDA más negativo del Grupo.</li>
+        </ul>
+      </div>
+      <div class="strat-box amber">
+        <h4>Qué se propone</h4>
+        <ul>
+          <li>Definir metodología formal de asignación de gastos corporativos, en vez de cargar el 100% a Chile. Reportar Adjusted EBITDA y EBITDA post-corporativo por separado.</li>
+          <li>Recalibrar el presupuesto 2026: implica ventas +68% y EBITDA 5,0x sobre 2025, un salto que enero-mayo no sostiene.</li>
+          <li>Extender el forecast de cierre de año a Colombia y México, siguiendo el estándar que ya usa Chile.</li>
+          <li>Capitalizar el impulso de Colombia con una discusión explícita de inversión/recursos.</li>
+        </ul>
+      </div>
+      <div class="strat-box">
+        <h4 style="color:var(--navy);">Qué falta por hacer</h4>
+        <ul>
+          <li>Conciliar diferencias ya detectadas entre Comercial y Finanzas en cifras de venta de Chile.</li>
+          <li>Dar seguimiento mensual a este mismo tablero en el comité de Gerencia, en vez de reconstruirlo ad-hoc.</li>
+          <li>Revisar formalmente en el comité de holding la propuesta de reasignación de costos corporativos.</li>
+          <li>Profundizar el diagnóstico de Farmazon y USA — las dos unidades con menor visibilidad del Grupo.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Preparado a partir de Financial Frame Chile, Colombia, México y Holding Medismart (corte 2026-05); base histórica 2024-2025.</span>
+    <span>Uso interno — confidencial</span>
+  </footer>
+
+</div>
+
+<script src="./Dashboard_July_files/chart.umd.js"></script>
+<script src="./Dashboard_July_files/chartjs-plugin-datalabels.min.js"></script>
+<script>
+(function(){
+  var NAVY='#1F3864', TEAL='#1F9D8A', AMBER='#E8A33D', RED='#C0392B', GREEN='#3C9F5C', GREY='#9AA0A6', MAUVE='#8E6C88', LIGHTBLUE='#B7C6E8';
+  var INKSOFT='#8A8F99', LINECOL='#EEF0F4';
+  var MONTHS = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+
+  Chart.defaults.font.family = "-apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif";
+  Chart.defaults.color = INKSOFT;
+  Chart.register(ChartDataLabels);
+  Chart.defaults.plugins.datalabels.display = false;
+
+  function moneyFmt(v){ var sign = v<0 ? '-' : ''; return sign + '$' + Math.abs(v) + 'k'; }
+  function pctFmt(v){ return (v>0?'+':'') + v + '%'; }
+
+  function baseScales(yCb){
+    return {
+      x: { grid: { display:false }, ticks: { color: INKSOFT, font: { size: 10.5 } } },
+      y: { grid: { color: LINECOL }, border: { display:false }, ticks: { color: INKSOFT, font: { size: 10.5 }, callback: yCb || moneyFmt } }
+    };
+  }
+
+  function lineTriple(id, s25, s26act, s26bud){
+    new Chart(document.getElementById(id), {
+      type: 'line',
+      data: { labels: MONTHS, datasets: [
+        { label:'2025 real', data:s25, borderColor:GREY, borderWidth:2, pointRadius:0, tension:.3 },
+        { label:'2026 real', data:s26act, borderColor:NAVY, borderWidth:3, pointRadius:3, pointBackgroundColor:NAVY, tension:.3 },
+        { label:'2026 presupuesto', data:s26bud, borderColor:AMBER, borderWidth:2, borderDash:[6,4], pointRadius:0, tension:.3 }
+      ]},
+      options: { responsive:true, maintainAspectRatio:false, devicePixelRatio:3,
+        plugins:{ legend:{display:false}, datalabels:{display:false}, tooltip:{backgroundColor:'#1A1A2E', padding:10, cornerRadius:6} },
+        scales: baseScales() }
+    });
+  }
+
+  // ---- 01 / 02: Consolidado ventas & EBITDA mensual ----
+  lineTriple('c01',
+    [726,667,693,687,740,718,737,762,729,774,771,770],
+    [819,796,882,849,810,null,null,null,null,null,null,null],
+    [828,884,995,1016,1144,1173,1309,1334,1411,1471,1558,1576]);
+
+  lineTriple('c02',
+    [109,34,-88,-6,-37,65,61,115,147,163,180,184],
+    [-34,1,2,-70,-59,null,null,null,null,null,null,null],
+    [154,181,247,235,356,347,425,434,500,533,606,598]);
+
+  // ---- 03: Cascada consolidado YTD ----
+  (function(){
+    var labels = ['Ventas','Costo directo','Margen bruto','SG&A',['Adjusted','EBITDA'],['Gastos','corp.'],['Gastos','one-off'],'EBITDA',['Otros no','EBITDA'],['Utilidad','neta']];
+    var values = [4156,-2324,1832,-1215,617,-621,-156,-160,-110,-269];
+    var isTotal = [true,false,true,false,true,false,false,true,false,true];
+    var ranges = [], colors = [], cum = 0;
+    values.forEach(function(v,i){
+      if (isTotal[i]) { ranges.push([0,v]); colors.push(v>=0?NAVY:RED); cum=v; }
+      else { var start=cum, end=cum+v; ranges.push([Math.min(start,end), Math.max(start,end)]); colors.push(v>=0?GREEN:RED); cum=end; }
+    });
+    new Chart(document.getElementById('c03'), {
+      type: 'bar',
+      data: { labels: labels, datasets: [{ data: ranges, backgroundColor: colors, borderRadius: 3, maxBarThickness: 46 }] },
+      options: { responsive:true, maintainAspectRatio:false, devicePixelRatio:3,
+        layout: { padding: { top: 26, bottom: 26 } },
+        plugins: { legend:{display:false}, tooltip:{enabled:false},
+          datalabels: { display:true, color:'#1A1A2E', font:{size:10, weight:'600'}, anchor:'end', align:'end',
+            formatter: function(v,ctx){ return moneyFmt(values[ctx.dataIndex]); } } },
+        scales: { x:{ grid:{display:false}, ticks:{ color:INKSOFT, font:{size:9.5}, autoSkip:false, maxRotation:0 } },
+                  y:{ grid:{color:LINECOL}, border:{display:false}, ticks:{ color:INKSOFT, font:{size:10}, callback:moneyFmt } } } }
+    });
+  })();
+
+  // ---- 04: Chile Adjusted EBITDA vs EBITDA (grouped bar, 5 meses) ----
+  new Chart(document.getElementById('c04'), {
+    type: 'bar',
+    data: { labels: MONTHS.slice(0,5), datasets: [
+      { label:'Adjusted EBITDA', data:[73,85,64,34,60], backgroundColor: TEAL, borderRadius:4, maxBarThickness:34 },
+      { label:'EBITDA reportado', data:[-45,-77,-112,-159,-68], backgroundColor: RED, borderRadius:4, maxBarThickness:34 }
+    ]},
+    options: { responsive:true, maintainAspectRatio:false, devicePixelRatio:3,
+      plugins:{ legend:{display:false}, datalabels:{display:false}, tooltip:{backgroundColor:'#1A1A2E', padding:10, cornerRadius:6} },
+      scales: baseScales() }
+  });
+
+  // ---- 05a/05b: Chile outlook FY2026 ----
+  new Chart(document.getElementById('c05a'), {
+    type:'bar',
+    data:{ labels:[['2025','real'],['2026','real+fcst'],['2026','presup.']], datasets:[{ data:[4905,4987,5811], backgroundColor:[GREY,NAVY,AMBER], borderRadius:5, maxBarThickness:44 }]},
+    options:{ responsive:true, maintainAspectRatio:false, devicePixelRatio:3,
+      layout: { padding: { top: 26 } },
+      plugins:{ legend:{display:false}, tooltip:{enabled:false}, datalabels:{ display:true, color:'#1A1A2E', font:{size:10.5,weight:'600'}, anchor:'end', align:'end', formatter:function(v){return moneyFmt(v);} } },
+      scales:{ x:{grid:{display:false}, ticks:{color:INKSOFT, font:{size:10}}}, y:{display:false, grid:{display:false}} } }
+  });
+  new Chart(document.getElementById('c05b'), {
+    type:'bar',
+    data:{ labels:[['2025','real'],['2026','real+fcst'],['2026','presup.']], datasets:[{ data:[665,-983,1942], backgroundColor:[GREY,RED,AMBER], borderRadius:5, maxBarThickness:44 }]},
+    options:{ responsive:true, maintainAspectRatio:false, devicePixelRatio:3,
+      layout: { padding: { top: 26, bottom: 26 } },
+      plugins:{ legend:{display:false}, tooltip:{enabled:false}, datalabels:{ display:true, color:'#1A1A2E', font:{size:10.5,weight:'600'}, anchor:'end', align:'end', formatter:function(v){return moneyFmt(v);} } },
+      scales:{ x:{grid:{display:false}, ticks:{color:INKSOFT, font:{size:10}}}, y:{grid:{color:LINECOL}, border:{display:false}, ticks:{color:INKSOFT, font:{size:10}, callback:moneyFmt}} } }
+  });
+
+  // ---- 06/07: Colombia ventas & EBITDA ----
+  lineTriple('c06', [202,208,235,234,266,259,271,264,280,309,319,327], [363,341,419,427,382,null,null,null,null,null,null,null], [278,315,361,361,396,402,428,429,439,445,505,516]);
+  lineTriple('c07', [37,29,59,52,55,54,34,37,65,76,94,72], [20,83,123,117,34,null,null,null,null,null,null,null], [49,67,78,68,95,97,116,113,120,120,166,169]);
+
+  // ---- 08/09: México ventas & EBITDA ----
+  lineTriple('c08', [14,12,11,13,10,16,21,22,22,21,26,23], [21,21,21,17,25,null,null,null,null,null,null,null], [24,27,55,65,69,86,121,129,136,145,152,158]);
+  lineTriple('c09', [-23,-27,-33,-35,-55,-24,-27,-19,-21,-21,-12,-21], [-12,-15,-15,-19,-10,null,null,null,null,null,null,null], [-16,-15,10,5,3,14,21,26,27,32,35,35]);
+
+  // ---- 10: Comparativo Ventas real vs presupuesto ----
+  var COUNTRIES5 = ['Chile','Colombia','México','Costa Rica','Farmazon'];
+  new Chart(document.getElementById('c10'), {
+    type:'bar',
+    data:{ labels:COUNTRIES5, datasets:[
+      { label:'Real YTD', data:[1942,1932,105,155,22], backgroundColor:NAVY, borderRadius:4, maxBarThickness:30 },
+      { label:'Presupuesto YTD', data:[2169,1710,241,695,23], backgroundColor:AMBER, borderRadius:4, maxBarThickness:30 }
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false, devicePixelRatio:3,
+      plugins:{ legend:{display:true, position:'top', align:'end', labels:{boxWidth:10, boxHeight:10, font:{size:11}}}, datalabels:{display:false}, tooltip:{backgroundColor:'#1A1A2E', padding:10, cornerRadius:6} },
+      scales: baseScales() }
+  });
+
+  // ---- 11: YoY growth ----
+  new Chart(document.getElementById('c11'), {
+    type:'bar',
+    data:{ labels:COUNTRIES5, datasets:[{ data:[-11.5,68.7,74.4,470.8,-50.5], backgroundColor:[RED,GREEN,GREEN,GREEN,RED], borderRadius:4, maxBarThickness:40 }]},
+    options:{ responsive:true, maintainAspectRatio:false, devicePixelRatio:3,
+      layout: { padding: { top: 24, bottom: 24 } },
+      plugins:{ legend:{display:false}, tooltip:{enabled:false}, datalabels:{ display:true, color:'#1A1A2E', font:{size:10.5,weight:'600'}, anchor:'end', align:'end', formatter:pctFmt } },
+      scales:{ x:{grid:{display:false}, ticks:{color:INKSOFT, font:{size:10.5}}}, y:{grid:{color:LINECOL}, border:{display:false}, ticks:{color:INKSOFT, font:{size:10}, callback:function(v){return v+'%';}}} } }
+  });
+
+  // ---- 12: Margenes por pais ----
+  new Chart(document.getElementById('c12'), {
+    type:'bar',
+    data:{ labels:COUNTRIES5, datasets:[
+      { label:'Margen bruto', data:[37.4,49.6,44.8,60.6,32.0], backgroundColor:LIGHTBLUE, borderRadius:3, maxBarThickness:20 },
+      { label:'Adjusted EBITDA', data:[16.3,19.5,-67.8,22.8,-158.3], backgroundColor:TEAL, borderRadius:3, maxBarThickness:20 },
+      { label:'EBITDA reportado', data:[-23.7,19.5,-67.8,22.8,-158.3], backgroundColor:RED, borderRadius:3, maxBarThickness:20 }
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false, devicePixelRatio:3,
+      plugins:{ legend:{display:false}, datalabels:{display:false}, tooltip:{backgroundColor:'#1A1A2E', padding:10, cornerRadius:6, callbacks:{label:function(c){return c.dataset.label+': '+c.formattedValue+'%';}}} },
+      scales:{ x:{grid:{display:false}, ticks:{color:INKSOFT, font:{size:10.5}}}, y:{grid:{color:LINECOL}, border:{display:false}, ticks:{color:INKSOFT, font:{size:10}, callback:function(v){return v+'%';}}} } }
+  });
+
+  // ---- 13: Ranking margen EBITDA (horizontal) ----
+  (function(){
+    var rk = [['Farmazon',-158.3],['México',-67.8],['Chile',-23.7],['Colombia',19.5],['Costa Rica',22.8]];
+    new Chart(document.getElementById('c13'), {
+      type:'bar',
+      data:{ labels: rk.map(function(r){return r[0];}), datasets:[{ data: rk.map(function(r){return r[1];}), backgroundColor: rk.map(function(r){return r[1]>=0?GREEN:RED;}), borderRadius:4, maxBarThickness:26 }]},
+      options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false, devicePixelRatio:3,
+        layout: { padding: { left: 46, right: 34 } },
+        plugins:{ legend:{display:false}, tooltip:{enabled:false}, datalabels:{ display:true, color:'#1A1A2E', font:{size:10.5,weight:'600'}, anchor:'end', align:'end', formatter:pctFmt } },
+        scales:{ x:{grid:{color:LINECOL}, border:{display:false}, ticks:{color:INKSOFT, font:{size:10}, callback:function(v){return v+'%';}}}, y:{grid:{display:false}, ticks:{color:INKSOFT, font:{size:11}}} } }
+    });
+  })();
+
+  // ---- 14a/14b: Cumplimiento presupuesto ----
+  new Chart(document.getElementById('c14a'), {
+    type:'bar',
+    data:{ labels:COUNTRIES5, datasets:[{ data:[90,113,43,22,98], backgroundColor:NAVY, borderRadius:4, maxBarThickness:26 }]},
+    options:{ responsive:true, maintainAspectRatio:false, devicePixelRatio:3,
+      plugins:{ legend:{display:false}, tooltip:{enabled:false}, datalabels:{ display:true, color:'#1A1A2E', font:{size:9.5,weight:'600'}, anchor:'end', align:'end', formatter:pctFmt } },
+      scales:{ x:{grid:{display:false}, ticks:{color:INKSOFT, font:{size:9.5}}}, y:{min:0, max:135, grid:{color:LINECOL}, border:{display:false}, ticks:{color:INKSOFT, font:{size:9.5}, callback:function(v){return v+'%';}}} } }
+  });
+  new Chart(document.getElementById('c14b'), {
+    type:'bar',
+    data:{ labels:COUNTRIES5, datasets:[{ data:[-66,106,-563,64,-229], backgroundColor:[RED,GREEN,RED,GREEN,RED], borderRadius:4, maxBarThickness:26 }]},
+    options:{ responsive:true, maintainAspectRatio:false, devicePixelRatio:3,
+      layout: { padding: { top: 20, bottom: 8 } },
+      plugins:{ legend:{display:false}, tooltip:{enabled:false}, datalabels:{ display:true, color:'#1A1A2E', font:{size:9.5,weight:'600'}, anchor:'end', align:'end', formatter:pctFmt } },
+      scales:{ x:{grid:{display:false}, ticks:{color:INKSOFT, font:{size:9.5}}}, y:{min:-600, max:150, grid:{color:LINECOL}, border:{display:false}, ticks:{color:INKSOFT, font:{size:9.5}, callback:function(v){return v+'%';}}} } }
+  });
+
+  // ---- 15: Mix de ventas (stacked horizontal) ----
+  new Chart(document.getElementById('c15'), {
+    type:'bar',
+    data:{ labels:['2025 (año completo)','2026 YTD (ene-may)'], datasets:[
+      { label:'Chile', data:[56,47], backgroundColor:NAVY },
+      { label:'Colombia', data:[37,46], backgroundColor:TEAL },
+      { label:'México', data:[2,3], backgroundColor:AMBER },
+      { label:'Costa Rica', data:[4,4], backgroundColor:MAUVE },
+      { label:'Farmazon', data:[1,1], backgroundColor:GREY }
+    ]},
+    options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false, devicePixelRatio:3,
+      plugins:{ legend:{display:false}, datalabels:{display:false}, tooltip:{backgroundColor:'#1A1A2E', padding:10, cornerRadius:6, callbacks:{label:function(c){return c.dataset.label+': '+c.formattedValue+'%';}}} },
+      scales:{ x:{stacked:true, min:0, max:100, grid:{display:false}, ticks:{color:INKSOFT, font:{size:10}, callback:function(v){return v+'%';}}}, y:{stacked:true, grid:{display:false}, ticks:{color:INKSOFT, font:{size:11}}} } }
+  });
+
+  // ---- 16a/b/c: Tendencia 2024-2026 por pais ----
+  function tendenciaChart(id, v2024, v2025, v2026bud, ritmo){
+    new Chart(document.getElementById(id), {
+      type:'bar',
+      data:{ labels:[['2024','real'],['2025','real'],['2026','presup.'],['Ritmo','anualizado']], datasets:[{ data:[v2024,v2025,v2026bud,ritmo], backgroundColor:[GREY,NAVY,AMBER,RED], borderRadius:5, maxBarThickness:38 }]},
+      options:{ responsive:true, maintainAspectRatio:false, devicePixelRatio:3,
+        layout: { padding: { top: 28 } },
+        plugins:{ legend:{display:false}, tooltip:{enabled:false}, datalabels:{ display:true, color:'#1A1A2E', font:{size:10,weight:'600'}, anchor:'end', align:'end', formatter:function(v){return '$'+v+'k';} } },
+        scales:{ x:{grid:{display:false}, ticks:{color:INKSOFT, font:{size:9.5}}}, y:{display:false, grid:{display:false}} } }
+    });
+  }
+  tendenciaChart('c16a', 6611, 4906, 5811, 4661);
+  tendenciaChart('c16b', 1399, 3175, 4874, 4637);
+  tendenciaChart('c16c', 225, 211, 1168, 251);
+
+  // ---- 17: Flujo de caja Chile (real + 2 escenarios) ----
+  (function(){
+    var mesesReal = ['Oct-25','Nov-25','Dic-25','Ene-26','Feb-26','Mar-26'];
+    var mesesProy = ['Mar-26','Abr-26','May-26','Jun-26','Jul-26','Ago-26'];
+    var saldoReal = [26,80,98,13,138,50];
+    var proyCia   = [50,-415,-606,-715,-821,-917];
+    var proyIndep = [50,-530,-737,-888,-1015,-1127];
+    var allLbl = mesesReal.concat(mesesProy.slice(1));
+    var pad = function(arr, offset){ var out = new Array(allLbl.length).fill(null); arr.forEach(function(v,i){ out[offset+i]=v; }); return out; };
+    new Chart(document.getElementById('c17'), {
+      type: 'line',
+      data: { labels: allLbl, datasets: [
+        { label:'Real', data: pad(saldoReal,0), borderColor:NAVY, borderWidth:3, pointRadius:3, pointBackgroundColor:NAVY, tension:.25, spanGaps:false },
+        { label:'Proyección Compañía', data: pad(proyCia,5), borderColor:AMBER, borderWidth:2.4, borderDash:[6,4], pointRadius:3, pointBackgroundColor:AMBER, tension:.25 },
+        { label:'Proyección independiente', data: pad(proyIndep,5), borderColor:RED, borderWidth:2.4, borderDash:[6,4], pointRadius:3, pointBackgroundColor:RED, tension:.25 }
+      ]},
+      options: { responsive:true, maintainAspectRatio:false, devicePixelRatio:3,
+        plugins:{ legend:{display:false}, datalabels:{display:false},
+          tooltip:{backgroundColor:'#1A1A2E', padding:10, cornerRadius:6, callbacks:{label:function(c){return c.dataset.label+': M CLP '+c.formattedValue;}}} },
+        scales: { x:{ grid:{display:false}, ticks:{color:INKSOFT, font:{size:9.5}} },
+                  y:{ grid:{color:LINECOL}, border:{display:false}, ticks:{color:INKSOFT, font:{size:10}, callback:function(v){return v;}} } } }
+    });
+  })();
+
+  // ---- 18: Estructura de deuda por acreedor (jun-26, codificada por riesgo) ----
+  (function(){
+    var rows = [
+      ['Convenios TGR', 402, RED],
+      ['Nota Conv. A. Vicencio', 347, AMBER],
+      ['Crédito Banco Estado', 223, GREEN],
+      ['Crédito Levanta*', 125, AMBER],
+      ['Nota Conv. M. Urbina', 93, AMBER],
+      ['Nota Conv. Yesod Trust', 90, AMBER],
+      ['Crédito Santander 4176', 62, GREEN],
+      ['Deuda E. Mandiola', 28, RED],
+      ['Crédito Security', 14, GREEN],
+      ['Crédito Santander 7573', 7, AMBER]
+    ];
+    new Chart(document.getElementById('c18'), {
+      type:'bar',
+      data:{ labels: rows.map(function(r){return r[0];}), datasets:[{ data: rows.map(function(r){return r[1];}), backgroundColor: rows.map(function(r){return r[2];}), borderRadius:4, maxBarThickness:18 }]},
+      options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false, devicePixelRatio:3,
+        layout: { padding: { right: 34 } },
+        plugins:{ legend:{display:false}, tooltip:{enabled:false}, datalabels:{ display:true, color:'#1A1A2E', font:{size:9.5,weight:'600'}, anchor:'end', align:'end', formatter:function(v){return v;} } },
+        scales:{ x:{grid:{color:LINECOL}, border:{display:false}, ticks:{color:INKSOFT, font:{size:9.5}}}, y:{grid:{display:false}, ticks:{color:INKSOFT, font:{size:9.5}}} } }
+    });
+  })();
+
+  // ---- 19: Comparativo deuda mar-26 vs jun-26 por grupo ----
+  (function(){
+    var grupos = ['TGR','Santander','Notas conv.','B. Estado','Levanta*','B. Security'];
+    var oldV = [441810,75833,582486,245084,137379,15386];
+    var newV = [61714,395963,654632,245388,131301,11155];
+    new Chart(document.getElementById('c19'), {
+      type:'bar',
+      data:{ labels:grupos, datasets:[
+        { label:'Mar-26', data:oldV.map(function(v){return Math.round(v/1000);}), backgroundColor:GREY, borderRadius:4, maxBarThickness:22 },
+        { label:'Jun-26', data:newV.map(function(v){return Math.round(v/1000);}), backgroundColor:NAVY, borderRadius:4, maxBarThickness:22 }
+      ]},
+      options:{ responsive:true, maintainAspectRatio:false, devicePixelRatio:3,
+        layout: { padding: { top: 22 } },
+        plugins:{ legend:{display:false}, datalabels:{display:false}, tooltip:{backgroundColor:'#1A1A2E', padding:10, cornerRadius:6, callbacks:{label:function(c){return c.dataset.label+': US$'+c.formattedValue+'k';}}} },
+        scales:{ x:{grid:{display:false}, ticks:{color:INKSOFT, font:{size:9.5}}}, y:{grid:{color:LINECOL}, border:{display:false}, ticks:{color:INKSOFT, font:{size:10}, callback:function(v){return '$'+v+'k';}}} } }
+    });
+  })();
+
+  // ---- 20: Nomina mensual Chile ----
+  new Chart(document.getElementById('c20'), {
+    type:'bar',
+    data:{ labels:['Mar-26','Abr-26','May-26','Jun-26','Jul-26','Ago-26'], datasets:[{ data:[105.9,91.2,105.7,105.7,105.7,105.7], backgroundColor:[NAVY,AMBER,NAVY,NAVY,NAVY,NAVY], borderRadius:4, maxBarThickness:36 }]},
+    options:{ responsive:true, maintainAspectRatio:false, devicePixelRatio:3,
+      layout: { padding: { top: 22 } },
+      plugins:{ legend:{display:false}, tooltip:{enabled:false}, datalabels:{ display:true, color:'#1A1A2E', font:{size:10,weight:'600'}, anchor:'end', align:'end', formatter:function(v){return v;} } },
+      scales:{ x:{grid:{display:false}, ticks:{color:INKSOFT, font:{size:10}}}, y:{min:0, max:135, grid:{color:LINECOL}, border:{display:false}, ticks:{color:INKSOFT, font:{size:10}}} } }
+  });
+
+})();
+</script>
+
+
+</body></html>
