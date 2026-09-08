@@ -1,0 +1,359 @@
+<title>Diagnóstico Modelo Medismart V4</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#FAFCFC; --surf:#FFFFFF; --surf2:#EFF4F5; --line:#D8E1E3; --line2:#EAF0F1;
+  --ink:#14232A; --ink2:#3B4E56; --mut:#66787F;
+  --s1:#0088A8; --s2:#B4650A; --s3:#4A55A8;
+  --crit:#A03328; --warn:#A46C0C; --good:#1C7551;
+  --critbg:#F8ECEA; --warnbg:#F9F1E2; --goodbg:#E7F3EC;
+  --shadow:0 1px 2px rgba(20,35,42,.05),0 8px 24px -12px rgba(20,35,42,.16);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0D1519; --surf:#141F24; --surf2:#1B282E; --line:#2A3A41; --line2:#202E34;
+  --ink:#E4EDF0; --ink2:#B4C4CA; --mut:#7E9199;
+  --s1:#28A0AD; --s2:#C08A1E; --s3:#7F8AD8;
+  --crit:#E08578; --warn:#D9A63F; --good:#59B489;
+  --critbg:#2C1B18; --warnbg:#2A2213; --goodbg:#16281F;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px -12px rgba(0,0,0,.5);
+}}
+:root[data-theme="dark"]{
+  --bg:#0D1519; --surf:#141F24; --surf2:#1B282E; --line:#2A3A41; --line2:#202E34;
+  --ink:#E4EDF0; --ink2:#B4C4CA; --mut:#7E9199;
+  --s1:#28A0AD; --s2:#C08A1E; --s3:#7F8AD8;
+  --crit:#E08578; --warn:#D9A63F; --good:#59B489;
+  --critbg:#2C1B18; --warnbg:#2A2213; --goodbg:#16281F;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px -12px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:34px 26px 80px}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-ligatures:none}
+.num{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+h1,h2,h3{font-family:Spectral,Georgia,serif;font-weight:600;text-wrap:balance;margin:0}
+.eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--s1);font-weight:600}
+
+/* ---------- header ---------- */
+header{border-bottom:2px solid var(--ink);padding-bottom:22px;margin-bottom:26px}
+h1{font-size:38px;line-height:1.12;letter-spacing:-.015em;margin:8px 0 10px}
+.sub{color:var(--mut);font-size:14px;max-width:66ch}
+.verdict{margin-top:22px;background:var(--surf2);border-left:4px solid var(--s1);padding:18px 22px;border-radius:0 6px 6px 0}
+.verdict p{margin:0;font-size:16.5px;line-height:1.6;max-width:78ch;color:var(--ink2)}
+.verdict b{color:var(--ink);font-weight:600}
+
+/* ---------- meters ---------- */
+.meters{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden;margin:26px 0 40px}
+.meter{background:var(--surf);padding:15px 17px}
+.meter .k{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);font-weight:600}
+.meter .v{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;font-size:29px;font-weight:500;letter-spacing:-.02em;margin:4px 0 2px;line-height:1}
+.meter .n{font-size:12px;color:var(--mut);line-height:1.4}
+.pill{display:inline-block;font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:2px 7px;border-radius:3px;vertical-align:3px;margin-left:6px}
+.p-crit{background:var(--critbg);color:var(--crit)}
+.p-warn{background:var(--warnbg);color:var(--warn)}
+.p-good{background:var(--goodbg);color:var(--good)}
+
+/* ---------- sections ---------- */
+section{margin-bottom:46px}
+.shead{display:flex;align-items:baseline;gap:12px;border-bottom:1px solid var(--line);padding-bottom:9px;margin-bottom:16px}
+.shead .n{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--mut);font-weight:500}
+.shead h2{font-size:22px;letter-spacing:-.01em}
+.lede{color:var(--ink2);max-width:72ch;margin:0 0 18px;font-size:14.5px}
+
+/* ---------- charts ---------- */
+.chartbox{background:var(--surf);border:1px solid var(--line);border-radius:8px;padding:18px 18px 10px;box-shadow:var(--shadow)}
+.chartbox .ct{font-family:Spectral,serif;font-size:15px;font-weight:600;margin:0 0 2px}
+.chartbox .cs{font-size:12.5px;color:var(--mut);margin:0 0 12px}
+.legend{display:flex;flex-wrap:wrap;gap:16px;font-size:12.5px;color:var(--ink2);margin:10px 0 4px}
+.legend i{display:inline-block;width:16px;height:3px;border-radius:2px;vertical-align:3px;margin-right:6px}
+.svgwrap{overflow-x:auto}
+svg{display:block;width:100%;height:auto;min-width:520px}
+.tip{position:fixed;pointer-events:none;background:var(--surf);border:1px solid var(--line);border-radius:6px;padding:8px 11px;font-size:12.5px;box-shadow:var(--shadow);opacity:0;transition:opacity .1s;z-index:20;white-space:nowrap}
+.tip .tm{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--mut);letter-spacing:.04em}
+.tip .tr{display:flex;justify-content:space-between;gap:16px;margin-top:3px}
+.tip .tr b{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;font-weight:500}
+
+/* ---------- scenario picker ---------- */
+.picker{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px}
+.picker button{font-family:inherit;font-size:12.5px;padding:7px 13px;border-radius:20px;border:1px solid var(--line);background:var(--surf);color:var(--ink2);cursor:pointer;transition:.13s}
+.picker button:hover{border-color:var(--s1);color:var(--ink)}
+.picker button[aria-pressed="true"]{background:var(--s1);border-color:var(--s1);color:#fff;font-weight:500}
+:root[data-theme="dark"] .picker button[aria-pressed="true"],
+:root:not([data-theme="light"]) .picker button[aria-pressed="true"]{color:#08151A}
+.picker button:focus-visible{outline:2px solid var(--s2);outline-offset:2px}
+.scendesc{font-size:13px;color:var(--mut);margin:0 0 14px;min-height:20px}
+.readout{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:20px;padding:14px 2px 4px;border-top:1px solid var(--line2);margin-top:12px}
+.readout div span{display:block;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--mut);font-weight:600}
+.readout div b{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;font-size:20px;font-weight:500}
+
+/* ---------- findings ledger ---------- */
+.ledger{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--surf)}
+.f{display:grid;grid-template-columns:5px 1fr;border-top:1px solid var(--line2)}
+.f:first-child{border-top:0}
+.f .stripe{background:var(--mut)}
+.f.c .stripe{background:var(--crit)} .f.a .stripe{background:var(--warn)} .f.m .stripe{background:var(--mut)}
+.f .body{padding:15px 20px}
+.f h3{font-size:16px;display:flex;flex-wrap:wrap;align-items:baseline;gap:9px;margin-bottom:5px}
+.f p{margin:0;color:var(--ink2);font-size:14px;max-width:80ch}
+.f p+p{margin-top:6px}
+.f .ref{font-family:"IBM Plex Mono",monospace;font-size:12px;background:var(--surf2);padding:1px 5px;border-radius:3px;color:var(--ink2)}
+.f b{color:var(--ink);font-weight:600}
+.f .bad{color:var(--crit);font-weight:600}
+.f .ok{color:var(--good);font-weight:600}
+
+/* ---------- table ---------- */
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--mut);font-weight:600;padding:9px 12px;background:var(--surf2);border-bottom:1px solid var(--line)}
+td{padding:11px 12px;border-bottom:1px solid var(--line2);vertical-align:top;color:var(--ink2)}
+tr:last-child td{border-bottom:0}
+td:first-child{font-family:"IBM Plex Mono",monospace;color:var(--mut);width:34px}
+.tbl{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--surf)}
+.imp{font-weight:600;color:var(--good);white-space:nowrap}
+.imp.n{color:var(--ink2);font-weight:400;white-space:normal}
+footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-size:12.5px;color:var(--mut);max-width:80ch}
+@media (max-width:620px){h1{font-size:29px}.wrap{padding:24px 16px 60px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">Revisión independiente · 8 de septiembre de 2026</div>
+  <h1>Modelo Financiero Consolidado 2026–2030 · V4</h1>
+  <p class="sub">Auditoría de las 27 hojas del modelo, contrastada contra el Reporte de Venta Chile ene–jul 2026 y el Investment Overview v7. Todas las cifras de impacto provienen de 20 recálculos completos del propio archivo.</p>
+  <div class="verdict"><p><b>La mecánica está bien.</b> Balance cuadrado en los cuatro perímetros, cartera de deuda con 11 instrumentos reales, fee intercompañía correctamente eliminado en consolidación, y las fórmulas reproducen cada valor al recalcular. El problema no es cómo está construido, es qué asume: <b>el punto de partida no calza con la venta real, el crédito llega tarde y es chico, y la solvencia de Chile descansa en dos palancas que no son operación.</b></p></div>
+</header>
+
+<div class="meters">
+  <div class="meter"><div class="k">DSCR 2027 · caso base</div><div class="v">0,24<span style="font-size:17px">x</span><span class="pill p-crit">Crítico</span></div><div class="n">CFADS de Chile sobre servicio de deuda</div></div>
+  <div class="meter"><div class="k">Meses bajo caja mínima</div><div class="v">12<span style="font-size:16px;color:var(--mut)"> / 54</span><span class="pill p-crit">Crítico</span></div><div class="n">jul–sep 2026 y jul 2027–mar 2028</div></div>
+  <div class="meter"><div class="k">Brecha del arranque</div><div class="v">+21<span style="font-size:17px">%</span><span class="pill p-crit">Crítico</span></div><div class="n">Modelo 377 vs. venta real 311 MM en jul-26</div></div>
+  <div class="meter"><div class="k">Patrimonio consolidado 2030</div><div class="v">+3,5<span style="font-size:16px"> MUSD</span><span class="pill p-warn">Atención</span></div><div class="n">Positivo recién en el último año del horizonte</div></div>
+</div>
+
+<section>
+  <div class="shead"><span class="n">01</span><h2>El arranque no calza con la venta real</h2></div>
+  <p class="lede">El modelo arranca en jul-2026, un mes que ya es dato duro. La base de proyección se fijó en el nivel desestacionalizado del histórico ene-2024 / jun-2026: promediar 30 meses de una serie que cae deja el arranque muy por sobre el último punto observado.</p>
+  <div class="chartbox">
+    <p class="ct">Venta Chile: lo que pasó y lo que el modelo proyecta</p>
+    <p class="cs">CLP millones por mes. La serie real es Medical Solutions (reporte de venta); la proyección es la línea única de Chile del modelo.</p>
+    <div class="legend">
+      <span><i style="background:var(--s3)"></i>Venta real ene-2025 · jul-2026</span>
+      <span><i style="background:var(--s1)"></i>Proyección del modelo (caso base)</span>
+      <span><i style="background:var(--s2)"></i>Proyección recalibrada al run-rate may–jul 2026</span>
+    </div>
+    <div class="svgwrap"><svg id="c1" viewBox="0 0 900 340" role="img" aria-label="Venta real de Chile frente a la proyección del modelo"></svg></div>
+  </div>
+</section>
+
+<section>
+  <div class="shead"><span class="n">02</span><h2>La caja, escenario por escenario</h2></div>
+  <p class="lede">Cada curva es una corrida completa del modelo, no una estimación. La zona sombreada marca los meses en que la caja proyectada de Chile queda bajo la caja mínima que el propio modelo exige.</p>
+  <div class="chartbox">
+    <div class="picker" id="pick" role="group" aria-label="Escenario"></div>
+    <p class="scendesc" id="sdesc"></p>
+    <p class="cs" style="margin:2px 0 10px">Holgura mensual de Chile: caja proyectada menos caja mínima exigida, en CLP millones. Bajo la línea de cero el modelo incumple su propia política de caja.</p>
+    <div class="svgwrap"><svg id="c2" viewBox="0 0 900 320" role="img" aria-label="Caja proyectada de Chile frente a la caja mínima exigida"></svg></div>
+    <div class="readout" id="ro"></div>
+  </div>
+</section>
+
+<section>
+  <div class="shead"><span class="n">03</span><h2>Hallazgos</h2></div>
+  <div class="ledger">
+    <div class="f c"><div class="stripe"></div><div class="body">
+      <h3>El crédito llega tres meses tarde y queda chico <span class="pill p-crit">Crítico</span></h3>
+      <p>El déficit contra la caja mínima ocurre en <b>jul–sep 2026</b>, con un peak de <span class="bad">−CLP 290 MM</span> en julio. El primer giro está fijado en el mes 4 <span class="ref">'03 Supuestos Oper.'!C224</span>, así que el dinero llega después de la necesidad.</p>
+      <p>Ya girado el crédito completo, la caja vuelve a quedar bajo el mínimo <b>nueve meses seguidos</b> (jul-2027 a mar-2028, peak −CLP 143 MM). Corrida de contraste: CLP 1.500 MM girados desde el mes 1 y sin el capex de expansión dan <span class="ok">cero meses bajo el mínimo</span>.</p>
+    </div></div>
+    <div class="f c"><div class="stripe"></div><div class="body">
+      <h3>Chile es solvente por dos razones que no son su operación <span class="pill p-crit">Crítico</span></h3>
+      <p><b>Management fee.</b> Chile recupera <b>CLP 55,5 MM/mes</b> de Colombia y México — el 27% de su GAV. Apagándolo, la caja de Chile cae a <span class="bad">−CLP 767 MM</span>, 27 meses en negativo y DSCR 2027 de −0,37x.</p>
+      <p><b>Deuda con relacionados.</b> CLP 571 MM de los CLP 1.293 MM de cartera (<b>44%</b>) son con Yesod Trust, Solutions Group LLC y Consultora Urbina, servidos en caja a CLP 26 MM/mes y tasas de 10,5% a 14,5% anual. El modelo ya trae la palanca de subordinación <span class="ref">'03 Supuestos Oper.'!C232</span> y está apagada: encenderla lleva los meses bajo el mínimo de <span class="bad">12</span> a <span class="ok">2</span> y el DSCR 2027 de 0,24x a 0,35x, sin costar caja ni EBITDA.</p>
+    </div></div>
+    <div class="f a"><div class="stripe"></div><div class="body">
+      <h3>El plan, como está modelado, no crea valor <span class="pill p-warn">Alto</span></h3>
+      <p><b>CLP 1.842 MM de capex de expansión (2028–2030) no generan un peso de ingreso.</b> Ninguna fórmula de ingresos depende del capex y el costo por escalón de capacidad está en cero <span class="ref">'03 Supuestos Oper.'!C249</span>. Quitándolo: caja 2030 <span class="ok">+USD 1,92 MM</span> y patrimonio <span class="ok">+USD 0,48 MM</span>, con ingreso y EBITDA idénticos. Tampoco figura en el uso de fondos del crédito.</p>
+      <p>El programa completo agrega USD 1,95 MM de ingreso 2030 y sólo <b>USD 0,35 MM de EBITDA</b>: margen incremental de 18% contra 25,5% promedio, porque el aumento de GAV de CLP 550 MM es permanente.</p>
+    </div></div>
+    <div class="f a"><div class="stripe"></div><div class="body">
+      <h3>Lo que la presentación afirma y el dato no sostiene <span class="pill p-warn">Alto</span></h3>
+      <p><b>“Ventas al alza”</b> (láminas 18 y 25): Chile, el mercado ancla, cae −19,9% YoY. Es cierto consolidado gracias a Colombia; no lo es donde se pide el crédito. <b>“Chile, mayor concentración de ventas del grupo”</b> (lámina 10): en el propio modelo Colombia 2026 (USD 5,07 MM) ya supera a Chile (USD 4,77 MM).</p>
+      <p><b>Lámina 27:</b> la tarjeta Conservador declara la caja bajo el mínimo, la tarjeta Base no dice que el caso base también lo queda 12 meses. <b>Lámina 29:</b> “cobro a 45 días, pago a 30” hoy son 76 y 100 días — es un compromiso de gestión, no una característica del negocio. <span class="ok">A favor:</span> el deck reporta el DSCR de 0,17x y 0,24x explícitamente; esa transparencia juega a favor y conviene mantenerla.</p>
+    </div></div>
+    <div class="f m"><div class="stripe"></div><div class="body">
+      <h3>Defectos de forma <span class="pill" style="background:var(--surf2);color:var(--mut)">Medio</span></h3>
+      <p><span class="ref">'01 Escenarios'!F14</span> muestra “faltan 290.068 MM” cuando el déficit real es CLP 290 MM: error de 1.000x en la carátula del tablero, por caché no recalculado al guardar.</p>
+      <p><b>Check #8</b> marca REVISAR por CLP 588.314.879 y es un falso positivo: compara la línea “Deuda financiera” del balance, que suma sólo 6 de los 11 instrumentos, contra el total de la hoja de deuda. El balance está correcto — los otros 5 están en las líneas 27 y 29. <b>Pero esa misma línea es la que ve el banco:</b> la Deuda Financiera Neta de <span class="ref">'16 Output Banco'</span> excluye esos CLP 588 MM y sale <span class="bad">negativa</span> (−USD 139k, posición de caja neta) para una empresa que pide CLP 1.000 MM.</p>
+      <p>La columna ORIGEN de <span class="ref">'01b Palancas'</span> está corrida una fila respecto de las celdas que las fórmulas leen (declara D14, lee D13): los cálculos están bien, la documentación manda a editar la celda equivocada. Las filas 61–63 de <span class="ref">'01 Escenarios'</span> están vacías, y el texto habla de “palancas ortogonales” cuando las cuatro iniciativas están multiplicadas por el switch ¿Crédito aprobado? <span class="ref">C13:C16 = D18 × D39:D42</span>.</p>
+    </div></div>
+  </div>
+</section>
+
+<section>
+  <div class="shead"><span class="n">04</span><h2>Qué haría antes de ir al banco</h2></div>
+  <div class="tbl"><table>
+    <thead><tr><th>#</th><th>Acción</th><th>Impacto medido</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Recalibrar la base de ingresos de Chile al run-rate may–jul 2026 y agregar un escenario con crecimiento negativo.</td><td class="imp n">Credibilidad ante el analista</td></tr>
+      <tr><td>2</td><td>Encender la subordinación de la deuda con relacionados antes de presentar.</td><td class="imp">12 → 2 meses bajo mínimo</td></tr>
+      <tr><td>3</td><td>Pedir CLP 1.500 MM con giro desde el mes 1, o CLP 1.000 MM más reprogramación de la cartera vigente.</td><td class="imp">0 meses bajo mínimo</td></tr>
+      <tr><td>4</td><td>Sacar del caso base el capex de expansión de CLP 1.842 MM, o atarlo a un driver de ingreso.</td><td class="imp">+USD 1,92 MM de caja 2030</td></tr>
+      <tr><td>5</td><td>Reexpresar la deuda financiera reportada al banco y corregir el check #8.</td><td class="imp n">Evita una observación fatal</td></tr>
+      <tr><td>6</td><td>Respaldar el management fee con estudio de precios de transferencia.</td><td class="imp n">Sostiene la solvencia del deudor</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<footer>El modelo proyecta Chile en una sola línea (Telemedicina + Teleperitaje) mientras el reporte de venta cubre Medical Solutions. Las dos líneas de producto son comparables directamente (+15% y +41%); en el total, descontando Telesalud y Farmazon (~CLP 15 MM/mes, que el motor no proyecta por separado), la brecha comparable es +16%.</footer>
+</div>
+<div class="tip" id="tip"></div>
+
+<script>
+const D = {"meses":["2026-07","2026-08","2026-09","2026-10","2026-11","2026-12","2027-01","2027-02","2027-03","2027-04","2027-05","2027-06","2027-07","2027-08","2027-09","2027-10","2027-11","2027-12","2028-01","2028-02","2028-03","2028-04","2028-05","2028-06","2028-07","2028-08","2028-09","2028-10","2028-11","2028-12","2029-01","2029-02","2029-03","2029-04","2029-05","2029-06","2029-07","2029-08","2029-09","2029-10","2029-11","2029-12","2030-01","2030-02","2030-03","2030-04","2030-05","2030-06","2030-07","2030-08","2030-09","2030-10","2030-11","2030-12"],"real":{"2025-01":501.9,"2025-02":409.9,"2025-03":412.5,"2025-04":414.6,"2025-05":426.0,"2025-06":396.2,"2025-07":375.9,"2025-08":407.3,"2025-09":366.6,"2025-10":374.2,"2025-11":359.9,"2025-12":356.5,"2026-01":341.3,"2026-02":326.2,"2026-03":350.0,"2026-04":339.6,"2026-05":340.0,"2026-06":344.0,"2026-07":311.2},"esc":{"S0_base":{"caja":[59.2,116.5,317.7,521.8,765.1,974.7,838.8,741.3,624.2,583.1,493.9,399.5,329.3,314.8,276.4,238.6,240.1,244.3,254.5,265.6,278.9,543.4,593.0,592.3,597.9,609.7,627.8,652.2,691.2,736.1,786.9,843.9,904.9,1326.2,1409.0,1499.1,1594.1,1693.9,1798.6,1908.3,2022.9,2142.5,2266.4,2394.8,2527.8,3105.3,3247.6,3394.6,3546.3,3702.7,3863.9,4052.1,4216.8,4385.8],"min":[349.3,351.9,354.6,358.0,358.0,356.9,361.3,361.3,363.7,368.1,368.1,369.6,373.6,373.6,375.0,379.1,383.2,387.4,391.7,395.9,400.2,404.5,408.3,412.1,416.0,419.8,423.6,427.5,431.4,435.4,439.4,443.4,447.5,451.6,455.6,459.7,463.8,467.9,472.0,476.2,481.0,485.9,490.8,495.8,500.8,505.8,510.9,515.9,521.0,526.2,531.3,536.5,1083.3,1083.3],"chile":[376.8,380.7,384.5,388.5,393.8,403.0,413.4,424.0,434.5,445.2,456.0,466.8,477.7,488.7,499.7,510.8,522.0,533.3,544.8,556.4,568.1,579.9,591.8,601.4,611.1,620.8,630.5,640.3,650.1,660.0,670.1,680.2,690.4,700.7,710.9,719.5,728.1,736.7,745.4,754.1,762.9,771.7,780.8,789.9,799.1,808.3,817.6,826.9,836.3,845.7,855.2,864.7,874.2,883.8],"dscr":[0.239887790653402,1.90169054138154,6.15444228011804,12.0881458645728],"mb":12,"peor":-290.1,"ing":21.07,"eb":5.38,"pat":3.54,"cj":7.85},"S1_conservador":{"caja":[73.0,141.4,352.2,563.4,809.5,1024.0,888.9,791.1,672.6,588.2,495.4,395.9,318.3,279.1,214.0,149.6,130.9,112.7,98.6,83.2,67.6,139.9,156.0,118.3,86.1,59.4,38.3,43.9,58.0,64.3,74.0,88.7,106.1,251.3,288.1,331.0,377.5,427.6,481.4,538.8,599.9,664.7,733.0,804.9,880.6,1092.6,1175.7,1262.6,1353.3,1447.8,1546.1,1670.6,1778.8,1890.4],"min":[331.0,332.5,334.0,336.2,336.2,333.2,337.1,337.1,338.2,342.1,342.1,343.2,347.1,347.1,348.1,352.1,356.0,360.0,364.0,368.1,372.2,376.3,380.4,384.6,388.7,393.0,397.2,401.5,405.5,409.6,413.7,417.8,422.0,426.2,430.4,434.6,438.9,443.2,447.5,451.8,456.2,460.7,465.3,469.8,474.4,479.0,483.7,488.4,493.0,497.8,502.5,507.3,1024.2,1024.2],"chile":[364.8,366.6,368.4,370.2,373.5,379.5,388.2,397.1,405.9,414.9,423.9,432.9,442.0,451.1,460.3,469.6,478.9,488.3,497.7,507.3,516.9,526.5,536.2,546.0,555.8,565.7,575.6,585.6,595.7,604.7,613.8,622.9,632.1,641.3,650.6,658.2,665.8,673.4,681.1,688.8,696.6,704.4,712.4,720.4,728.4,736.5,744.6,752.8,761.0,769.3,777.6,786.0,794.5,802.9],"dscr":[0.165544315904361,1.24766446374388,4.52200648760126,9.04579829494148],"mb":28,"peor":-358.9,"ing":17.24,"eb":3.29,"pat":-0.2,"cj":4.31},"S11_base_real":{"caja":[49.9,101.4,296.6,494.4,720.6,912.7,759.0,643.0,507.0,441.8,333.0,218.6,127.4,91.3,31.4,-28.4,-49.7,-69.1,-83.2,-97.1,-109.5,120.5,144.5,117.7,96.7,81.6,72.5,69.4,80.7,98.0,121.2,150.2,182.9,567.9,621.7,682.6,748.0,817.9,892.5,971.6,1055.3,1143.8,1236.2,1332.9,1434.0,1971.9,2081.7,2195.9,2314.5,2437.6,2565.2,2719.6,2850.2,2984.9],"min":[323.8,326.1,328.6,331.7,331.7,330.4,334.5,334.5,336.4,340.6,340.6,341.6,345.4,345.4,346.4,350.3,354.2,358.2,362.2,366.2,370.3,374.4,378.0,381.6,385.3,389.0,392.7,396.4,400.1,403.9,407.7,411.6,415.4,419.3,423.2,427.1,431.0,434.9,438.9,442.8,447.4,452.0,456.7,461.4,466.1,470.9,475.6,480.4,485.2,490.1,494.9,499.8,1009.4,1009.4],"chile":[331.6,335.0,338.4,341.9,346.8,355.3,365.2,375.1,385.1,395.2,405.3,415.5,425.8,436.2,446.6,457.0,467.6,478.2,489.1,500.0,511.0,522.1,533.3,542.4,551.6,560.9,570.2,579.5,588.9,598.3,607.9,617.6,627.3,637.0,646.8,654.9,662.9,671.1,679.3,687.5,695.7,704.0,712.6,721.2,729.8,738.5,747.2,756.0,764.8,773.7,782.5,791.5,800.5,809.5],"dscr":[0.0188107907222716,1.29941151215808,4.98922117078543,10.199584330594],"mb":26,"peor":-479.8,"ing":20.2,"eb":4.94,"pat":1.98,"cj":6.37},"S15_todo_adverso":{"caja":[-18.7,-40.7,79.1,199.9,426.5,618.9,813.2,698.3,562.5,458.3,347.7,230.3,134.4,76.8,-7.0,-91.8,-131.1,-170.4,-206.6,-244.7,-283.6,-239.4,-247.2,-249.8,-247.0,-238.8,-225.0,-205.5,-172.0,-132.0,-86.7,-35.9,18.2,178.7,193.0,213.3,236.9,263.9,294.3,328.2,365.6,406.4,450.5,498.1,549.2,733.1,791.3,853.0,918.3,987.2,1059.7,1158.2,1240.2,1325.4],"min":[306.1,307.5,308.9,311.0,311.0,308.0,311.6,311.6,312.4,316.1,316.1,316.8,320.5,320.5,321.2,324.9,328.7,332.5,336.3,340.2,344.1,348.0,351.9,355.9,359.8,363.8,367.9,371.9,375.8,379.7,383.6,387.6,391.5,395.5,399.6,403.6,407.7,411.7,415.8,420.0,424.2,428.5,432.8,437.2,441.6,445.9,450.4,454.8,459.3,463.8,468.3,472.9,954.9,954.9],"chile":[321.2,322.8,324.4,326.0,329.0,334.7,343.1,351.5,360.0,368.5,377.1,385.7,394.4,403.2,411.9,420.8,429.7,438.6,447.6,456.7,465.9,475.1,484.3,493.6,503.0,512.4,521.9,531.4,541.0,549.6,558.4,567.2,576.0,584.9,593.8,601.0,608.2,615.5,622.8,630.1,637.5,645.0,652.5,660.1,667.8,675.4,683.2,691.0,698.8,706.7,714.6,722.6,730.6,738.6],"dscr":[0.281284836459332,0.716257334230871,3.52901546519121,7.53342141343234],"mb":35,"peor":-627.7,"ing":16.54,"eb":2.97,"pat":-1.18,"cj":3.73},"S18_subord_relac":{"caja":[91.5,180.8,413.7,649.2,923.7,1164.0,1058.7,991.5,904.3,893.0,833.2,767.9,726.6,740.6,730.5,720.7,749.9,781.4,818.7,856.7,896.6,1187.3,1236.9,1236.2,1241.8,1253.6,1271.7,1296.1,1335.1,1380.0,1430.8,1487.8,1548.8,1970.1,2052.9,2143.0,2238.0,2337.8,2442.5,2552.2,2666.8,2786.4,2910.3,3038.7,3171.7,3749.2,3891.5,4038.5,4190.2,4346.6,4507.8,4696.0,4860.7,5029.7],"min":[349.3,351.9,354.6,358.0,358.0,356.9,361.3,361.3,363.7,368.1,368.1,369.6,373.6,373.6,375.0,379.1,383.2,387.4,391.7,395.9,400.2,404.5,408.3,412.1,416.0,419.8,423.6,427.5,431.4,435.4,439.4,443.4,447.5,451.6,455.6,459.7,463.8,467.9,472.0,476.2,481.0,485.9,490.8,495.8,500.8,505.8,510.9,515.9,521.0,526.2,531.3,536.5,1083.3,1083.3],"chile":[376.8,380.7,384.5,388.5,393.8,403.0,413.4,424.0,434.5,445.2,456.0,466.8,477.7,488.7,499.7,510.8,522.0,533.3,544.8,556.4,568.1,579.9,591.8,601.4,611.1,620.8,630.5,640.3,650.1,660.0,670.1,680.2,690.4,700.7,710.9,719.5,728.1,736.7,745.4,754.1,762.9,771.7,780.8,789.9,799.1,808.3,817.6,826.9,836.3,845.7,855.2,864.7,874.2,883.8],"dscr":[0.350328650733611,2.38665749796785,6.15444228011804,12.0881458645728],"mb":2,"peor":-257.8,"ing":21.07,"eb":5.38,"pat":3.14,"cj":8.5},"S20_1500_giro1":{"caja":[555.0,1103.8,1792.2,1619.8,1489.6,1328.8,1178.4,1066.5,935.0,879.7,776.4,667.9,583.8,555.4,503.3,451.8,439.8,430.5,427.3,425.2,425.3,676.7,713.3,759.1,811.4,870.1,935.5,1007.4,1094.0,1186.9,1285.9,1391.3,1500.8,1971.0,2102.8,2242.2,2386.7,2536.2,2690.9,2850.7,3015.6,3185.8,3360.4,3539.7,3723.9,4352.7,4546.6,4745.3,4982.2,5223.8,5470.1,5721.0,5948.5,6180.4],"min":[349.3,351.9,354.6,358.0,358.0,356.9,361.3,361.3,363.7,368.1,368.1,369.6,373.6,373.6,375.0,379.1,383.2,387.4,391.7,395.9,400.2,404.5,408.3,412.1,416.0,419.8,423.6,427.5,431.4,435.4,439.4,443.4,447.5,451.6,455.6,459.7,463.8,467.9,472.0,476.2,481.0,485.9,490.8,495.8,500.8,505.8,510.9,515.9,521.0,526.2,531.3,536.5,1083.3,1083.3],"chile":[376.8,380.7,384.5,388.5,393.8,403.0,413.4,424.0,434.5,445.2,456.0,466.8,477.7,488.7,499.7,510.8,522.0,533.3,544.8,556.4,568.1,579.9,591.8,601.4,611.1,620.8,630.5,640.3,650.1,660.0,670.1,680.2,690.4,700.7,710.9,719.5,728.1,736.7,745.4,754.1,762.9,771.7,780.8,789.9,799.1,808.3,817.6,826.9,836.3,845.7,855.2,864.7,874.2,883.8],"dscr":[0.208201287031585,1.46999320709952,4.19753826020254,12.2378170078341],"mb":0,"peor":25.1,"ing":21.07,"eb":5.38,"pat":3.9,"cj":9.66},"S7_sin_mgmtfee":{"caja":[59.2,62.4,209.0,358.2,544.0,698.3,505.2,350.8,176.7,164.4,18.5,-127.4,-238.1,-309.5,-405.5,-502.1,-560.5,-616.9,-667.9,-718.5,-767.5,-401.6,-410.2,-469.0,-522.4,-570.2,-612.3,-648.6,-670.9,-687.5,-698.5,-703.4,-704.5,-183.3,-156.2,-121.4,-81.5,-36.4,14.1,69.9,130.6,196.1,265.7,339.8,418.3,1104.7,1192.2,1284.3,1381.0,1482.2,1588.1,1720.9,1827.5,1938.2],"min":[349.3,351.9,354.6,358.0,358.0,356.9,361.3,361.3,363.7,368.1,368.1,369.6,373.6,373.6,375.0,379.1,383.2,387.4,391.7,395.9,400.2,404.5,408.3,412.1,416.0,419.8,423.6,427.5,431.4,435.4,439.4,443.4,447.5,451.6,455.6,459.7,463.8,467.9,472.0,476.2,481.0,485.9,490.8,495.8,500.8,505.8,510.9,515.9,521.0,526.2,531.3,536.5,1083.3,1083.3],"chile":[376.8,380.7,384.5,388.5,393.8,403.0,413.4,424.0,434.5,445.2,456.0,466.8,477.7,488.7,499.7,510.8,522.0,533.3,544.8,556.4,568.1,579.9,591.8,601.4,611.1,620.8,630.5,640.3,650.1,660.0,670.1,680.2,690.4,700.7,710.9,719.5,728.1,736.7,745.4,754.1,762.9,771.7,780.8,789.9,799.1,808.3,817.6,826.9,836.3,845.7,855.2,864.7,874.2,883.8],"dscr":[-0.366487006902261,0.539466310362724,3.4448370078776,8.77915744729135],"mb":41,"peor":-1167.7,"ing":21.07,"eb":5.38,"pat":2.45,"cj":6.63}}};
+const SC = [
+  ["S0_base","Caso base","Como está el archivo hoy: escenario 2 Medio, crédito CLP 1.000 MM girado desde el mes 4, plan de iniciativas activo."],
+  ["S18_subord_relac","+ Subordinar relacionados","Misma base, pero se deja de amortizar en caja la deuda con Yesod Trust, Solutions Group y Consultora Urbina. La palanca ya existe en el modelo."],
+  ["S20_1500_giro1","CLP 1.500 MM, giro mes 1","Crédito redimensionado y adelantado al primer mes, y sin el capex de expansión de CLP 1.842 MM. Único escenario que nunca cae bajo el mínimo."],
+  ["S11_base_real","Base al run-rate real","Se recalibra la base de ingresos de Chile al nivel efectivamente vendido en may–jul 2026, dejando todo lo demás igual."],
+  ["S1_conservador","Escenario 3 Conservador","El caso adverso que el propio modelo trae para el comité: crecimiento +1%, re-pricing 8%, margen erosionado."],
+  ["S7_sin_mgmtfee","Sin management fee","Chile deja de cobrar overhead a Colombia y México. Muestra cuánto de la viabilidad del deudor es intercompañía."],
+  ["S15_todo_adverso","Adverso combinado","Conservador + base real + cobranza a 76 días. El piso razonable del caso."]
+];
+const $=s=>document.querySelector(s), tip=$("#tip");
+const cs=()=>getComputedStyle(document.documentElement);
+const C=n=>cs().getPropertyValue("--"+n).trim();
+const fmt=n=>n.toLocaleString("es-CL",{maximumFractionDigits:0});
+const SVGNS="http://www.w3.org/2000/svg";
+function el(t,a){const e=document.createElementNS(SVGNS,t);for(const k in a)e.setAttribute(k,a[k]);return e}
+function nice(max,min){const r=max-min||1,st=Math.pow(10,Math.floor(Math.log10(r/4)));let s=st;[1,2,2.5,5,10].some(m=>{if(r/(st*m)<=5){s=st*m;return true}});
+  return {lo:Math.floor(min/s)*s, hi:Math.ceil(max/s)*s, step:s}}
+
+/* ---------------- chart 1 ---------------- */
+const REAL_K=Object.keys(D.real), REAL_V=Object.values(D.real);
+const MSTART=REAL_K.length-1;                       // 2026-07 index
+const NPROJ=18;
+const LBL=REAL_K.concat(D.meses.slice(1,NPROJ));    // 2025-01 .. 2027-12
+const modelo=D.esc.S0_base.chile.slice(0,NPROJ);
+const recal=D.esc.S11_base_real.chile.slice(0,NPROJ);
+
+function chart1(){
+  const svg=$("#c1"); svg.innerHTML="";
+  const W=900,H=340,L=52,R=118,T=18,B=40, iw=W-L-R, ih=H-T-B;
+  const all=REAL_V.concat(modelo,recal), sc=nice(Math.max(...all),Math.min(...all,250));
+  const x=i=>L+i*iw/(LBL.length-1), y=v=>T+ih-(v-sc.lo)/(sc.hi-sc.lo)*ih;
+  for(let v=sc.lo;v<=sc.hi+1e-9;v+=sc.step){
+    svg.appendChild(el("line",{x1:L,x2:L+iw,y1:y(v),y2:y(v),stroke:C("line2"),"stroke-width":1}));
+    const t=el("text",{x:L-9,y:y(v)+4,"text-anchor":"end",fill:C("mut"),"font-size":11,"font-family":"IBM Plex Mono, monospace"});t.textContent=fmt(v);svg.appendChild(t)}
+  // junction
+  svg.appendChild(el("line",{x1:x(MSTART),x2:x(MSTART),y1:T,y2:T+ih,stroke:C("mut"),"stroke-width":1,"stroke-dasharray":"3 4",opacity:.6}));
+  const jt=el("text",{x:x(MSTART)+6,y:T+12,fill:C("mut"),"font-size":10.5,"font-family":"IBM Plex Sans, sans-serif"});jt.textContent="jul-2026 · inicio de la proyección";svg.appendChild(jt);
+  LBL.forEach((m,i)=>{ if(m.slice(5)!=="01"&&i!==LBL.length-1) return;
+    const t=el("text",{x:x(i),y:H-16,"text-anchor":"middle",fill:C("mut"),"font-size":10.5,"font-family":"IBM Plex Mono, monospace"});t.textContent=m;svg.appendChild(t)});
+  const path=(vals,off,col,dash)=>{
+    const d=vals.map((v,i)=>(i?"L":"M")+x(i+off).toFixed(1)+" "+y(v).toFixed(1)).join(" ");
+    svg.appendChild(el("path",{d,fill:"none",stroke:col,"stroke-width":2,"stroke-linejoin":"round","stroke-linecap":"round","stroke-dasharray":dash||"none"}))};
+  path(REAL_V,0,C("s3"));
+  path(recal,MSTART,C("s2"),"5 4");
+  path(modelo,MSTART,C("s1"));
+  const lab=(txt,v,off,col)=>{const t=el("text",{x:x(LBL.length-1)+8,y:y(v)+4,fill:col,"font-size":11.5,"font-weight":600,"font-family":"IBM Plex Sans, sans-serif"});t.textContent=txt;svg.appendChild(t)};
+  lab("Modelo "+fmt(modelo[NPROJ-1]),modelo[NPROJ-1],0,C("s1"));
+  lab("Recalibrado "+fmt(recal[NPROJ-1]),recal[NPROJ-1],0,C("s2"));
+  // endpoint of real
+  svg.appendChild(el("circle",{cx:x(MSTART),cy:y(REAL_V[MSTART]),r:4,fill:C("s3"),stroke:C("surf"),"stroke-width":2}));
+  const rt=el("text",{x:x(MSTART)-8,y:y(REAL_V[MSTART])+16,"text-anchor":"end",fill:C("s3"),"font-size":11.5,"font-weight":600,"font-family":"IBM Plex Sans, sans-serif"});
+  rt.textContent="Real jul-26  "+fmt(REAL_V[MSTART]);svg.appendChild(rt);
+  svg.appendChild(el("circle",{cx:x(MSTART),cy:y(modelo[0]),r:4,fill:C("s1"),stroke:C("surf"),"stroke-width":2}));
+  const mt=el("text",{x:x(MSTART)+6,y:y(modelo[0])-9,fill:C("s1"),"font-size":11.5,"font-weight":600,"font-family":"IBM Plex Sans, sans-serif"});
+  mt.textContent="Modelo "+fmt(modelo[0])+"  (+21%)";svg.appendChild(mt);
+  const cross=el("line",{y1:T,y2:T+ih,stroke:C("mut"),"stroke-width":1,opacity:0});svg.appendChild(cross);
+  const hit=el("rect",{x:L,y:T,width:iw,height:ih,fill:"transparent"});svg.appendChild(hit);
+  hit.addEventListener("pointermove",e=>{
+    const r=svg.getBoundingClientRect(), px=(e.clientX-r.left)/r.width*W;
+    let i=Math.round((px-L)/(iw/(LBL.length-1))); i=Math.max(0,Math.min(LBL.length-1,i));
+    cross.setAttribute("x1",x(i));cross.setAttribute("x2",x(i));cross.setAttribute("opacity",.35);
+    let h="<div class='tm'>"+LBL[i]+"</div>";
+    if(i<=MSTART) h+="<div class='tr'><span>Venta real</span><b>"+fmt(REAL_V[i])+"</b></div>";
+    if(i>=MSTART){h+="<div class='tr'><span>Modelo</span><b>"+fmt(modelo[i-MSTART])+"</b></div>";
+                  h+="<div class='tr'><span>Recalibrado</span><b>"+fmt(recal[i-MSTART])+"</b></div>"}
+    tip.innerHTML=h;tip.style.opacity=1;tip.style.left=Math.min(e.clientX+14,innerWidth-190)+"px";tip.style.top=(e.clientY-10)+"px"});
+  hit.addEventListener("pointerleave",()=>{tip.style.opacity=0;cross.setAttribute("opacity",0)});
+}
+
+/* ---------------- chart 2 ---------------- */
+let cur="S0_base";
+function chart2(){
+  const s=D.esc[cur], svg=$("#c2"); svg.innerHTML="";
+  const W=900,H=320,L=64,R=22,T=20,B=38, iw=W-L-R, ih=H-T-B, n=s.caja.length;
+  const hol=s.caja.map((v,i)=>v-s.min[i]);
+  const loRaw=Math.min(...hol,-150);
+  const hiRaw=Math.max(Math.max(...hol.slice(0,24)), Math.abs(loRaw)*0.9, 600);
+  const sc=nice(hiRaw,loRaw);
+  const x=i=>L+i*iw/(n-1), y=v=>T+ih-(v-sc.lo)/(sc.hi-sc.lo)*ih;
+  const y0=y(0);
+  for(let v=sc.lo;v<=sc.hi+1e-9;v+=sc.step){
+    const z=Math.abs(v)<1e-9;
+    svg.appendChild(el("line",{x1:L,x2:L+iw,y1:y(v),y2:y(v),stroke:z?C("ink2"):C("line2"),"stroke-width":z?1.5:1}));
+    const t=el("text",{x:L-9,y:y(v)+4,"text-anchor":"end",fill:z?C("ink2"):C("mut"),"font-size":11,"font-family":"IBM Plex Mono, monospace"});
+    t.textContent=fmt(v);svg.appendChild(t)}
+  // area
+  const area=hol.map((v,i)=>(i?"L":"M")+x(i).toFixed(1)+" "+y(v).toFixed(1)).join(" ")
+    +" L "+x(n-1).toFixed(1)+" "+y0.toFixed(1)+" L "+x(0).toFixed(1)+" "+y0.toFixed(1)+" Z";
+  const uid=Math.random().toString(36).slice(2,7), cid="cp"+uid, cid2="cn"+uid;
+  const defs=el("defs",{});
+  const cp=el("clipPath",{id:cid}); cp.appendChild(el("rect",{x:L,y:T,width:iw,height:Math.max(0,y0-T)})); defs.appendChild(cp);
+  const cn=el("clipPath",{id:cid2}); cn.appendChild(el("rect",{x:L,y:y0,width:iw,height:Math.max(0,T+ih-y0)})); defs.appendChild(cn);
+  svg.appendChild(defs);
+  svg.appendChild(el("path",{d:area,fill:C("s1"),opacity:.16,"clip-path":"url(#"+cid+")"}));
+  svg.appendChild(el("path",{d:area,fill:C("crit"),opacity:.24,"clip-path":"url(#"+cid2+")"}));
+  D.meses.forEach((m,i)=>{ if(m.slice(5)!=="01"&&i!==0) return;
+    const t=el("text",{x:x(i),y:H-14,"text-anchor":"middle",fill:C("mut"),"font-size":10.5,"font-family":"IBM Plex Mono, monospace"});t.textContent=m;svg.appendChild(t)});
+  const d=hol.map((v,i)=>(i?"L":"M")+x(i).toFixed(1)+" "+y(v).toFixed(1)).join(" ");
+  svg.appendChild(el("path",{d,fill:"none",stroke:C("s1"),"stroke-width":2,"stroke-linejoin":"round","clip-path":"url(#"+cid+")"}));
+  // where the curve leaves the top of the frame
+  const ex=hol.findIndex(v=>v>sc.hi);
+  if(ex>0){
+    svg.appendChild(el("path",{d:"M "+(x(ex)-6)+" "+(T+11)+" L "+x(ex)+" "+(T+3)+" L "+(x(ex)+6)+" "+(T+11),fill:"none",stroke:C("s1"),"stroke-width":2,"stroke-linecap":"round"}));
+    const et=el("text",{x:Math.min(x(ex)+11,W-8),y:T+13,"text-anchor":x(ex)>W*0.72?"end":"start",fill:C("mut"),"font-size":11,"font-family":"IBM Plex Sans, sans-serif"});
+    et.textContent="sigue subiendo hasta +"+fmt(hol[hol.length-1])+" MM en dic-2030";
+    if(x(ex)>W*0.72) et.setAttribute("x", x(ex)-11);
+    svg.appendChild(et);
+  }
+  // worst month marker
+  let w=0; hol.forEach((v,i)=>{if(v<hol[w])w=i});
+  svg.appendChild(el("circle",{cx:x(w),cy:y(hol[w]),r:4.5,fill:hol[w]<0?C("crit"):C("good"),stroke:C("surf"),"stroke-width":2}));
+  const anch=x(w)>W*0.6?"end":"start", dx=anch==="end"?-9:9;
+  const wt=el("text",{x:x(w)+dx,y:Math.min(y(hol[w])+20,T+ih-6),"text-anchor":anch,fill:hol[w]<0?C("crit"):C("good"),"font-size":11.5,"font-weight":600,"font-family":"IBM Plex Sans, sans-serif"});
+  wt.textContent="Peor mes "+D.meses[w]+" · "+(hol[w]>0?"+":"")+fmt(hol[w])+" MM";svg.appendChild(wt);
+  const nb=hol.filter(v=>v<0).length;
+  const nt=el("text",{x:L+iw,y:T-6,"text-anchor":"end",fill:nb?C("crit"):C("good"),"font-size":11.5,"font-weight":600,"font-family":"IBM Plex Sans, sans-serif"});
+  nt.textContent=nb?nb+" de 54 meses bajo el mínimo":"Nunca cae bajo el mínimo";svg.appendChild(nt);
+  const cross=el("line",{y1:T,y2:T+ih,stroke:C("mut"),"stroke-width":1,opacity:0});svg.appendChild(cross);
+  const hit=el("rect",{x:L,y:T,width:iw,height:ih,fill:"transparent"});svg.appendChild(hit);
+  hit.addEventListener("pointermove",e=>{
+    const r=svg.getBoundingClientRect(), px=(e.clientX-r.left)/r.width*W;
+    let i=Math.round((px-L)/(iw/(n-1))); i=Math.max(0,Math.min(n-1,i));
+    cross.setAttribute("x1",x(i));cross.setAttribute("x2",x(i));cross.setAttribute("opacity",.35);
+    tip.innerHTML="<div class='tm'>"+D.meses[i]+"</div>"+
+      "<div class='tr'><span>Holgura</span><b style='color:"+(hol[i]<0?C("crit"):C("good"))+"'>"+(hol[i]>0?"+":"")+fmt(hol[i])+"</b></div>"+
+      "<div class='tr'><span>Caja</span><b>"+fmt(s.caja[i])+"</b></div>"+
+      "<div class='tr'><span>Mínimo exigido</span><b>"+fmt(s.min[i])+"</b></div>";
+    tip.style.opacity=1;tip.style.left=Math.min(e.clientX+14,innerWidth-190)+"px";tip.style.top=(e.clientY-10)+"px"});
+  hit.addEventListener("pointerleave",()=>{tip.style.opacity=0;cross.setAttribute("opacity",0)});
+  const good=s.mb===0, warn=s.mb<=4;
+  $("#ro").innerHTML=[
+    ["Meses bajo el mínimo",s.mb+" / 54",good?"good":warn?"warn":"crit"],
+    ["Peor mes vs. mínimo",(s.peor>0?"+":"")+fmt(s.peor)+" MM",s.peor>0?"good":"crit"],
+    ["DSCR 2027",s.dscr[0].toFixed(2).replace(".",",")+"x",s.dscr[0]>=1?"good":s.dscr[0]>=.35?"warn":"crit"],
+    ["EBITDA 2030",s.eb.toFixed(2).replace(".",",")+" MUSD","ink"],
+    ["Patrimonio 2030",(s.pat>0?"+":"")+s.pat.toFixed(2).replace(".",",")+" MUSD",s.pat>0?"good":"crit"]
+  ].map(([k,v,c])=>`<div><span>${k}</span><b style="color:var(--${c==="ink"?"ink":c})">${v}</b></div>`).join("");
+}
+$("#pick").innerHTML=SC.map(([k,l])=>`<button data-k="${k}" aria-pressed="${k===cur}">${l}</button>`).join("");
+$("#pick").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
+  cur=b.dataset.k;[...$("#pick").children].forEach(x=>x.setAttribute("aria-pressed",x.dataset.k===cur));
+  $("#sdesc").textContent=SC.find(s=>s[0]===cur)[2];chart2()});
+$("#sdesc").textContent=SC[0][2];
+chart1();chart2();
+matchMedia("(prefers-color-scheme:dark)").addEventListener("change",()=>{chart1();chart2()});
+new MutationObserver(()=>{chart1();chart2()}).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+addEventListener("resize",()=>{clearTimeout(window._rz);window._rz=setTimeout(()=>{chart1();chart2()},150)});
+</script>
