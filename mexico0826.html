@@ -1,0 +1,514 @@
+<title>Medismart México</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --bg:#F6F7FB; --surface:#FFFFFF; --surface-2:#F0F1F9;
+  --ink:#1B1533; --text-secondary:#5B5770; --border:#E4E3F0;
+  --brand-ink:#241454; --brand-blue:#0B7FD6; --brand-magenta:#9B3FA6; --brand-teal:#1BAF7A;
+  --good:#0C8F3D; --warning:#B5680A; --critical:#C4302B;
+  --good-bg:#E7F6EC; --warning-bg:#FBF0DE; --critical-bg:#FBE9E8;
+  --chart-grid:#E7E6F1;
+  --shadow: 0 1px 2px rgba(27,21,51,.04), 0 8px 24px -12px rgba(27,21,51,.12);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --bg:#130F26; --surface:#1B1633; --surface-2:#221C42;
+    --ink:#F1EFFA; --text-secondary:#B6B2CF; --border:#312A54;
+    --brand-ink:#C8BEFF; --brand-blue:#5CB2F5; --brand-magenta:#D394DE; --brand-teal:#5FDBA6;
+    --good:#4ED07E; --warning:#F2B94C; --critical:#F0837E;
+    --good-bg:#153823; --warning-bg:#3A2C10; --critical-bg:#3B1918;
+    --chart-grid:#2C2650;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --bg:#130F26; --surface:#1B1633; --surface-2:#221C42;
+  --ink:#F1EFFA; --text-secondary:#B6B2CF; --border:#312A54;
+  --brand-ink:#C8BEFF; --brand-blue:#5CB2F5; --brand-magenta:#D394DE; --brand-teal:#5FDBA6;
+  --good:#4ED07E; --warning:#F2B94C; --critical:#F0837E;
+  --good-bg:#153823; --warning-bg:#3A2C10; --critical-bg:#3B1918;
+  --chart-grid:#2C2650;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Inter",system-ui,sans-serif;font-size:15px;line-height:1.5}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px 64px}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--surface);border-bottom:1px solid var(--border);backdrop-filter:blur(6px)}
+.topbar{max-width:1180px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px}
+.brand img{height:26px;display:block}
+.brand .div{width:1px;height:22px;background:var(--border)}
+.brand .meta{font-family:"Poppins",sans-serif;font-weight:600;font-size:13px;color:var(--text-secondary)}
+.brand .meta b{color:var(--ink);font-weight:700}
+nav.pill{display:flex;gap:6px;background:var(--surface-2);padding:4px;border-radius:999px;font-size:12.5px;font-weight:600;color:var(--text-secondary)}
+nav.pill span{padding:6px 12px;border-radius:999px}
+nav.pill span.now{background:var(--surface);color:var(--brand-blue);box-shadow:var(--shadow)}
+
+.hero{padding:36px 0 8px}
+.eyebrow{font-family:"Poppins";font-weight:600;font-size:12px;letter-spacing:.08em;color:var(--brand-blue);text-transform:uppercase;margin:0 0 8px}
+h1{font-family:"Poppins";font-weight:800;font-size:clamp(28px,4.5vw,42px);margin:0 0 6px;letter-spacing:-.01em;text-wrap:balance}
+.sub{color:var(--text-secondary);font-size:15px;margin:0 0 26px}
+
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:34px}
+@media(max-width:820px){.kpis{grid-template-columns:repeat(2,1fr)}}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow)}
+.kpi .lbl{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-secondary);margin-bottom:8px}
+.kpi .val{font-family:"Poppins";font-weight:700;font-size:24px;letter-spacing:-.01em}
+.kpi .sub2{font-size:12.5px;color:var(--text-secondary);margin-top:4px}
+.kpi.crit .val{color:var(--critical)}
+.kpi.warn .val{color:var(--warning)}
+.kpi.good .val{color:var(--good)}
+.kpi.brand{display:block}
+.kpi.brand .val{color:var(--brand-ink)}
+
+section{margin-bottom:34px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px 24px;box-shadow:var(--shadow)}
+.card h2{font-family:"Poppins";font-size:17px;font-weight:700;margin:0 0 4px}
+.card .desc{color:var(--text-secondary);font-size:13.5px;margin:0 0 18px}
+.grid2{display:grid;grid-template-columns:1.35fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:900px){.grid2{grid-template-columns:1fr}.grid3{grid-template-columns:1fr}}
+
+/* bars */
+.barchart{display:flex;align-items:flex-end;gap:10px;height:170px;padding-top:22px;border-bottom:1px solid var(--chart-grid)}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;position:relative}
+.bar{width:100%;max-width:34px;border-radius:5px 5px 0 0;background:var(--brand-blue);position:relative}
+.bar .v{position:absolute;top:-19px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:600;color:var(--text-secondary);white-space:nowrap}
+.bar-col .lb{margin-top:8px;font-size:11.5px;color:var(--text-secondary)}
+
+.linewrap{margin-top:14px}
+.linewrap svg{width:100%;height:auto;display:block}
+
+.trayline{margin-top:8px}
+.trayline svg{width:100%;height:auto;display:block}
+
+.hbars{display:flex;flex-direction:column;gap:14px}
+.hrow{display:grid;grid-template-columns:180px 1fr auto;align-items:center;gap:10px}
+.hrow .lb{font-size:12.5px;color:var(--text-secondary);text-align:right}
+.htrack{height:20px;background:var(--surface-2);border-radius:5px;overflow:hidden}
+.hfill{height:100%;border-radius:5px}
+.hrow .val{font-size:12.5px;font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}
+
+.legend{display:flex;gap:16px;font-size:12px;color:var(--text-secondary);margin-top:10px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+
+.statrow{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px}
+.statrow .stat-lbl{font-size:12px;color:var(--text-secondary);font-weight:600}
+.statrow .stat-val{font-family:"Poppins";font-weight:700;font-size:26px;color:var(--brand-ink)}
+.statrow .stat-sub{font-size:11.5px;color:var(--text-secondary)}
+
+.callout{display:flex;gap:12px;padding:14px 16px;border-radius:12px;margin-bottom:10px;font-size:13.5px;line-height:1.55}
+.callout b.tag{font-family:"Poppins";font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:3px 8px;border-radius:999px;white-space:nowrap;height:fit-content}
+.callout.critico{background:var(--critical-bg)} .callout.critico b.tag{background:var(--critical);color:#fff}
+.callout.alerta{background:var(--warning-bg)} .callout.alerta b.tag{background:var(--warning);color:#fff}
+.callout.atencion{background:var(--warning-bg)} .callout.atencion b.tag{background:var(--warning);color:#fff}
+.callout.positivo{background:var(--good-bg)} .callout.positivo b.tag{background:var(--good);color:#fff}
+.callout.mejora{background:var(--surface-2)} .callout.mejora b.tag{background:var(--brand-blue);color:#fff}
+.callout p{margin:0;color:var(--ink)}
+
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:9px 10px;text-align:right;border-bottom:1px solid var(--border);font-variant-numeric:tabular-nums}
+th:first-child,td:first-child{text-align:left}
+thead th{color:var(--text-secondary);font-weight:600;font-size:11.5px;text-transform:uppercase;letter-spacing:.04em}
+tbody tr:last-child td{font-weight:700;border-bottom:none;border-top:2px solid var(--ink)}
+
+footer{color:var(--text-secondary);font-size:12px;text-align:center;padding-top:20px;border-top:1px solid var(--border)}
+
+.tt{position:fixed;pointer-events:none;z-index:9999;background:#1B1533;color:#fff;font-family:"Inter",system-ui,sans-serif;font-size:12.5px;padding:8px 12px;border-radius:8px;box-shadow:0 6px 20px rgba(0,0,0,.28);opacity:0;transform:translate(-50%,calc(-100% - 12px));transition:opacity .08s;white-space:nowrap;line-height:1.45;max-width:280px}
+.tt.show{opacity:1}
+.tt b{font-family:"Poppins";font-weight:700;font-size:13.5px;display:block}
+.tt .tt-sub{font-weight:400;color:#C9C6DC;font-size:11px;display:block;margin-top:2px}
+[data-tv]{cursor:pointer;transition:filter .08s,opacity .08s}
+[data-tv]:hover{filter:brightness(1.18)}
+.hfill[data-tv]:hover,.bar[data-tv]:hover{filter:brightness(1.1)}
+</style>
+
+<header class="top">
+  <div class="topbar">
+    <div class="brand">
+      <img src="data:image/png;base64,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" alt="Medismart">
+      <div class="div"></div>
+      <div class="meta">Reporte de gestión país · <b>México</b></div>
+    </div>
+    <nav class="pill">
+      <span>Colombia</span><span class="now">México</span><span>Costa Rica</span><span>USA</span><span>Chile</span><span>Consolidado</span>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="hero">
+    <p class="eyebrow">Cierre agosto 2026 · real enero–agosto</p>
+    <h1>México — Dashboard financiero</h1>
+    <p class="sub">Margen operativo saludable (41,9%) absorbido por una estructura de GAV que equivale a 116,7% de las ventas — utilidad neta negativa los 8 meses del año. Cifras en MXN salvo donde se indica.</p>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi crit"><div class="lbl">Ventas YTD (8m)</div><div class="val">$2.968K MXN</div><div class="sub2">USD 170.557 · 29,5% del budget</div></div>
+    <div class="kpi brand"><div class="lbl">Margen de explotación</div><div class="val">41,9%</div><div class="sub2">rango mensual 31,9%–48,8%</div></div>
+    <div class="kpi crit"><div class="lbl">GAV / Ventas</div><div class="val">116,7%</div><div class="sub2">el GAV supera a las ventas totales</div></div>
+    <div class="kpi crit"><div class="lbl">Utilidad neta</div><div class="val">–$1.919K MXN</div><div class="sub2">negativa en 8 de 8 meses</div></div>
+    <div class="kpi crit"><div class="lbl">EBITDA USD (Holding)</div><div class="val">–USD 128K</div><div class="sub2">vs. budget +USD 49K</div></div>
+    <div class="kpi crit"><div class="lbl">Cumpl. presupuesto ventas</div><div class="val">29,5%</div><div class="sub2">USD 171K real vs. USD 578K budget</div></div>
+    <div class="kpi warn"><div class="lbl">GAV Comercial &amp; Marketing</div><div class="val">69,6%</div><div class="sub2">–$2.412K MXN · &gt;60% es el cargo del CEO</div></div>
+    <div class="kpi warn"><div class="lbl">Desvío agosto vs. forecast</div><div class="val">–$323K MXN</div><div class="sub2">89,2% explicado por 2 clientes nuevos</div></div>
+    <div class="kpi warn"><div class="lbl">Concentración top 5 clientes</div><div class="val">68,2%</div><div class="sub2">sobre 35 clientes activos, ene–ago</div></div>
+  </div>
+
+  <section class="grid2">
+    <div class="card">
+      <h2>Ventas mensuales 2026</h2>
+      <p class="desc">MXN miles · ene–ago, todo real</p>
+      <div class="barchart" id="bar-ventas"></div>
+    </div>
+    <div class="card">
+      <h2>Margen de explotación %</h2>
+      <p class="desc">Rango 31,9%–48,8%, sin tendencia clara</p>
+      <div class="linewrap" id="line-margen"></div>
+    </div>
+  </section>
+
+  <section class="grid2">
+    <div class="card">
+      <h2>Ventas por canal</h2>
+      <p class="desc">Acumulado ene–ago 2026 · $2.968K MXN total</p>
+      <div class="hbars" id="hbars-canal"></div>
+    </div>
+    <div class="card">
+      <h2>Estructura del costo directo</h2>
+      <p class="desc">Acumulado ene–ago 2026 · $1.724K MXN total</p>
+      <div class="hbars" id="hbars-costo"></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Gastos de Administración y Venta por área</h2>
+    <p class="desc">Acumulado ene–ago 2026 · $3.464K MXN total — 116,7% de las ventas del período</p>
+    <div class="hbars" id="hbars-gav"></div>
+    <div class="callout critico" style="margin-top:16px">
+      <b class="tag">CRÍTICO</b>
+      <p>69,6% del GAV ($2.412K MXN) se concentra en Comercial &amp; Marketing. Según el detalle de nómina crudo (hoja PIVOT), la partida del CEO de la filial concentra $1.506K MXN de los 8 meses — más del 60% de todo el GAV de esa área. El desajuste no es de plantilla numerosa, sino de concentración del costo en una sola posición.</p>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Cascada de rentabilidad — acumulado ene–ago 2026 (MXN, archivo local)</h2>
+    <p class="desc">El margen de explotación es absorbido por completo por el GAV</p>
+    <div id="waterfall"></div>
+    <div class="callout critico" style="margin-top:16px">
+      <b class="tag">CRÍTICO</b>
+      <p>El Margen de explotación ($1.243K MXN) no alcanza a cubrir el GAV (–$3.464K MXN): el EBITDA local cierra en –$2.220K MXN. En USD (base Holding, comparable entre países), la misma cascada es Margen USD 71.572 → GAV −USD 199.104 → Adjusted EBITDA −USD 127.532, cifra que coincide con el EBITDA final porque no hay Gastos Corporativos ni cargos one-off asignados a México en el período.</p>
+    </div>
+    <div class="callout atencion">
+      <b class="tag">ATENCIÓN</b>
+      <p>Entre el EBITDA y la Utilidad neta, el archivo registra Ingresos no Operacionales muy volátiles mes a mes (de –$259K en marzo a +$219K en enero), que en el acumulado aportan +$326K MXN. Según la hoja "Validación" del propio archivo, esto corresponde en gran medida a utilidad/pérdida por tipo de cambio, no al negocio — con Gasto Financiero (–$25K) e Impuestos ($0), este bloque lleva el EBITDA (–$2.220K) a la Utilidad neta de –$1.919K MXN.</p>
+    </div>
+  </section>
+
+  <section class="grid2">
+    <div class="card">
+      <h2>Utilidad neta mensual</h2>
+      <p class="desc">MXN miles · negativa los 8 meses del año</p>
+      <div id="util-chart"></div>
+    </div>
+    <div class="card">
+      <h2>Comparativo integral: real 2026 vs. presupuesto (USD)</h2>
+      <p class="desc">Acumulado ene–ago 2026 · USD miles · sin base 2025 ni proyección confiable disponibles (ver nota)</p>
+      <div id="budget-chart"></div>
+      <div class="legend"><span><i style="background:color-mix(in srgb, var(--brand-ink) 22%, var(--surface-2))"></i>Presupuesto</span><span><i style="background:var(--brand-ink)"></i>Real</span></div>
+      <div class="callout mejora" style="margin-top:16px">
+        <b class="tag">MEJORA</b>
+        <p>México no tiene hoja de 2025 en su archivo propio (sin base comparable). El archivo de la Holding sí trae un forecast de venta para México, pero su cifra de referencia es internamente inconsistente con la venta real reportada — por rigor no se usa aquí como proyección. Se muestra real YTD vs. presupuesto del mismo período, la única comparación confiable disponible.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Trayectoria mensual: la misma comparación, mes a mes</h2>
+    <p class="desc">USD · el cumplimiento cae de forma sostenida, de 87,2% en enero a 18,4% en agosto — la venta real se mantiene plana mientras el presupuesto asume una curva de crecimiento que nunca se acompañó</p>
+    <div class="trayline" id="tray-mexico"></div>
+    <div class="legend" style="margin-top:8px">
+      <span><i style="background:#1baf7a"></i>Real 2026 (ene–ago)</span>
+      <span><i style="background:#C9C6DC"></i>Presupuesto 2026</span>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Desvío de agosto por cliente (real vs. forecast del Country Manager)</h2>
+    <p class="desc">MXN · dos negocios nuevos proyectados y no concretados explican el 89,2% del desvío negativo</p>
+    <div id="clientes-chart"></div>
+    <div class="callout atencion" style="margin-top:16px">
+      <b class="tag">ATENCIÓN</b>
+      <p>El forecast de agosto proyectaba $728K MXN; la venta real fue $406K MXN (desvío de –$323K MXN). PLENIT (–$201K) y PRUDENTIAL (–$132K) —negocios nuevos que no llegaron a facturar— explican por sí solos el 89,2% de los desvíos negativos del mes.</p>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Concentración de clientes</h2>
+    <p class="desc">Acumulado ene–ago 2026 · % sobre ventas totales, 35 clientes activos</p>
+    <div class="hbars" id="hbars-clientes"></div>
+    <div class="callout atencion" style="margin-top:16px">
+      <b class="tag">ATENCIÓN</b>
+      <p>Los cinco principales clientes concentran 68,2% de las ventas ($2.024K MXN de $2.968K MXN), repartidos entre tres cuentas de tamaño casi idéntico: Grupo Consulmed (18,4%), Cardif México Seguros de Vida (17,3%) y Mancera (15,1%) suman 50,9% por sí solas. Es una concentración del mismo orden que la de Chile (71%) y Colombia.</p>
+    </div>
+    <div class="callout atencion">
+      <b class="tag">ATENCIÓN</b>
+      <p>Esta concentración agrava el riesgo ya visto arriba: México ya perdió –$323K MXN de venta de agosto por solo dos negocios no concretados. Con 68,2% de la venta dependiendo de cinco cuentas y EBITDA ya negativo, el margen de maniobra para absorber la pérdida de cualquiera de las tres principales es prácticamente nulo. → Plan de retención explícito para estas cinco cuentas.</p>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Hallazgos, alertas y recomendaciones</h2>
+    <div class="callout critico"><b class="tag">CRÍTICO</b><p>El GAV total ($3.464K MXN) equivale a 116,7% de las ventas del período — la estructura de costos fijos por sí sola supera la facturación. → Revisión inmediata del dimensionamiento de la estructura frente al nivel de venta real.</p></div>
+    <div class="callout critico"><b class="tag">CRÍTICO</b><p>Cumplimiento de ventas de solo 29,5% del presupuesto (USD 171K vs. USD 578K) — el más bajo del grupo. → Revisar los supuestos del presupuesto 2026 y el plan comercial vigente.</p></div>
+    <div class="callout critico"><b class="tag">CRÍTICO</b><p>69,6% del GAV se concentra en Comercial &amp; Marketing, con más del 60% de esa cifra en una sola posición (CEO, según nómina cruda). → Evaluar junto al Holding el criterio de asignación y el nivel de esa remuneración.</p></div>
+    <div class="callout critico"><b class="tag">CRÍTICO</b><p>Utilidad neta negativa en los 8 de 8 meses de 2026, con EBITDA y utilidad neta USD revirtiendo de presupuesto positivo a resultado negativo. → Definir un plan de contención de pérdidas con fecha de punto de equilibrio.</p></div>
+    <div class="callout atencion"><b class="tag">ATENCIÓN</b><p>El desvío de agosto se explica en 89,2% por dos negocios nuevos proyectados (PLENIT y PRUDENTIAL) que no llegaron a facturar. → Revisar el criterio de inclusión de negocio "proyectado no cerrado" en el forecast mensual.</p></div>
+    <div class="callout atencion"><b class="tag">ATENCIÓN</b><p>Concentración de venta en el canal B2C (72,1%) con venta cero en canales institucionales (Isapres, Empleadores, Incumbentes, Laboratorios). → Evaluar reactivar el desarrollo de canal institucional antes de seguir invirtiendo en estructura comercial B2C.</p></div>
+    <div class="callout atencion"><b class="tag">ATENCIÓN</b><p>Concentración de clientes: top 5 = 68,2% de ventas sobre 35 clientes activos, con Consulmed + Cardif + Mancera sumando 50,9%. → Plan de retención explícito para las cinco cuentas principales; la filial ya opera con EBITDA negativo.</p></div>
+    <div class="callout positivo"><b class="tag">POSITIVO</b><p>El margen de explotación (41,9%) y la estructura de costo directo son saludables y comparables al resto del grupo — el problema de México es de estructura de gastos y de nivel de venta, no de eficiencia clínica.</p></div>
+    <div class="callout mejora"><b class="tag">MEJORA</b><p>Agosto registra la menor pérdida mensual desde enero (–$35K MXN vs. –$240K MXN promedio en los 7 meses previos). → Dar seguimiento el próximo cierre para confirmar si es tendencia o un mes puntual.</p></div>
+  </section>
+
+  <section class="card">
+    <h2>Estado de resultados — acumulado ene–ago 2026</h2>
+    <table>
+      <thead><tr><th>Línea</th><th>MXN miles</th><th>% s/ ventas</th></tr></thead>
+      <tbody id="tbl-eerr"></tbody>
+    </table>
+  </section>
+
+  <footer>Fuente: 2026-08_Financial_Frame_Me_xico_V1.xlsm ("1. EERR 2026 A&E", "3. EERR 2026 det", "Análisis Ago-26", "PIVOT") y Holding_Medismart_V1.xlsx (validación USD) · Elaboración propia · Confidencial, uso interno Medismart</footer>
+</div>
+
+<script>
+(function(){
+  const css = getComputedStyle(document.documentElement);
+  const C = n => css.getPropertyValue(n).trim();
+  const months = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago"];
+
+  // ---- Tooltip compartido (hover/tap sobre cualquier marca) ----
+  const ttEl = document.createElement('div');
+  ttEl.className = 'tt';
+  document.body.appendChild(ttEl);
+  window.showTip = function(evt, el){
+    const l = el.getAttribute('data-tl')||'', v = el.getAttribute('data-tv')||'', s = el.getAttribute('data-ts')||'';
+    ttEl.innerHTML = `<b>${l}</b>${v?`${v}`:''}${s?`<span class="tt-sub">${s}</span>`:''}`;
+    window.moveTip(evt);
+    ttEl.classList.add('show');
+  }
+  window.moveTip = function(evt){
+    const pad=14, w=ttEl.offsetWidth||160, vw=window.innerWidth;
+    let x = evt.clientX, y = evt.clientY;
+    if(x - w/2 < pad) x = w/2+pad;
+    if(x + w/2 > vw-pad) x = vw-w/2-pad;
+    ttEl.style.left = x+'px';
+    ttEl.style.top = Math.max(y, 60)+'px';
+  }
+  window.hideTip = function(){ ttEl.classList.remove('show'); }
+  const TIP = 'onmousemove="showTip(event,this)" onmouseleave="hideTip()" onmouseenter="showTip(event,this)"';
+
+  // ---- Ventas mensuales (MXN miles) ----
+  const ventas = [368,370,370,293,430,338,392,406];
+  const maxV = Math.max(...ventas);
+  const barEl = document.getElementById("bar-ventas");
+  ventas.forEach((v,i)=>{
+    const col = document.createElement("div");
+    col.className = "bar-col";
+    const h = (v/maxV*100).toFixed(1);
+    col.innerHTML = `<div class="bar" data-tl="Ventas · ${months[i]} 2026" data-tv="MXN ${v}K" ${TIP} style="height:${h}%"><span class="v" style="pointer-events:none">${v}K</span></div><div class="lb">${months[i]}</div>`;
+    barEl.appendChild(col);
+  });
+
+  // ---- Margen % line ----
+  const margen = [45.1,48.0,44.1,34.6,48.8,31.9,37.8,41.6];
+  const W=560,H=150,pad=28;
+  const stepX = (W-2*pad)/(margen.length-1);
+  const yMax=60, yMin=0;
+  const yOf = v => H-pad - (v-yMin)/(yMax-yMin)*(H-2*pad);
+  let pts = margen.map((v,i)=>`${pad+i*stepX},${yOf(v)}`).join(" ");
+  let grid = "";
+  [0,12,24,36,48,60].forEach(g=>{ grid += `<line x1="${pad}" y1="${yOf(g)}" x2="${W-pad}" y2="${yOf(g)}" stroke="${C('--chart-grid')}" stroke-width="1"/><text x="2" y="${yOf(g)+3}" font-size="9" fill="${C('--text-secondary')}">${g}%</text>`; });
+  let dots = margen.map((v,i)=>`<circle cx="${pad+i*stepX}" cy="${yOf(v)}" r="10" fill="transparent" data-tl="Margen de explotación · ${months[i]}" data-tv="${v.toFixed(1)}%" ${TIP}/><circle cx="${pad+i*stepX}" cy="${yOf(v)}" r="3.4" fill="${C('--brand-magenta')}" style="pointer-events:none"/><text x="${pad+i*stepX}" y="${yOf(v)-9}" font-size="9.5" text-anchor="middle" fill="${C('--text-secondary')}" style="pointer-events:none">${v.toFixed(0)}%</text>`).join("");
+  let labels = months.map((m,i)=>`<text x="${pad+i*stepX}" y="${H-6}" font-size="9.5" text-anchor="middle" fill="${C('--text-secondary')}">${m}</text>`).join("");
+  document.getElementById("line-margen").innerHTML = `<svg viewBox="0 0 ${W} ${H}">${grid}<polyline points="${pts}" fill="none" stroke="${C('--brand-magenta')}" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>${dots}${labels}</svg>`;
+
+  // ---- Ventas por canal ----
+  const canal = [["B2C",2139,72.1,C('--brand-ink')],["Aseguradoras y Corredores",519,17.5,C('--brand-blue')],["Agregadores",310,10.5,C('--brand-teal')]];
+  document.getElementById("hbars-canal").innerHTML = canal.map(([lb,v,p,col])=>`<div class="hrow"><div class="lb">${lb}</div><div class="htrack"><div class="hfill" data-tl="${lb}" data-tv="$${v}K MXN" data-ts="${p}% de la venta" style="width:${p}%;background:${col}" ${TIP}></div></div><div class="val">$${v}K · ${p}%</div></div>`).join("");
+
+  // ---- Costo directo ----
+  const costoDirecto = [["Equipo Médico",1499,86.9,C('--brand-ink')],["Otros costos directos",226,13.1,C('--brand-teal')]];
+  document.getElementById("hbars-costo").innerHTML = costoDirecto.map(([lb,v,p,col])=>`<div class="hrow"><div class="lb">${lb}</div><div class="htrack"><div class="hfill" data-tl="${lb}" data-tv="$${v}K MXN" data-ts="${p}% del costo directo" style="width:${p}%;background:${col}" ${TIP}></div></div><div class="val">$${v}K · ${p}%</div></div>`).join("");
+
+  // ---- Concentración de clientes ----
+  const clientes = [["Grupo Consulmed",547,18.4,C('--brand-ink')],["Cardif México Seguros de Vida",514,17.3,C('--brand-blue')],["Mancera",449,15.1,C('--brand-teal')],["EYS Equipo y Soluciones",302,10.2,C('--brand-magenta')],["Total Pass",213,7.2,C('--text-secondary')],["Resto de clientes (30)",943,31.8,C('--border')]];
+  document.getElementById("hbars-clientes").innerHTML = clientes.map(([lb,v,p,col])=>`<div class="hrow"><div class="lb">${lb}</div><div class="htrack"><div class="hfill" data-tl="${lb}" data-tv="$${v}K MXN" data-ts="${p}% de la venta" style="width:${p}%;background:${col}" ${TIP}></div></div><div class="val">$${v}K · ${p}%</div></div>`).join("");
+
+  // ---- GAV por área ----
+  const gav = [["Comercial & Marketing",2412,69.6,C('--critical')],["Administración, Finanzas y RRHH",677,19.5,C('--brand-blue')],["Operaciones & Equipo Médico",375,10.8,C('--brand-teal')],["TI",0,0.0,C('--border')]];
+  document.getElementById("hbars-gav").innerHTML = gav.map(([lb,v,p,col])=>`<div class="hrow"><div class="lb">${lb}</div><div class="htrack"><div class="hfill" data-tl="${lb}" data-tv="$${v}K MXN" data-ts="${p}% del GAV" style="width:${Math.max(p,0.6)}%;background:${col}" ${TIP}></div></div><div class="val">$${v}K · ${p}%</div></div>`).join("");
+
+  // ---- Waterfall (MXN miles, local) ----
+  const steps = [["Margen de explotación",1243,"total"],["Gastos Adm. y Venta",-3464,"delta"],["EBITDA",-2220,"total"]];
+  const WW=760,HH=230,P=34,PB=34;
+  let cum=0; const cums=[];
+  steps.forEach(s=>{ if(s[2]==="total"){cum=s[1];} else {cum+=s[1];} cums.push(cum); });
+  const allTops = steps.map((s,i)=> s[2]==="total" ? s[1] : cums[i]);
+  const allBottoms = steps.map((s,i)=> s[2]==="total" ? 0 : cums[i]-s[1]);
+  const yMaxW = Math.max(...allTops,...allBottoms,0)*1.15;
+  const yMinW = Math.min(...allTops,...allBottoms,0)*1.15;
+  const yOfW = v => PB + (yMaxW-v)/(yMaxW-yMinW)*(HH-2*PB);
+  const bw = (WW-2*P)/steps.length;
+  let bars="", connectors="", zero = yOfW(0);
+  let running=0;
+  steps.forEach((s,i)=>{
+    const x = P + i*bw + bw*0.18;
+    const w = bw*0.64;
+    let top, bottom, color;
+    if(s[2]==="total"){ top=Math.max(0,s[1]); bottom=Math.min(0,s[1]); running=s[1]; color=C('--brand-ink'); }
+    else { const start=running; running+=s[1]; top=Math.max(start,running); bottom=Math.min(start,running); color = s[1]>=0? C('--good') : C('--critical'); }
+    const y = yOfW(top), h = Math.max(2,yOfW(bottom)-yOfW(top));
+    const labY = s[1]>=0 ? yOfW(top)-8 : yOfW(bottom)+16;
+    bars += `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3" fill="${color}" data-tl="${s[0]}" data-tv="MXN ${s[1].toLocaleString('es-MX')}K" ${TIP}/>`;
+    bars += `<text x="${x+w/2}" y="${labY}" font-size="12" font-weight="700" text-anchor="middle" fill="${C('--ink')}" style="pointer-events:none">${s[1]>0?'+':''}${s[1]}K</text>`;
+    bars += `<text x="${x+w/2}" y="${HH-8}" font-size="10.5" text-anchor="middle" fill="${C('--text-secondary')}" style="pointer-events:none">${s[0]}</text>`;
+    if(i<steps.length-1){ const lvl = s[2]==="total"? s[1] : running; connectors += `<line x1="${x+w}" y1="${yOfW(lvl)}" x2="${x+bw+bw*0.18}" y2="${yOfW(lvl)}" stroke="${C('--border')}" stroke-width="1.4" stroke-dasharray="3,3"/>`; }
+  });
+  document.getElementById("waterfall").innerHTML = `<svg viewBox="0 0 ${WW} ${HH}" style="width:100%;height:auto"><line x1="${P}" y1="${zero}" x2="${WW-P}" y2="${zero}" stroke="${C('--chart-grid')}" stroke-width="1"/>${connectors}${bars}</svg>`;
+
+  // ---- Utilidad neta mensual (todas negativas) ----
+  const util = [-2,-259,-532,-114,-153,-448,-377,-35];
+  const UW=560, UH=200, UP=30, UPB=18;
+  const uMax = 0, uMin = Math.min(...util)*1.18;
+  const uYof = v => UPB + (uMax-v)/(uMax-uMin)*(UH-2*UPB);
+  const ubw = (UW-2*UP)/util.length;
+  let ubars="";
+  util.forEach((v,i)=>{
+    const x = UP + i*ubw + ubw*0.2, w = ubw*0.6;
+    const y = uYof(0), h = Math.max(2, uYof(v)-uYof(0));
+    ubars += `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3" fill="${C('--critical')}" data-tl="Utilidad neta · ${months[i]} 2026" data-tv="MXN ${v}K" ${TIP}/>`;
+    ubars += `<text x="${x+w/2}" y="${uYof(v)+ (v<0?14:-6)}" font-size="10" font-weight="600" text-anchor="middle" fill="${C('--text-secondary')}" style="pointer-events:none">${v}K</text>`;
+    ubars += `<text x="${x+w/2}" y="${UH-2}" font-size="10.5" text-anchor="middle" fill="${C('--text-secondary')}" style="pointer-events:none">${months[i]}</text>`;
+  });
+  document.getElementById("util-chart").innerHTML = `<svg viewBox="0 0 ${UW} ${UH}" style="width:100%;height:auto"><line x1="${UP}" y1="${uYof(0)}" x2="${UW-UP}" y2="${uYof(0)}" stroke="${C('--text-secondary')}" stroke-width="1"/>${ubars}</svg>`;
+
+  // ---- Presupuesto vs. real (USD miles, con negativos) ----
+  const metrics = [["Ventas",578,171],["EBITDA",49,-128],["Utilidad Neta",49,-110]];
+  const BW=560, BH=220, BP=34, BPB=18;
+  const allB = metrics.flatMap(m=>[m[1],m[2]]);
+  const bMax = Math.max(...allB,0)*1.15, bMin = Math.min(...allB,0)*1.25;
+  const bYof = v => BPB + (bMax-v)/(bMax-bMin)*(BH-2*BPB);
+  const bbw = (BW-2*BP)/metrics.length;
+  let bbars="";
+  metrics.forEach(([name,b,r],i)=>{
+    const gx = BP + i*bbw;
+    const w1 = bbw*0.28, w2 = bbw*0.28, gap=bbw*0.06;
+    const x1 = gx + bbw*0.15, x2 = x1 + w1 + gap;
+    const y1 = bYof(Math.max(0,b)), h1 = Math.abs(bYof(b)-bYof(0));
+    const y2 = bYof(Math.max(0,r)), h2 = Math.abs(bYof(r)-bYof(0));
+    bbars += `<rect x="${x1}" y="${y1}" width="${w1}" height="${Math.max(2,h1)}" rx="2" fill="color-mix(in srgb, ${C('--brand-ink')} 22%, ${C('--surface-2')})" data-tl="${name} · Presupuesto" data-tv="USD ${b}K" ${TIP}/>`;
+    bbars += `<rect x="${x2}" y="${y2}" width="${w2}" height="${Math.max(2,h2)}" rx="2" fill="${r>=0?C('--brand-ink'):C('--critical')}" data-tl="${name} · Real" data-tv="USD ${r}K" ${TIP}/>`;
+    bbars += `<text x="${x1+w1/2}" y="${b>=0? y1-6 : y1+h1+13}" font-size="10" font-weight="600" text-anchor="middle" fill="${C('--text-secondary')}" style="pointer-events:none">${b}</text>`;
+    bbars += `<text x="${x2+w2/2}" y="${r>=0? y2-6 : y2+h2+13}" font-size="10" font-weight="600" text-anchor="middle" fill="${C('--text-secondary')}" style="pointer-events:none">${r}</text>`;
+    bbars += `<text x="${gx+bbw/2}" y="${BH-2}" font-size="10.5" text-anchor="middle" fill="${C('--text-secondary')}" style="pointer-events:none">${name}</text>`;
+  });
+  document.getElementById("budget-chart").innerHTML = `<svg viewBox="0 0 ${BW} ${BH}" style="width:100%;height:auto"><line x1="${BP}" y1="${bYof(0)}" x2="${BW-BP}" y2="${bYof(0)}" stroke="${C('--text-secondary')}" stroke-width="1"/>${bbars}</svg>`;
+
+  // ---- Trayectoria mensual suavizada (Catmull-Rom → Bezier) ----
+  function smoothPath(pts){
+    if (pts.length < 2) return "";
+    if (pts.length === 2) return `M${pts[0][0]},${pts[0][1]} L${pts[1][0]},${pts[1][1]}`;
+    let d = `M${pts[0][0].toFixed(2)},${pts[0][1].toFixed(2)}`;
+    for (let i=0;i<pts.length-1;i++){
+      const p0 = pts[i-1] || pts[i], p1 = pts[i], p2 = pts[i+1], p3 = pts[i+2] || p2;
+      const c1x = p1[0] + (p2[0]-p0[0])/6, c1y = p1[1] + (p2[1]-p0[1])/6;
+      const c2x = p2[0] - (p3[0]-p1[0])/6, c2y = p2[1] - (p3[1]-p1[1])/6;
+      d += ` C${c1x.toFixed(2)},${c1y.toFixed(2)} ${c2x.toFixed(2)},${c2y.toFixed(2)} ${p2[0].toFixed(2)},${p2[1].toFixed(2)}`;
+    }
+    return d;
+  }
+  function renderTrayline(elId, {monthsN=12, series}){
+    const W=780, H=260, padL=54, padR=14, padT=14, padB=28;
+    const allVals = series.flatMap(s=>s.data.map(d=>d[1]));
+    const yMax = Math.max(...allVals)*1.12;
+    const xOf = m => padL + (m/(monthsN-1))*(W-padL-padR);
+    const yOf = v => padT + (1 - v/yMax)*(H-padT-padB);
+    const monthsEs = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"].slice(0,monthsN);
+    let grid = "";
+    for (let i=0;i<=4;i++){
+      const v = yMax*i/4, y = yOf(v);
+      grid += `<line x1="${padL}" y1="${y.toFixed(1)}" x2="${W-padR}" y2="${y.toFixed(1)}" stroke="${C('--chart-grid')}" stroke-width="1"/><text x="${padL-8}" y="${(y+3).toFixed(1)}" font-size="9.5" text-anchor="end" fill="${C('--text-secondary')}" style="pointer-events:none">${Math.round(v).toLocaleString('es-MX')}</text>`;
+    }
+    const xlabels = monthsEs.map((m,i)=>`<text x="${xOf(i).toFixed(1)}" y="${H-8}" font-size="9.5" text-anchor="middle" fill="${C('--text-secondary')}" style="pointer-events:none">${m}</text>`).join("");
+    let paths = "";
+    series.forEach(s=>{
+      const pts = s.data.map(([m,v])=>[xOf(m), yOf(v)]);
+      const d = smoothPath(pts);
+      if (s.fill){
+        const fillD = d + ` L${pts[pts.length-1][0].toFixed(2)},${yOf(0).toFixed(2)} L${pts[0][0].toFixed(2)},${yOf(0).toFixed(2)} Z`;
+        paths += `<path d="${fillD}" fill="${s.color}" opacity="0.10" stroke="none"/>`;
+      }
+    });
+    series.forEach(s=>{
+      const pts = s.data.map(([m,v])=>[xOf(m), yOf(v)]);
+      const d = smoothPath(pts);
+      paths += `<path d="${d}" fill="none" stroke="${s.color}" stroke-width="${s.dash?2.2:3}" ${s.dash?`stroke-dasharray="${s.dash}"`:""} stroke-linecap="round" style="pointer-events:none"/>`;
+      pts.forEach(([x,y],i)=>{
+        paths += `<circle cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="10" fill="transparent" data-tl="${s.name||''} · ${monthsEs[i]}" data-tv="USD ${s.data[i][1].toLocaleString('es-MX')}" ${TIP}/>`;
+        paths += `<circle cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="3.6" fill="${s.color}" stroke="${C('--surface')}" stroke-width="1.4" style="pointer-events:none"/>`;
+      });
+    });
+    document.getElementById(elId).innerHTML = `<svg viewBox="0 0 ${W} ${H}">${grid}${paths}${xlabels}</svg>`;
+  }
+
+  const mxReal = [20850,21488,20844,16827,24854,19459,22470,23765];
+  const mxBudget = [23902,27274,55445,65300,69218,86133,121328,129148,135743,144887,151531,157881];
+  renderTrayline("tray-mexico", {
+    series: [
+      { color: "#C9C6DC", dash: "6,3", name: "Presupuesto 2026", data: mxBudget.map((v,i)=>[i,v]) },
+      { color: "#1baf7a", fill: true, name: "Real 2026", data: mxReal.map((v,i)=>[i,v]) },
+    ]
+  });
+
+  // ---- Desvío de agosto por cliente (tornado horizontal) ----
+  const cli = [
+    ["PLENIT",-200.7],["PRUDENTIAL",-132.1],["CALMANERA",-25.0],["MANCERA",-4.8],
+    ["EYS EQUIPO Y SOLUCIONES",-3.4],["TOTAL PASS",6.1],["GRUPO CONSULMED",11.6],["CARDIF MÉXICO SEGUROS DE VIDA",30.3]
+  ];
+  const CW=760, rowH=28, CH2 = cli.length*rowH + 30, CP=200, CPR=70;
+  const cMax = Math.max(...cli.map(c=>Math.abs(c[1])))*1.15;
+  const cScale = (CW-CP-CPR)/2;
+  const cCenter = CP + cScale;
+  let crows = "";
+  cli.forEach(([name,v],i)=>{
+    const y = 10 + i*rowH;
+    const w = Math.abs(v)/cMax*cScale;
+    const x = v>=0 ? cCenter : cCenter-w;
+    const color = v>=0 ? C('--good') : C('--critical');
+    crows += `<text x="${CP-10}" y="${y+14}" font-size="10.5" text-anchor="end" fill="${C('--text-secondary')}" style="pointer-events:none">${name}</text>`;
+    crows += `<rect x="${x}" y="${y+2}" width="${Math.max(w,1.5)}" height="16" rx="3" fill="${color}" data-tl="${name} · Desvío agosto" data-tv="MXN ${v>0?'+':''}${v.toFixed(1)}K" ${TIP}/>`;
+    const labelTxt = `${v>0?'+':''}${v.toFixed(1)}K`;
+    const estW = labelTxt.length * 6.4 + 8;
+    // place the value label outside the bar by default; switch to inside (white text)
+    // when the bar is wide enough that an outside label on the negative side would
+    // collide with the row name column (avoids the text-overlap bug seen with PLENIT).
+    let lx, anchor, fill;
+    if (v >= 0) { lx = x + w + 6; anchor = "start"; fill = C('--ink'); }
+    else if (x - 6 - estW < CP - 6) { lx = x + 8; anchor = "start"; fill = "#fff"; }
+    else { lx = x - 6; anchor = "end"; fill = C('--ink'); }
+    crows += `<text x="${lx}" y="${y+14}" font-size="10.5" text-anchor="${anchor}" fill="${fill}" font-weight="600" style="pointer-events:none">${labelTxt}</text>`;
+  });
+  document.getElementById("clientes-chart").innerHTML = `<svg viewBox="0 0 ${CW} ${CH2}" style="width:100%;height:auto"><line x1="${cCenter}" y1="4" x2="${cCenter}" y2="${CH2-8}" stroke="${C('--text-secondary')}" stroke-width="1"/>${crows}</svg>`;
+
+  // ---- Tabla EERR ----
+  const rows = [["Ventas","2.968","100,0%"],["Costo directo","–1.724","–58,1%"],["Margen de explotación","1.243","41,9%"],["Gastos de Administración y Venta","–3.464","–116,7%"],["EBITDA (local)","–2.220","–74,8%"],["Ingresos no Operacionales","326","11,0%"],["Gasto Financiero","–25","–0,8%"],["Impuestos","0","0,0%"],["Utilidad neta","–1.919","–64,7%"]];
+  document.getElementById("tbl-eerr").innerHTML = rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join("");
+})();
+</script>
